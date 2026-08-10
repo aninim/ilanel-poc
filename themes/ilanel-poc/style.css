@@ -1,0 +1,14 @@
+/*
+Theme Name: ILANEL POC
+Theme URI: https://www.ilanel.com/
+Author: ILANEL POC
+Description: Proof-of-concept WooCommerce theme for ILANEL Design Studio. Structural demonstration only — placeholder styling pending studio visual direction. Real styles live in assets/css/main.css.
+Version: 0.1.0
+Requires at least: 6.0
+Requires PHP: 7.4
+License: Proprietary
+Text Domain: ilanel-poc
+WC requires at least: 8.0
+*/
+
+/* Styles are enqueued from assets/css/main.css — see functions.php. */

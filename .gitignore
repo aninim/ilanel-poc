@@ -1,0 +1,13 @@
+# WordPress core / vendor — this repo holds only the theme, plugin and docs
+wp-content/
+wp-admin/
+wp-includes/
+wp-config.php
+vendor/
+node_modules/
+
+# Local env
+*.log
+.DS_Store
+Thumbs.db
+~$*

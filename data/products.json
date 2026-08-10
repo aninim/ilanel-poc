@@ -1,0 +1,84 @@
+{
+  "_source": "Real ILANEL content extracted from reports/crawl-2026-08-10-live.json (ilanel-studio), crawl dated 2026-08-10.",
+  "_note": "Copy, titles and meta descriptions are verbatim from the live site. Prices and SKUs are marked PLACEHOLDER and must be confirmed against Commerce before any real use. Spec PDFs are real live URLs.",
+  "range": {
+    "slug": "pendants",
+    "name": "Pendants",
+    "description": "Sculptural pendant lighting, handmade in Melbourne. Each piece is made to order in a choice of finishes, with lead times of 4–12 weeks for collection pieces."
+  },
+  "products": [
+    {
+      "slug": "comet-pendant",
+      "name": "Comet",
+      "type": "Linear Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/comet-pendant-light",
+      "live_h1": "Comet / Linear Pendant",
+      "seo_title": "Comet Pendant: Burst of Dynamic Energy",
+      "meta_description": "Illuminate your space with ILANEL's Comet Pendant, featuring radiating rods that burst with energy and style. An impactful presence perfect for modern interiors.",
+      "spec_pdf": "https://www.ilanel.com/s/ILANEL_COMET_PENDANT_2026_V2-c772.pdf",
+      "range": "pendants",
+      "sku": "PLACEHOLDER-COMET-01",
+      "price": "PLACEHOLDER",
+      "finishes": ["PLACEHOLDER — confirm from spec PDF"],
+      "related_projects": []
+    },
+    {
+      "slug": "comet-stardust-pendant",
+      "name": "Comet Stardust",
+      "type": "Linear Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/comet-stardust-pendant-light",
+      "live_h1": "Comet Stardust / Linear Pendant",
+      "seo_title": "Comet Stardust Pendant Light - Illuminate with Elegance",
+      "meta_description": "Illuminate your home with the contemporary Comet Stardust Pendant from Ilanel. Crafted for sophistication and charm, it's the perfect enhancement for stylish interiors.",
+      "spec_pdf": "https://www.ilanel.com/s/ILANEL_COMET_STARDUST_PENDANT_23V1.pdf",
+      "range": "pendants",
+      "sku": "PLACEHOLDER-COMETSD-01",
+      "price": "PLACEHOLDER",
+      "finishes": ["PLACEHOLDER — confirm from spec PDF"],
+      "related_projects": []
+    },
+    {
+      "slug": "kahdu-pendant",
+      "name": "Kahdu",
+      "type": "Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/kahdu-light-shades",
+      "live_h1": "Kahdu / Pendant",
+      "seo_title": "Kahdu Light Shades",
+      "meta_description": "Hand woven light shade offering a bold sculptural presence that is soft and organic creating a perfect statement for any sophisticated modern space. Handmade in Melbourne",
+      "spec_pdf": "https://www.ilanel.com/s/ILANEL_KAHDU_PENDANT_2026_V1.pdf",
+      "range": "pendants",
+      "sku": "PLACEHOLDER-KAHDU-01",
+      "price": "PLACEHOLDER",
+      "finishes": ["PLACEHOLDER — confirm from spec PDF"],
+      "related_projects": [
+        {
+          "name": "Chatswood Hill Tavern",
+          "url": "https://www.ilanel.com/projects/kahdu-pendants-chatswood-tavern",
+          "description": "ILANEL's Kahdu pendants light up Chatswood Hill Tavern, adding a touch of elegance and warmth to the bistro's modern renovations."
+        }
+      ]
+    },
+    {
+      "slug": "dais-wall-light",
+      "name": "Dais",
+      "type": "Wall Light",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/dais-wall-light",
+      "live_h1": "Dais / Wall Light",
+      "seo_title": "Dais Wall Light: Minimalist Elegance in Modern Lighting",
+      "meta_description": "Add a touch of sophistication with Ilanel's Dais Wall Light, featuring a sleek and contemporary design. Perfect for modernizing any room.",
+      "spec_pdf": "https://www.ilanel.com/s/ILANEL_DAIS_WALL_2026_V2.pdf",
+      "range": "wall-lights",
+      "sku": "PLACEHOLDER-DAIS-01",
+      "price": "PLACEHOLDER",
+      "finishes": ["PLACEHOLDER — confirm from spec PDF"],
+      "related_projects": []
+    }
+  ],
+  "studio_constants": {
+    "lead_time": "4–12 weeks for collection pieces; longer for custom/commissioned work",
+    "response_time": "within 2 business days",
+    "trade_programme": "20% off RRP + 3D files",
+    "provenance": ["NGV", "Australian War Memorial", "The Hour Glass", "Four Seasons", "Ritz-Carlton"],
+    "made_in": "Melbourne, Australia"
+  }
+}

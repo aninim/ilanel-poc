@@ -1,0 +1,249 @@
+/**
+ * ILANEL POC — PLACEHOLDER STYLING
+ *
+ * ============================================================================
+ * THIS IS NOT THE DESIGN.
+ *
+ * Deliberately neutral: system fonts, no brand colour, no photography
+ * treatment. The studio is supplying the visual design, photography and
+ * final copy. This stylesheet exists only so the structure is legible
+ * while it is being reviewed.
+ *
+ * Judge the STRUCTURE (schema, filters, breadcrumbs, single-source specs),
+ * not the appearance.
+ * ============================================================================
+ */
+
+:root {
+  --ilanel-ink: #1a1a1a;
+  --ilanel-muted: #6b6b6b;
+  --ilanel-rule: #e0e0e0;
+  --ilanel-bg: #ffffff;
+  --ilanel-max: 1200px;
+  --ilanel-gap: 2rem;
+}
+
+body {
+  margin: 0;
+  background: var(--ilanel-bg);
+  color: var(--ilanel-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.ilanel-main,
+.ilanel-range {
+  max-width: var(--ilanel-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Placeholder banner so nobody mistakes this for finished design. */
+body::before {
+  content: "PLACEHOLDER STYLING — structure demo only. Visual design pending studio direction.";
+  display: block;
+  padding: 0.5rem 1rem;
+  background: #fff8e1;
+  border-bottom: 1px solid #ffe082;
+  color: #6b5800;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+/* --- Breadcrumbs ---------------------------------------------------------- */
+
+.ilanel-breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  color: var(--ilanel-muted);
+}
+
+.ilanel-breadcrumbs li + li::before {
+  content: "/";
+  margin-right: 0.5rem;
+  color: var(--ilanel-rule);
+}
+
+.ilanel-breadcrumbs a {
+  color: var(--ilanel-muted);
+  text-decoration: none;
+}
+
+.ilanel-breadcrumbs a:hover,
+.ilanel-breadcrumbs a:focus {
+  color: var(--ilanel-ink);
+  text-decoration: underline;
+}
+
+/* --- Product title -------------------------------------------------------- */
+
+.ilanel-product-title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.ilanel-product-title__type {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--ilanel-muted);
+  font-size: 0.5em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --- Specification block -------------------------------------------------- */
+
+.ilanel-specs {
+  margin: 3rem 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--ilanel-rule);
+}
+
+.ilanel-specs h2 {
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ilanel-specs__list {
+  display: grid;
+  grid-template-columns: minmax(8rem, 12rem) 1fr;
+  gap: 0.75rem 2rem;
+  margin: 0;
+}
+
+.ilanel-specs__list dt {
+  color: var(--ilanel-muted);
+  font-size: 0.875rem;
+}
+
+.ilanel-specs__list dd {
+  margin: 0;
+}
+
+.ilanel-finishes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ilanel-specs__download {
+  margin-top: 1.5rem;
+  font-size: 0.9375rem;
+}
+
+/* --- Range archive -------------------------------------------------------- */
+
+.ilanel-range__header {
+  margin: 2rem 0 3rem;
+}
+
+.ilanel-range__title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+}
+
+.ilanel-range__intro {
+  max-width: 60ch;
+  color: var(--ilanel-muted);
+}
+
+/* --- Filters -------------------------------------------------------------- */
+
+.ilanel-filters {
+  margin: 0 0 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--ilanel-rule);
+}
+
+.ilanel-filters__label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--ilanel-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ilanel-filters ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ilanel-filters a {
+  color: var(--ilanel-ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.ilanel-filters a:hover,
+.ilanel-filters a:focus {
+  border-bottom-color: var(--ilanel-ink);
+}
+
+.ilanel-filters .is-current a {
+  border-bottom-color: var(--ilanel-ink);
+  font-weight: 600;
+}
+
+.ilanel-filters__count {
+  color: var(--ilanel-muted);
+  font-size: 0.8125rem;
+}
+
+/* --- Product grid --------------------------------------------------------- */
+
+ul.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--ilanel-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.products li.product a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul.products li.product img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.75rem;
+  background: #f4f4f4;
+}
+
+ul.products li.product h2,
+ul.products li.product .woocommerce-loop-product__title {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+@media (max-width: 640px) {
+  .ilanel-specs__list {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .ilanel-specs__list dd {
+    margin-bottom: 1rem;
+  }
+}
