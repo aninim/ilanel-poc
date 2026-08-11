@@ -1,11 +1,24 @@
 # ILANEL POC — WooCommerce
 
-Engineering proof-of-concept for moving ILANEL from Squarespace to
-WordPress + WooCommerce. Scope agreed with the studio: **product page +
-collection/range page**, engineering only.
+Proof-of-concept for moving ILANEL from Squarespace to WordPress +
+WooCommerce. Two pages: **product page + collection/range page**.
 
-**The studio supplies visual design, photography and final copy.** Styling here
-is deliberately neutral placeholder — judge the structure, not the appearance.
+**The goal is visual:** show that ILANEL can be built to look like
+[Ross Gardam](https://www.rossgardam.com.au/). The layout, type scale and
+page anatomy are taken from their live markup and stylesheet, not
+approximated.
+
+## ▶ Run it — one click, no install
+
+```
+https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/aninim/ilanel-poc/master/dist/blueprint.json
+```
+
+Boots WordPress + WooCommerce in your browser (WebAssembly), installs the
+theme and plugin, and seeds four real ILANEL products. **Nothing persists** —
+it is a demo, not a host.
+
+After changing code: `node scripts/build-playground-blueprint.js` then push.
 
 ---
 
@@ -58,48 +71,29 @@ template, so content entry cannot reintroduce the defect.
 
 | Item | State |
 |---|---|
-| Plugin + theme code | ✅ Complete, `php -l` clean on all 12 files |
-| Product schema | ✅ Verified — valid JSON-LD, all required fields |
-| CollectionPage schema | ✅ Verified — valid JSON-LD with ItemList |
-| BreadcrumbList schema | ✅ Verified — sequential positions |
-| Real content seeded | ✅ Comet, Comet Stardust, Kahdu, Dais |
-| **Running instance** | ❌ **Blocked — no host. See below.** |
-| Prices / SKUs | ⚠️ Placeholder — must come from Commerce |
-| Product images | ⚠️ Not included — studio supplies photography |
+| Plugin + theme code | ✅ Complete, `php -l` clean |
+| RG-style product + range pages | ✅ Hero carousel, storytelling, configurator, downloads, discover |
+| Product / CollectionPage / Breadcrumb schema | ✅ Verified valid JSON-LD |
+| All four products fully dressed | ✅ Comet, Comet Stardust, Kahdu, Dais |
+| Real ILANEL photography | ✅ Sideloaded from their CDN |
+| Running instance | ✅ **WordPress Playground — see above** |
+| 3D viewer | ⚙️ `<model-viewer>` wired; needs a `.glb` from the studio |
+| Prices / SKUs | ⚠️ **Invented for the demo — do not quote** |
 
 Schema output was verified by running the generators against stubbed
 WordPress/WooCommerce in PHP 8.3 — not by inspection. See `docs/VERIFICATION.md`.
 
 ---
 
-## ⚠️ Hosting is unresolved
+## Hosting a real instance
 
-The handoff assumed `dads42.com` could host this. **It can't as configured.**
+Playground is the demo vehicle and needs nothing. A **persistent** install
+still needs PHP + MySQL, which neither `dads42.com` (Firebase, static) nor
+Vercel (Node) provides. Options, cheapest first:
 
-`dads42.com` is **Firebase Hosting + Cloudflare DNS** — static hosting only.
-Firebase Hosting serves static files; it does not run PHP or MySQL. The other
-documented pattern (Netlify) doesn't run WordPress either.
-
-So the "full local WP+Woo so it actually runs and is clickable" requirement is
-**not met**, and can't be met by either existing hosting pattern. This machine
-also has no PHP, MySQL or Docker, and no admin rights to install a database
-server — and putting one on a company PC would cross the safety boundary in
-`CLAUDE.md` regardless.
-
-**Options, cheapest first — needs a decision:**
-
-1. **Managed WP host** (~AU$10–30/mo) — e.g. SiteGround, Cloudways, Kinsta.
-   Fastest path to clickable; deploy this repo and run the seeder.
-2. **A VPS you already own** — if there's a real server behind `dads42.com`
-   beyond the Firebase static sites, WP+Woo installs there normally.
-3. **Local install on a personal machine** — free, avoids the company-PC
-   issue entirely. `docs/INSTALL.md` has the steps.
-4. **WordPress Playground** (`playground.wordpress.net`) — runs WP+Woo in the
-   browser via WASM, zero install. Good enough to *demo* the pages; not a real
-   host, and state doesn't persist.
-
-Option 4 is the fastest way to see it working; option 1 is the right answer if
-this proceeds past POC.
+1. **Managed WP host** (~AU$10–30/mo) — SiteGround, Cloudways, Kinsta.
+2. **A VPS you already own.**
+3. **Local install** — LocalWP. See `docs/INSTALL.md`.
 
 ---
 

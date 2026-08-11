@@ -1,8 +1,16 @@
 # Architecture
 
-Structural patterns borrowed from Ross Gardam's WooCommerce build — **not a
-visual clone.** RG validates the stack at ILANEL's scale and price point
-(67 products, 137 journal posts, 14 ranges, 24 collections).
+Structural **and visual** patterns taken from Ross Gardam's WooCommerce build.
+The studio's brief was explicit — *"the sample pages must look Ross Gardam"* —
+so page anatomy, type scale and spacing were read from their served HTML and
+stylesheet rather than approximated.
+
+RG also validates the stack at ILANEL's scale and price point (67 products,
+137 journal posts, 14 ranges, 24 collections).
+
+> **Fonts:** RG use ABCFavorit + Lyon Display, both licensed. This substitutes
+> Inter + Playfair Display. Swapping in the licensed faces is the single
+> biggest remaining step toward an exact match.
 
 ---
 
@@ -42,15 +50,24 @@ plugins/ilanel-poc-core/
 ├── ilanel-poc-core.php              Bootstrap; hard-fails without WooCommerce
 └── includes/
     ├── class-ilanel-taxonomies.php  ilanel_range taxonomy (hierarchical)
-    ├── class-ilanel-product-meta.php Spec PDF, finishes, lead time, origin, type label
+    ├── class-ilanel-product-meta.php Spec PDF, finishes, lead time, origin,
+    │                                 type label, gallery, story images,
+    │                                 swatches, lengths, .glb / .usdz
     ├── class-ilanel-schema.php      Product+Offer, CollectionPage+ItemList
     └── class-ilanel-breadcrumbs.php Visible trail + BreadcrumbList, one source
 
 themes/ilanel-poc/
-├── functions.php                    Strips Woo defaults; renders specs + filters
+├── functions.php                    Strips Woo defaults; filters; enqueues
+├── header.php / footer.php          RG header (overlaid on hero) and footer
 ├── taxonomy-ilanel_range.php        Range archive (the collection page)
+├── woocommerce/single-product.php   Full RG product anatomy
 ├── woocommerce/single-product/title.php   The one H1
-└── assets/css/main.css              PLACEHOLDER styling
+└── assets/
+    ├── css/main.css                 RG design language
+    └── js/
+        ├── product.js               Carousel, configurator, scale drawing,
+        │                            lit/unlit, lightbox, sticky bar
+        └── transitions.js           Soft page-to-page fades
 ```
 
 ## Design decisions worth knowing
