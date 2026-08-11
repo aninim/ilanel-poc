@@ -102,6 +102,7 @@ function buildSeedPhp() {
     story: p.story || [],
     swatches: (p.finishes || []).filter((f) => Array.isArray(f)).map(([name, image]) => ({ name, image })),
     lengths: p.lengths || [],
+    spin: p.spin || [],
   }));
 
   const payload = JSON.stringify({ products }, null, 2);
@@ -213,6 +214,9 @@ foreach ( $data['products'] as $item ) {
     }
     if ( ! empty( $item['lengths'] ) ) {
         update_post_meta( $product_id, '_ilanel_lengths', array_map( 'sanitize_text_field', $item['lengths'] ) );
+    }
+    if ( ! empty( $item['spin'] ) ) {
+        update_post_meta( $product_id, '_ilanel_spin', array_map( 'esc_url_raw', $item['spin'] ) );
     }
     if ( ! empty( $item['swatches'] ) ) {
         $clean = array();

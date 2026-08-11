@@ -56,6 +56,15 @@ function ilanel_poc_enqueue_assets() {
 		ILANEL_POC_THEME_VERSION
 	);
 
+	// Site-wide: soft page-to-page transitions.
+	wp_enqueue_script(
+		'ilanel-poc-transitions',
+		get_stylesheet_directory_uri() . '/assets/js/transitions.js',
+		array(),
+		ILANEL_POC_THEME_VERSION,
+		true
+	);
+
 	if ( function_exists( 'is_product' ) && is_product() ) {
 		wp_enqueue_script(
 			'ilanel-poc-product',
@@ -64,6 +73,23 @@ function ilanel_poc_enqueue_assets() {
 			ILANEL_POC_THEME_VERSION,
 			true
 		);
+
+		/*
+		 * <model-viewer> is only fetched when the product actually has a
+		 * .glb — it is a ~300KB module and there is no reason to pay for
+		 * it on products without a model.
+		 */
+		if ( class_exists( 'ILANEL_Product_Meta' )
+			&& ILANEL_Product_Meta::get( get_the_ID(), ILANEL_Product_Meta::FIELD_MODEL_GLB ) ) {
+			wp_enqueue_script(
+				'model-viewer',
+				'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js',
+				array(),
+				'3.5.0',
+				true
+			);
+			wp_script_add_data( 'model-viewer', 'type', 'module' );
+		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'ilanel_poc_enqueue_assets', 20 );

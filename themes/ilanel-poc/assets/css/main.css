@@ -23,6 +23,41 @@ html {
   font-size: 62.5%;
 }
 
+/* --- Page transitions -----------------------------------------------------
+ * The page starts faded and lifts in; on leaving it fades back out before
+ * navigation. Softens the hard cut between pages without a SPA router.
+ *
+ * `.is-ready` is added by transitions.js. The `no-js` guard means the page
+ * is fully visible when JavaScript is unavailable — never a blank page.
+ */
+
+html.is-transitions body {
+  opacity: 0;
+  transform: translateY(0.8rem);
+}
+
+html.is-transitions.is-ready body {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.42s ease, transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.is-transitions.is-leaving body {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.is-transitions body,
+  html.is-transitions.is-ready body,
+  html.is-transitions.is-leaving body {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 :root {
   --rg-ink: #000;
   --rg-bg: #fff;
@@ -1078,6 +1113,74 @@ body.has-hero .rg-header::before {
 
 .rg-configure__preview img {
   transition: filter 0.6s ease;
+}
+
+/* --- 3D / 360° ------------------------------------------------------------ */
+
+.rg-model {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  --poster-color: transparent;
+}
+
+.rg-spin {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  cursor: grab;
+  user-select: none;
+}
+
+.rg-spin.is-dragging {
+  cursor: grabbing;
+}
+
+.rg-spin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.rg-spin__hint {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.6rem 1.4rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--rg-rule);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-muted);
+  pointer-events: none;
+}
+
+.rg-spin-toggle {
+  position: absolute;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  z-index: 2;
+  padding: 0.8rem 1.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(6px);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.rg-spin-toggle:hover {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.rg-spin-toggle.is-active {
+  background: var(--rg-ink);
+  border-color: var(--rg-ink);
+  color: #fff;
 }
 
 /* --- Lightbox ------------------------------------------------------------- */

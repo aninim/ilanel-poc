@@ -103,23 +103,117 @@
     restart();
   }
 
+  /* --- 360° spin --------------------------------------------------------
+   * Drag to rotate through studio renders. Real rotation without a 3D
+   * asset; when a .glb is supplied the <model-viewer> takes over instead
+   * and this never renders.
+   */
+
+  function initSpin() {
+    var toggle = document.querySelector('.js-spin-toggle');
+    var stage = document.querySelector('.js-spin');
+    if (!toggle || !stage) return;
+
+    var frameEl = stage.querySelector('.js-spin-frame');
+    var img = document.querySelector('.js-config-image');
+
+    var frames;
+    try {
+      frames = JSON.parse(stage.dataset.frames || '[]');
+    } catch (e) {
+      return;
+    }
+    if (frames.length < 2) return;
+
+    // Preload so dragging never stutters on first pass.
+    frames.forEach(function (src) {
+      var pre = new Image();
+      pre.src = src;
+    });
+
+    var index = 0;
+    var dragging = false;
+    var lastX = 0;
+
+    function setFrame(i) {
+      index = ((i % frames.length) + frames.length) % frames.length;
+      frameEl.src = frames[index];
+    }
+
+    toggle.addEventListener('click', function () {
+      var on = stage.hasAttribute('hidden');
+
+      if (on) {
+        stage.removeAttribute('hidden');
+        if (img) img.style.visibility = 'hidden';
+      } else {
+        stage.setAttribute('hidden', '');
+        if (img) img.style.visibility = '';
+      }
+
+      toggle.setAttribute('aria-pressed', String(on));
+      toggle.classList.toggle('is-active', on);
+    });
+
+    function start(x) {
+      dragging = true;
+      lastX = x;
+      stage.classList.add('is-dragging');
+    }
+
+    function move(x) {
+      if (!dragging) return;
+      var dx = x - lastX;
+      // ~14px of travel per frame feels natural at this frame count.
+      if (Math.abs(dx) < 14) return;
+      setFrame(index + (dx > 0 ? 1 : -1));
+      lastX = x;
+    }
+
+    function end() {
+      dragging = false;
+      stage.classList.remove('is-dragging');
+    }
+
+    stage.addEventListener('mousedown', function (e) {
+      e.preventDefault();
+      start(e.clientX);
+    });
+    window.addEventListener('mousemove', function (e) {
+      move(e.clientX);
+    });
+    window.addEventListener('mouseup', end);
+
+    stage.addEventListener(
+      'touchstart',
+      function (e) {
+        start(e.touches[0].clientX);
+      },
+      { passive: true }
+    );
+    stage.addEventListener(
+      'touchmove',
+      function (e) {
+        move(e.touches[0].clientX);
+      },
+      { passive: true }
+    );
+    stage.addEventListener('touchend', end, { passive: true });
+  }
+
   /* --- Lightbox --------------------------------------------------------
-   * Click any hero slide or story image to inspect it full screen. These
-   * are hand-finished pieces; buyers want to see the join, the glass,
-   * the finish up close.
+   * Click a story image or the configurator preview to inspect it full
+   * screen. These are hand-finished pieces; buyers want to see the join,
+   * the glass, the finish up close.
+   *
+   * The hero is deliberately excluded — it is a carousel, and a zoom
+   * cursor over it competes with the slide controls.
    */
 
   function initLightbox() {
-    var sources = [];
-
-    document.querySelectorAll('.rg-hero__slide').forEach(function (slide) {
-      var m = slide.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
-      if (m) sources.push(m[1]);
-    });
-
     var storyImgs = document.querySelectorAll('.rg-feature img, .rg-configure__preview img');
 
-    if (!sources.length && !storyImgs.length) return;
+    if (!storyImgs.length) return;
 
     var box = document.createElement('div');
     box.className = 'rg-lightbox';
@@ -154,14 +248,6 @@
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && box.classList.contains('is-open')) close();
-    });
-
-    document.querySelectorAll('.rg-hero__slide').forEach(function (slide) {
-      slide.style.cursor = 'zoom-in';
-      slide.addEventListener('click', function () {
-        var m = slide.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
-        if (m) open(m[1]);
-      });
     });
 
     storyImgs.forEach(function (el) {
@@ -398,6 +484,7 @@
     initHero();
     initConfigurator();
     initLightSwitch();
+    initSpin();
     initLightbox();
     initReveal();
     initStickyBar();

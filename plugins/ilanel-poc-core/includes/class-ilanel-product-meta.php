@@ -29,6 +29,13 @@ class ILANEL_Product_Meta {
 	const FIELD_SWATCHES = '_ilanel_swatches';
 	const FIELD_LENGTHS  = '_ilanel_lengths';
 
+	// 3D / 360°. Per the studio's SPEC-ar-viewer.md: .glb for web and
+	// Android AR, .usdz for iOS Quick Look. Spin frames are a fallback
+	// built from studio renders when no model exists yet.
+	const FIELD_MODEL_GLB  = '_ilanel_model_glb';
+	const FIELD_MODEL_USDZ = '_ilanel_model_usdz';
+	const FIELD_SPIN       = '_ilanel_spin';
+
 	/**
 	 * Hook registration.
 	 */
@@ -82,6 +89,26 @@ class ILANEL_Product_Meta {
 
 		woocommerce_wp_text_input(
 			array(
+				'id'          => self::FIELD_MODEL_GLB,
+				'label'       => __( '3D model (.glb)', 'ilanel-poc' ),
+				'description' => __( 'Public HTTPS URL to the .glb. When set, the configurator shows a real 3D viewer with AR instead of the 360° spin.', 'ilanel-poc' ),
+				'desc_tip'    => true,
+				'type'        => 'url',
+			)
+		);
+
+		woocommerce_wp_text_input(
+			array(
+				'id'          => self::FIELD_MODEL_USDZ,
+				'label'       => __( '3D model (.usdz)', 'ilanel-poc' ),
+				'description' => __( 'Optional. Enables AR Quick Look on iOS.', 'ilanel-poc' ),
+				'desc_tip'    => true,
+				'type'        => 'url',
+			)
+		);
+
+		woocommerce_wp_text_input(
+			array(
 				'id'          => self::FIELD_TYPE_LABEL,
 				'label'       => __( 'Type label', 'ilanel-poc' ),
 				'placeholder' => __( 'Linear Pendant', 'ilanel-poc' ),
@@ -100,7 +127,7 @@ class ILANEL_Product_Meta {
 	 */
 	public static function save_fields( $post_id ) {
 		// WooCommerce verifies the nonce before firing this hook.
-		$url_fields = array( self::FIELD_SPEC_PDF );
+		$url_fields = array( self::FIELD_SPEC_PDF, self::FIELD_MODEL_GLB, self::FIELD_MODEL_USDZ );
 		foreach ( $url_fields as $field ) {
 			$value = isset( $_POST[ $field ] ) ? esc_url_raw( wp_unslash( $_POST[ $field ] ) ) : '';
 			update_post_meta( $post_id, $field, $value );
@@ -194,6 +221,18 @@ class ILANEL_Product_Meta {
 	 */
 	public static function get_lengths( $product_id ) {
 		$value = get_post_meta( $product_id, self::FIELD_LENGTHS, true );
+
+		return is_array( $value ) ? $value : array();
+	}
+
+	/**
+	 * 360° spin frames, in rotation order.
+	 *
+	 * @param int $product_id Product post ID.
+	 * @return string[]
+	 */
+	public static function get_spin_frames( $product_id ) {
+		$value = get_post_meta( $product_id, self::FIELD_SPIN, true );
 
 		return is_array( $value ) ? $value : array();
 	}

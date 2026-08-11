@@ -16,6 +16,19 @@ defined( 'ABSPATH' ) || exit;
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<?php
+	/*
+	 * Opt into page transitions before first paint.
+	 *
+	 * Inline and synchronous on purpose: if this ran later the page would
+	 * paint opaque and then jump to the faded state. Because the class is
+	 * only ever added by script, a browser without JavaScript never hides
+	 * the body — no blank page, ever.
+	 */
+	?>
+	<script>document.documentElement.classList.add('is-transitions');</script>
+
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
