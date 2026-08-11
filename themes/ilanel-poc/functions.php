@@ -55,8 +55,33 @@ function ilanel_poc_enqueue_assets() {
 		array( 'ilanel-poc-fonts', 'woocommerce-general' ),
 		ILANEL_POC_THEME_VERSION
 	);
+
+	if ( function_exists( 'is_product' ) && is_product() ) {
+		wp_enqueue_script(
+			'ilanel-poc-product',
+			get_stylesheet_directory_uri() . '/assets/js/product.js',
+			array(),
+			ILANEL_POC_THEME_VERSION,
+			true
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'ilanel_poc_enqueue_assets', 20 );
+
+/**
+ * Mark product pages so the header can overlay the hero.
+ *
+ * @param string[] $classes Body classes.
+ * @return string[]
+ */
+function ilanel_poc_body_class( $classes ) {
+	if ( function_exists( 'is_product' ) && is_product() ) {
+		$classes[] = 'has-hero';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'ilanel_poc_body_class' );
 
 /**
  * Drop WooCommerce's layout and smallscreen sheets.

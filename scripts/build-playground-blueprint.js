@@ -98,6 +98,10 @@ function buildSeedPhp() {
     spec_pdf: p.spec_pdf,
     range: p.range,
     image: p.image,
+    gallery: p.gallery || [],
+    story: p.story || [],
+    swatches: (p.finishes || []).filter((f) => Array.isArray(f)).map(([name, image]) => ({ name, image })),
+    lengths: p.lengths || [],
   }));
 
   const payload = JSON.stringify({ products }, null, 2);
@@ -199,15 +203,44 @@ foreach ( $data['products'] as $item ) {
         }
     }
 
+    // Presentation data for the hero carousel, storytelling rows and
+    // configurator. Stored as arrays; see ILANEL_Product_Meta.
+    if ( ! empty( $item['gallery'] ) ) {
+        update_post_meta( $product_id, '_ilanel_gallery', array_map( 'esc_url_raw', $item['gallery'] ) );
+    }
+    if ( ! empty( $item['story'] ) ) {
+        update_post_meta( $product_id, '_ilanel_story', array_map( 'esc_url_raw', $item['story'] ) );
+    }
+    if ( ! empty( $item['lengths'] ) ) {
+        update_post_meta( $product_id, '_ilanel_lengths', array_map( 'sanitize_text_field', $item['lengths'] ) );
+    }
+    if ( ! empty( $item['swatches'] ) ) {
+        $clean = array();
+        foreach ( $item['swatches'] as $swatch ) {
+            $clean[] = array(
+                'name'  => sanitize_text_field( $swatch['name'] ),
+                'image' => esc_url_raw( $swatch['image'] ),
+            );
+        }
+        update_post_meta( $product_id, '_ilanel_swatches', $clean );
+    }
+
     update_post_meta( $product_id, '_ilanel_spec_pdf', $item['spec_pdf'] );
     update_post_meta( $product_id, '_ilanel_product_type_label', $item['type'] );
     update_post_meta( $product_id, '_ilanel_lead_time', '4–12 weeks' );
     update_post_meta( $product_id, '_ilanel_made_in', 'Melbourne, Australia' );
-    update_post_meta(
-        $product_id,
-        '_ilanel_finishes',
-        "Brushed Brass\\nBlackened Steel\\nPolished Nickel\\n(placeholder — confirm from spec sheet)"
-    );
+    // Text finish list. Where swatches exist we derive it from them so the
+    // two cannot disagree.
+    if ( ! empty( $item['swatches'] ) ) {
+        $names = wp_list_pluck( $item['swatches'], 'name' );
+        update_post_meta( $product_id, '_ilanel_finishes', implode( "\\n", array_map( 'sanitize_text_field', $names ) ) );
+    } else {
+        update_post_meta(
+            $product_id,
+            '_ilanel_finishes',
+            "Brushed Brass\\nBlackened Steel\\nPolished Nickel\\n(placeholder — confirm from spec sheet)"
+        );
+    }
 }
 
 flush_rewrite_rules();

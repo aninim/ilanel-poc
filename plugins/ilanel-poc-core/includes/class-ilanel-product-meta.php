@@ -23,6 +23,12 @@ class ILANEL_Product_Meta {
 	const FIELD_MADE_IN    = '_ilanel_made_in';
 	const FIELD_TYPE_LABEL = '_ilanel_product_type_label';
 
+	// Presentation data, stored as arrays and seeded rather than hand-entered.
+	const FIELD_GALLERY  = '_ilanel_gallery';
+	const FIELD_STORY    = '_ilanel_story';
+	const FIELD_SWATCHES = '_ilanel_swatches';
+	const FIELD_LENGTHS  = '_ilanel_lengths';
+
 	/**
 	 * Hook registration.
 	 */
@@ -142,5 +148,53 @@ class ILANEL_Product_Meta {
 		$value = get_post_meta( $product_id, $field, true );
 
 		return $value ? $value : $default;
+	}
+
+	/**
+	 * Hero carousel image URLs.
+	 *
+	 * @param int $product_id Product post ID.
+	 * @return string[]
+	 */
+	public static function get_gallery( $product_id ) {
+		$value = get_post_meta( $product_id, self::FIELD_GALLERY, true );
+
+		return is_array( $value ) ? $value : array();
+	}
+
+	/**
+	 * Storytelling image URLs — [0] portrait, [1] landscape.
+	 *
+	 * @param int $product_id Product post ID.
+	 * @return string[]
+	 */
+	public static function get_story_images( $product_id ) {
+		$value = get_post_meta( $product_id, self::FIELD_STORY, true );
+
+		return is_array( $value ) ? $value : array();
+	}
+
+	/**
+	 * Colourway swatches for the configurator.
+	 *
+	 * @param int $product_id Product post ID.
+	 * @return array[] List of array{name: string, image: string}.
+	 */
+	public static function get_swatches( $product_id ) {
+		$value = get_post_meta( $product_id, self::FIELD_SWATCHES, true );
+
+		return is_array( $value ) ? $value : array();
+	}
+
+	/**
+	 * Available lengths for the configurator.
+	 *
+	 * @param int $product_id Product post ID.
+	 * @return string[]
+	 */
+	public static function get_lengths( $product_id ) {
+		$value = get_post_meta( $product_id, self::FIELD_LENGTHS, true );
+
+		return is_array( $value ) ? $value : array();
 	}
 }
