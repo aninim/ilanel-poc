@@ -197,19 +197,54 @@ while ( have_posts() ) :
 
 							<form class="rg-config" data-base-price="<?php echo esc_attr( $product->get_price() ); ?>">
 
+								<?php // Shown only when a previous selection is restored. ?>
+								<p class="rg-config__restored js-config-restored" hidden>
+									<?php esc_html_e( 'We’ve restored your last selection.', 'ilanel-poc' ); ?>
+								</p>
+
+
 								<?php if ( $ilanel_lengths ) : ?>
 									<fieldset class="rg-config__group">
 										<legend class="rg-config__label"><?php esc_html_e( 'Configurations', 'ilanel-poc' ); ?></legend>
 										<div class="rg-config__options">
-											<?php foreach ( $ilanel_lengths as $ilanel_i => $ilanel_length ) : ?>
+											<?php
+											foreach ( $ilanel_lengths as $ilanel_i => $ilanel_length ) :
+												// Numeric mm, used by the scale drawing.
+												$ilanel_mm = (int) preg_replace( '/\D/', '', $ilanel_length );
+												?>
 												<label class="rg-config__pill">
 													<input type="radio" name="ilanel_length"
 														value="<?php echo esc_attr( $ilanel_length ); ?>"
 														data-increment="<?php echo esc_attr( $ilanel_i * 320 ); ?>"
+														data-mm="<?php echo esc_attr( $ilanel_mm ); ?>"
 														<?php checked( 0, $ilanel_i ); ?>>
 													<span><?php echo esc_html( $ilanel_length ); ?></span>
 												</label>
 											<?php endforeach; ?>
+										</div>
+
+										<?php
+										/*
+										 * Scale drawing.
+										 *
+										 * "1800 mm" means nothing to most buyers. Drawn against a
+										 * 2400 mm dining table and a 1.7 m human silhouette, the
+										 * choice becomes obvious at a glance. This is the single
+										 * biggest cause of wrong-size orders in lighting.
+										 */
+										?>
+										<div class="rg-scale" aria-hidden="true">
+											<div class="rg-scale__stage">
+												<div class="rg-scale__fixture js-scale-fixture"></div>
+												<div class="rg-scale__table">
+													<span class="rg-scale__tablelabel"><?php esc_html_e( 'Dining table 2400 mm', 'ilanel-poc' ); ?></span>
+												</div>
+												<div class="rg-scale__person"></div>
+											</div>
+											<p class="rg-scale__caption">
+												<span class="js-scale-caption"></span>
+												<?php esc_html_e( 'shown over a 2400 mm table', 'ilanel-poc' ); ?>
+											</p>
 										</div>
 									</fieldset>
 								<?php endif; ?>

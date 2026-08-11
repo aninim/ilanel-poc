@@ -58,7 +58,118 @@
       });
     });
 
+    /* Keyboard: arrows step the carousel when it is in view. */
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var box = hero.getBoundingClientRect();
+      if (box.bottom < 0 || box.top > window.innerHeight) return;
+      show(index + (e.key === 'ArrowRight' ? 1 : -1));
+      restart();
+    });
+
+    /* Swipe on touch devices. */
+    var startX = null;
+
+    hero.addEventListener(
+      'touchstart',
+      function (e) {
+        startX = e.touches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    hero.addEventListener(
+      'touchend',
+      function (e) {
+        if (startX === null) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 45) {
+          show(index + (dx < 0 ? 1 : -1));
+          restart();
+        }
+        startX = null;
+      },
+      { passive: true }
+    );
+
+    /* Pause the auto-advance while the pointer rests on the hero — nothing
+     * is more irritating than an image changing while you study it. */
+    hero.addEventListener('mouseenter', function () {
+      window.clearInterval(timer);
+    });
+
+    hero.addEventListener('mouseleave', restart);
+
     restart();
+  }
+
+  /* --- Lightbox --------------------------------------------------------
+   * Click any hero slide or story image to inspect it full screen. These
+   * are hand-finished pieces; buyers want to see the join, the glass,
+   * the finish up close.
+   */
+
+  function initLightbox() {
+    var sources = [];
+
+    document.querySelectorAll('.rg-hero__slide').forEach(function (slide) {
+      var m = slide.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+      if (m) sources.push(m[1]);
+    });
+
+    var storyImgs = document.querySelectorAll('.rg-feature img, .rg-configure__preview img');
+
+    if (!sources.length && !storyImgs.length) return;
+
+    var box = document.createElement('div');
+    box.className = 'rg-lightbox';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', 'Image viewer');
+    box.innerHTML =
+      '<button class="rg-lightbox__close" type="button" aria-label="Close">&times;</button>' +
+      '<img class="rg-lightbox__img" alt="">';
+    document.body.appendChild(box);
+
+    var img = box.querySelector('.rg-lightbox__img');
+    var lastFocus = null;
+
+    function open(src) {
+      img.src = src;
+      box.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      lastFocus = document.activeElement;
+      box.querySelector('.rg-lightbox__close').focus();
+    }
+
+    function close() {
+      box.classList.remove('is-open');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+
+    box.addEventListener('click', function (e) {
+      if (e.target === box || e.target.closest('.rg-lightbox__close')) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && box.classList.contains('is-open')) close();
+    });
+
+    document.querySelectorAll('.rg-hero__slide').forEach(function (slide) {
+      slide.style.cursor = 'zoom-in';
+      slide.addEventListener('click', function () {
+        var m = slide.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+        if (m) open(m[1]);
+      });
+    });
+
+    storyImgs.forEach(function (el) {
+      el.style.cursor = 'zoom-in';
+      el.addEventListener('click', function () {
+        open(el.currentSrc || el.src);
+      });
+    });
   }
 
   /* --- Configurator: swap preview, update summary and price ----------- */
@@ -87,6 +198,71 @@
       );
     }
 
+    /* Scale drawing: draw the chosen length against a 2400mm table. */
+    var scaleFixture = document.querySelector('.js-scale-fixture');
+    var scaleCaption = document.querySelector('.js-scale-caption');
+    var TABLE_MM = 2400;
+
+    function updateScale(lengthInput) {
+      if (!scaleFixture || !lengthInput) return;
+
+      var mm = parseInt(lengthInput.dataset.mm || '0', 10);
+      if (!mm) return;
+
+      // The table is drawn at 78% of the stage; scale the fixture to match.
+      var pct = (mm / TABLE_MM) * 78;
+      scaleFixture.style.width = pct + '%';
+
+      if (scaleCaption) scaleCaption.textContent = mm + ' mm';
+    }
+
+    /* Remember the configuration between visits.
+     *
+     * People shopping for lighting compare for weeks. Losing their
+     * selection on every return visit is a needless drop-off. */
+    var KEY = 'ilanel-config-' + (document.body.className.match(/postid-(\d+)/) || [, 'x'])[1];
+
+    function save() {
+      try {
+        var length = form.querySelector('input[name="ilanel_length"]:checked');
+        var finish = form.querySelector('input[name="ilanel_finish"]:checked');
+        window.localStorage.setItem(
+          KEY,
+          JSON.stringify({
+            length: length ? length.value : null,
+            finish: finish ? finish.value : null,
+          })
+        );
+      } catch (e) {
+        /* Storage can be unavailable (private mode, quota). Not fatal. */
+      }
+    }
+
+    function restore() {
+      var saved;
+      try {
+        saved = JSON.parse(window.localStorage.getItem(KEY) || 'null');
+      } catch (e) {
+        return false;
+      }
+      if (!saved) return false;
+
+      var restored = false;
+
+      ['length', 'finish'].forEach(function (field) {
+        if (!saved[field]) return;
+        var input = form.querySelector(
+          'input[name="ilanel_' + field + '"][value="' + window.CSS.escape(saved[field]) + '"]'
+        );
+        if (input && !input.checked) {
+          input.checked = true;
+          restored = true;
+        }
+      });
+
+      return restored;
+    }
+
     function update() {
       var length = form.querySelector('input[name="ilanel_length"]:checked');
       var finish = form.querySelector('input[name="ilanel_finish"]:checked');
@@ -104,9 +280,20 @@
         var increment = length ? parseFloat(length.dataset.increment || '0') : 0;
         priceEl.textContent = money(base + increment);
       }
+
+      updateScale(length);
     }
 
-    form.addEventListener('change', update);
+    form.addEventListener('change', function () {
+      update();
+      save();
+    });
+
+    if (window.CSS && window.CSS.escape && restore()) {
+      var note = form.querySelector('.js-config-restored');
+      if (note) note.hidden = false;
+    }
+
     update();
   }
 
@@ -211,6 +398,7 @@
     initHero();
     initConfigurator();
     initLightSwitch();
+    initLightbox();
     initReveal();
     initStickyBar();
     initHeaderState();

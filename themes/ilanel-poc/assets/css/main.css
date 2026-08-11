@@ -513,6 +513,144 @@ body.has-hero .rg-header::before {
   color: #fff;
 }
 
+/* --- Scale drawing --------------------------------------------------------
+ * "1800 mm" is meaningless to most buyers. Drawn against a dining table
+ * and a human figure, the right length becomes obvious — and wrong-size
+ * orders are the most expensive mistake in made-to-order lighting.
+ */
+
+.rg-scale {
+  margin-top: 2.5rem;
+  padding: 2rem 2rem 1.5rem;
+  background: #fff;
+  border: 1px solid var(--rg-rule);
+}
+
+.rg-scale__stage {
+  position: relative;
+  height: 11rem;
+}
+
+/* The pendant, drawn to scale and animating between lengths. */
+.rg-scale__fixture {
+  position: absolute;
+  top: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 3px;
+  background: linear-gradient(90deg, #c9a24a, #e4cd8f, #c9a24a);
+  border-radius: 2px;
+  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rg-scale__fixture::before,
+.rg-scale__fixture::after {
+  content: '';
+  position: absolute;
+  top: -0.35rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: #dcb968;
+  box-shadow: 0 0 0.8rem rgba(220, 185, 104, 0.8);
+}
+
+.rg-scale__fixture::before {
+  left: -0.4rem;
+}
+
+.rg-scale__fixture::after {
+  right: -0.4rem;
+}
+
+/* The reference table. */
+.rg-scale__table {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 78%;
+  height: 0.6rem;
+  background: #cfc3b0;
+  border-radius: 1px;
+}
+
+.rg-scale__table::before,
+.rg-scale__table::after {
+  content: '';
+  position: absolute;
+  top: 0.6rem;
+  width: 0.5rem;
+  height: 2.2rem;
+  background: #cfc3b0;
+}
+
+.rg-scale__table::before {
+  left: 8%;
+}
+
+.rg-scale__table::after {
+  right: 8%;
+}
+
+.rg-scale__tablelabel {
+  position: absolute;
+  top: -1.9rem;
+  right: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+/* A 1.7 m figure for human reference. */
+.rg-scale__person {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 4%;
+  width: 1.5rem;
+  height: 6.4rem;
+  border-radius: 0.75rem 0.75rem 0 0;
+  background: #e2e2e2;
+}
+
+.rg-scale__person::before {
+  content: '';
+  position: absolute;
+  top: -1.7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #e2e2e2;
+}
+
+.rg-scale__caption {
+  margin: 0.5rem 0 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rg-muted);
+  text-align: center;
+}
+
+.rg-scale__caption .js-scale-caption {
+  color: var(--rg-ink);
+}
+
+/* --- Restored-selection note ---------------------------------------------- */
+
+.rg-config__restored {
+  margin: 0 0 2rem;
+  padding: 1rem 1.4rem;
+  background: #fff;
+  border-left: 2px solid var(--rg-accent);
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: #444;
+}
+
 .rg-config__options--swatches {
   gap: 1.6rem;
 }
@@ -940,6 +1078,59 @@ body.has-hero .rg-header::before {
 
 .rg-configure__preview img {
   transition: filter 0.6s ease;
+}
+
+/* --- Lightbox ------------------------------------------------------------- */
+
+.rg-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  background: rgba(12, 12, 12, 0.94);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.rg-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.rg-lightbox__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform: scale(0.98);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rg-lightbox.is-open .rg-lightbox__img {
+  transform: none;
+}
+
+.rg-lightbox__close {
+  position: absolute;
+  top: 2rem;
+  right: 2.5rem;
+  width: 4rem;
+  height: 4rem;
+  border: 0;
+  background: none;
+  color: #fff;
+  font-size: 3.2rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.rg-lightbox__close:hover {
+  opacity: 1;
 }
 
 /* --- Reveal on scroll ----------------------------------------------------- */
