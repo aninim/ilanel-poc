@@ -236,7 +236,11 @@ function ilanel_poc_render_spec_block() {
 
 	echo '</section>';
 }
-add_action( 'woocommerce_after_single_product_summary', 'ilanel_poc_render_spec_block', 15 );
+/*
+ * NOT hooked. single-product.php renders specs inline as part of the RG
+ * article layout, so the standalone block would duplicate it. Kept because
+ * it is still the reference for what a Woo-hook version looks like.
+ */
 
 /**
  * Range filter UI on range archives.
@@ -262,8 +266,10 @@ function ilanel_poc_render_range_filters() {
 
 	$current = is_tax( ILANEL_Taxonomies::RANGE_TAXONOMY ) ? get_queried_object_id() : 0;
 
-	echo '<nav class="ilanel-filters" aria-label="' . esc_attr__( 'Filter by range', 'ilanel-poc' ) . '">';
-	echo '<span class="ilanel-filters__label">' . esc_html__( 'Range', 'ilanel-poc' ) . '</span>';
+	// RG's filter block: a small accent label sitting above a hairline
+	// rule, with the filter terms spaced widely beneath it.
+	echo '<nav class="rg-filters" aria-label="' . esc_attr__( 'Filter by range', 'ilanel-poc' ) . '">';
+	echo '<span class="rg-filters__label">' . esc_html__( 'Filters', 'ilanel-poc' ) . '</span>';
 	echo '<ul>';
 
 	foreach ( $terms as $term ) {
@@ -276,7 +282,6 @@ function ilanel_poc_render_range_filters() {
 			echo ' aria-current="page"';
 		}
 		echo '>' . esc_html( $term->name );
-		echo ' <span class="ilanel-filters__count">(' . absint( $term->count ) . ')</span>';
 		echo '</a></li>';
 	}
 

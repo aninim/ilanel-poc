@@ -1,6 +1,6 @@
 <?php
 /**
- * Theme footer.
+ * Theme footer — Ross Gardam layout.
  *
  * @package ILANEL_POC
  */
@@ -8,20 +8,13 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 
-<footer class="ilanel-sitefooter">
-	<div class="ilanel-sitefooter__inner">
-		<p>
-			<?php
-			printf(
-				/* translators: %s: studio name */
-				esc_html__( '%s — handmade in Melbourne, Australia.', 'ilanel-poc' ),
-				esc_html( get_bloginfo( 'name' ) )
-			);
-			?>
-		</p>
-		<p class="ilanel-sitefooter__note">
-			<?php esc_html_e( 'Proof of concept. Placeholder styling — not the final design.', 'ilanel-poc' ); ?>
-		</p>
+<footer class="rg-footer">
+	<div class="rg-shell">
+		<div class="rg-footer__inner">
+			<p><?php esc_html_e( 'Handmade in Melbourne, Australia', 'ilanel-poc' ); ?></p>
+			<p><?php esc_html_e( 'Trade enquiries welcome', 'ilanel-poc' ); ?></p>
+			<p>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></p>
+		</div>
 	</div>
 </footer>
 

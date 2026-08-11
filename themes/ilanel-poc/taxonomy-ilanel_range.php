@@ -1,10 +1,11 @@
 <?php
 /**
- * Range archive — the collection/range page.
+ * Range archive — Ross Gardam products-grid anatomy.
  *
- * Demonstrates what a Squarespace portfolio collection cannot do:
- * breadcrumbs, filters, CollectionPage + ItemList schema, and a single h1
- * that names the range.
+ * Verified against rossgardam.com.au/lighting-furniture-products/:
+ *   FILTERS label over a hairline rule, filter row beneath, then a
+ *   three-up grid of flat grey tiles with the name and "FROM AU$ x"
+ *   underneath each.
  *
  * @package ILANEL_POC
  */
@@ -16,66 +17,81 @@ get_header( 'shop' );
 $ilanel_term = get_queried_object();
 ?>
 
-<div class="ilanel-range">
+<main id="main" class="rg-main rg-main--archive">
+	<div class="rg-shell">
 
-	<?php
-	/**
-	 * woocommerce_before_main_content renders the wrapper and breadcrumbs.
-	 */
-	do_action( 'woocommerce_before_main_content' );
-	?>
+		<div class="rg-breadcrumbs rg-breadcrumbs--inline">
+			<?php ILANEL_Breadcrumbs::render(); ?>
+		</div>
 
-	<header class="ilanel-range__header">
-		<?php // The range name is this page's only h1. ?>
-		<h1 class="ilanel-range__title"><?php echo esc_html( $ilanel_term->name ); ?></h1>
+		<header class="rg-range__header">
+			<h1 class="rg-range__title"><?php echo esc_html( $ilanel_term->name ); ?></h1>
 
-		<?php if ( term_description() ) : ?>
-			<div class="ilanel-range__intro">
-				<?php echo wp_kses_post( term_description() ); ?>
-			</div>
-		<?php endif; ?>
-	</header>
-
-	<?php if ( woocommerce_product_loop() ) : ?>
+			<?php if ( term_description() ) : ?>
+				<div class="rg-range__intro"><?php echo wp_kses_post( term_description() ); ?></div>
+			<?php endif; ?>
+		</header>
 
 		<?php
 		/**
-		 * Renders the filter nav (hooked at priority 15).
+		 * Filter row, hooked at priority 15.
 		 */
 		do_action( 'woocommerce_before_shop_loop' );
 		?>
 
-		<?php woocommerce_product_loop_start(); ?>
+		<?php if ( woocommerce_product_loop() ) : ?>
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+			<ul class="rg-products">
+				<?php
+				while ( have_posts() ) :
+					the_post();
 
-			/**
-			 * Standard Woo loop hook so product cards stay consistent
-			 * with any other archive.
-			 */
-			do_action( 'woocommerce_shop_loop' );
+					global $product;
 
-			wc_get_template_part( 'content', 'product' );
-		endwhile;
-		?>
+					$ilanel_type = get_post_meta( $product->get_id(), '_ilanel_product_type_label', true );
+					?>
+					<li class="rg-product-card">
+						<a href="<?php the_permalink(); ?>">
+							<div class="rg-product-card__media">
+								<?php
+								if ( has_post_thumbnail() ) {
+									the_post_thumbnail( 'large' );
+								}
+								?>
+							</div>
 
-		<?php woocommerce_product_loop_end(); ?>
+							<h2 class="rg-product-card__title"><?php the_title(); ?></h2>
 
-		<?php do_action( 'woocommerce_after_shop_loop' ); ?>
+							<?php if ( $ilanel_type ) : ?>
+								<p class="rg-product-card__type"><?php echo esc_html( $ilanel_type ); ?></p>
+							<?php endif; ?>
 
-	<?php else : ?>
+							<?php if ( $product->get_price() ) : ?>
+								<p class="rg-product-card__price">
+									<?php
+									printf(
+										/* translators: %s: formatted price */
+										esc_html__( 'From %s', 'ilanel-poc' ),
+										wp_kses_post( wc_price( $product->get_price() ) )
+									);
+									?>
+								</p>
+							<?php endif; ?>
+						</a>
+					</li>
+					<?php
+				endwhile;
+				?>
+			</ul>
 
-		<p class="ilanel-range__empty">
-			<?php esc_html_e( 'No products in this range yet.', 'ilanel-poc' ); ?>
-		</p>
+		<?php else : ?>
 
-	<?php endif; ?>
+			<p class="rg-range__empty"><?php esc_html_e( 'No products in this range yet.', 'ilanel-poc' ); ?></p>
 
-	<?php do_action( 'woocommerce_after_main_content' ); ?>
+		<?php endif; ?>
 
-</div>
+	</div>
+</main>
 
 <?php
 get_footer( 'shop' );
