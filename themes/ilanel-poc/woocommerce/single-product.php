@@ -164,7 +164,6 @@ while ( have_posts() ) :
 							<?php
 							$ilanel_model = ILANEL_Product_Meta::get( $ilanel_id, ILANEL_Product_Meta::FIELD_MODEL_GLB );
 							$ilanel_usdz  = ILANEL_Product_Meta::get( $ilanel_id, ILANEL_Product_Meta::FIELD_MODEL_USDZ );
-							$ilanel_spin  = ILANEL_Product_Meta::get_spin_frames( $ilanel_id );
 
 							if ( $ilanel_model ) :
 								/*
@@ -205,28 +204,6 @@ while ( have_posts() ) :
 							 * lifts a warm glow to simulate it.
 							 */
 							?>
-								<?php
-								/*
-								 * 360° spin.
-								 *
-								 * Drag-to-rotate built from the studio's existing
-								 * renders — real rotation, no 3D asset required.
-								 * Swap in a .glb via the Model field above and the
-								 * true 3D viewer takes over automatically.
-								 */
-								if ( $ilanel_spin ) :
-									?>
-									<div class="rg-spin js-spin" hidden
-										data-frames="<?php echo esc_attr( wp_json_encode( $ilanel_spin ) ); ?>">
-										<img class="js-spin-frame" src="<?php echo esc_url( $ilanel_spin[0] ); ?>"
-											alt="<?php echo esc_attr( $product->get_name() ); ?>" draggable="false">
-										<span class="rg-spin__hint"><?php esc_html_e( 'Drag to rotate', 'ilanel-poc' ); ?></span>
-									</div>
-
-									<button type="button" class="rg-spin-toggle js-spin-toggle" aria-pressed="false">
-										<?php esc_html_e( '360°', 'ilanel-poc' ); ?>
-									</button>
-								<?php endif; ?>
 							<?php endif; ?>
 
 							<button type="button" class="rg-lightswitch js-lightswitch"

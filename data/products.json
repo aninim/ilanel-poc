@@ -56,13 +56,6 @@
         "1200 mm",
         "1800 mm",
         "2400 mm"
-      ],
-      "spin": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772338200-52FUZJSEQLHYWQ3I88JU/Ilanel_Comet_1800_Golds.jpg",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772423825-EPKN3K2B5ZEAABZS34DO/Ilanel_Comet_1800_Teals.jpg",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772471370-J1C0R3ZMQWZJJ4PUEPTU/Ilanel_Comet_1800_Whites.jpg",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772382236-4XZNQRGSZW7X50LLJJIR/Ilanel_Comet_1800_GreyandGold.jpg",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772510452-WGMA95K64573X7K5UX2T/Ilanel_Comet_Amber_FWhite_Bronze.jpg"
       ]
     },
     {
@@ -78,10 +71,30 @@
       "sku": "PLACEHOLDER-COMETSD-01",
       "price": "PLACEHOLDER",
       "finishes": [
-        "PLACEHOLDER — confirm from spec PDF"
+        [
+          "Black",
+          "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=600w"
+        ],
+        [
+          "Brass",
+          "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=600w"
+        ]
       ],
       "related_projects": [],
-      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=1000w"
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=1000w",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=2000w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=2000w"
+      ],
+      "story": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=1600w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=1600w"
+      ],
+      "lengths": [
+        "1200 mm",
+        "1800 mm",
+        "2400 mm"
+      ]
     },
     {
       "slug": "kahdu-pendant",
@@ -96,7 +109,18 @@
       "sku": "PLACEHOLDER-KAHDU-01",
       "price": "PLACEHOLDER",
       "finishes": [
-        "PLACEHOLDER — confirm from spec PDF"
+        [
+          "Natural",
+          "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=600w"
+        ],
+        [
+          "Black",
+          "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1468ca57-74fd-47c0-9710-777689cf5d6c/ILANEL_Kahdu800_Black-01.jpg?format=600w"
+        ],
+        [
+          "Brown",
+          "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1e5b578d-0b8b-42d8-bb65-39d6793adae5/ILANEL_Kahdu800_Brown-01.jpg?format=600w"
+        ]
       ],
       "related_projects": [
         {
@@ -105,7 +129,20 @@
           "description": "ILANEL's Kahdu pendants light up Chatswood Hill Tavern, adding a touch of elegance and warmth to the bistro's modern renovations."
         }
       ],
-      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=1000w"
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=1000w",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1468ca57-74fd-47c0-9710-777689cf5d6c/ILANEL_Kahdu800_Black-01.jpg?format=2000w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=2000w"
+      ],
+      "story": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=1600w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1468ca57-74fd-47c0-9710-777689cf5d6c/ILANEL_Kahdu800_Black-01.jpg?format=1600w"
+      ],
+      "lengths": [
+        "600 mm",
+        "800 mm",
+        "1000 mm"
+      ]
     },
     {
       "slug": "dais-wall-light",
@@ -120,10 +157,29 @@
       "sku": "PLACEHOLDER-DAIS-01",
       "price": "PLACEHOLDER",
       "finishes": [
-        "PLACEHOLDER — confirm from spec PDF"
+        [
+          "Brass",
+          "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=600w"
+        ],
+        [
+          "Bronze",
+          "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=600w"
+        ]
       ],
       "related_projects": [],
-      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=1000w"
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=1000w",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=2000w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=2000w"
+      ],
+      "story": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=1600w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=1600w"
+      ],
+      "lengths": [
+        "Single",
+        "Dual"
+      ]
     }
   ],
   "studio_constants": {

@@ -34,7 +34,6 @@ class ILANEL_Product_Meta {
 	// built from studio renders when no model exists yet.
 	const FIELD_MODEL_GLB  = '_ilanel_model_glb';
 	const FIELD_MODEL_USDZ = '_ilanel_model_usdz';
-	const FIELD_SPIN       = '_ilanel_spin';
 
 	/**
 	 * Hook registration.
@@ -224,6 +223,7 @@ class ILANEL_Product_Meta {
 
 		return is_array( $value ) ? $value : array();
 	}
+
 
 	/**
 	 * 360° spin frames, in rotation order.
