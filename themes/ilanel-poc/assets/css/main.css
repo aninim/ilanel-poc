@@ -1,54 +1,126 @@
 /**
- * ILANEL POC — PLACEHOLDER STYLING
+ * ILANEL POC — Ross Gardam design language
  *
- * ============================================================================
- * THIS IS NOT THE DESIGN.
+ * Built to answer one question: can ILANEL be made to look like Ross Gardam?
+ * Structural and visual patterns are taken from rossgardam.com.au:
  *
- * Deliberately neutral: system fonts, no brand colour, no photography
- * treatment. The studio is supplying the visual design, photography and
- * final copy. This stylesheet exists only so the structure is legible
- * while it is being reviewed.
- *
- * Judge the STRUCTURE (schema, filters, breadcrumbs, single-source specs),
- * not the appearance.
- * ============================================================================
+ *   - Type: ABCFavorit (body/UI) + Lyon Display (wordmark). Both are
+ *     licensed commercial faces we cannot redistribute, so this uses the
+ *     closest free equivalents — Inter for the grotesque, a Didone serif
+ *     for the wordmark. Swap in the licensed faces for production.
+ *   - Weights limited to 300/400/600, as RG loads.
+ *   - Uppercase + wide tracking on every label, nav item and button
+ *     (RG has 97 uppercase rules; tracking .06–.08em).
+ *   - Product tiles sit on flat grey (#eee/#f4f4f4), image floating with
+ *     generous padding, name + "FROM AU$" beneath.
+ *   - Pure #fff page, #000 text, hairline rules.
  */
 
+/* Fonts are enqueued from functions.php — @import is unreliable in the
+   Playground sandbox and delays first paint. */
+
 :root {
-  --ilanel-ink: #1a1a1a;
-  --ilanel-muted: #6b6b6b;
-  --ilanel-rule: #e0e0e0;
-  --ilanel-bg: #ffffff;
-  --ilanel-max: 1200px;
-  --ilanel-gap: 2rem;
+  --rg-ink: #000;
+  --rg-bg: #fff;
+  --rg-tile: #eee;
+  --rg-tile-alt: #f4f4f4;
+  --rg-rule: #d8d8d8;
+  --rg-muted: #767676;
+  --rg-accent: #8c6f3f;
+
+  --rg-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --rg-serif: 'Playfair Display', 'Times New Roman', serif;
+
+  --rg-gut: 2rem;
+  --rg-pad: 6.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: var(--ilanel-bg);
-  color: var(--ilanel-ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.6;
+  background: var(--rg-bg);
+  color: var(--rg-ink);
+  font-family: var(--rg-sans);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- Shared label treatment ---------------------------------------------- */
+
+.ilanel-filters__label,
+.ilanel-specs h2,
+.ilanel-nav a,
+.ilanel-filters a,
+.woocommerce-loop-product__title,
+ul.products li.product h2,
+.ilanel-breadcrumbs,
+.single_add_to_cart_button,
+.ilanel-specs__download a {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  font-weight: 400;
+}
+
+/* --- Site header ---------------------------------------------------------- */
+
+.ilanel-siteheader {
+  padding: 2.25rem var(--rg-pad) 1.75rem;
+}
+
+.ilanel-siteheader__inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ilanel-siteheader__brand {
+  grid-column: 2;
+  margin: 0;
+  text-align: center;
+  font-family: var(--rg-serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.ilanel-nav {
+  grid-column: 3;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* --- Main container ------------------------------------------------------- */
 
 .ilanel-main,
 .ilanel-range {
-  max-width: var(--ilanel-max);
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-/* Placeholder banner so nobody mistakes this for finished design. */
-body::before {
-  content: "PLACEHOLDER STYLING — structure demo only. Visual design pending studio direction.";
-  display: block;
-  padding: 0.5rem 1rem;
-  background: #fff8e1;
-  border-bottom: 1px solid #ffe082;
-  color: #6b5800;
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
-  text-align: center;
+  padding: 0 var(--rg-pad);
 }
 
 /* --- Breadcrumbs ---------------------------------------------------------- */
@@ -56,75 +128,255 @@ body::before {
 .ilanel-breadcrumbs ol {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 1.5rem 0;
+  gap: 0.4rem;
+  margin: 0 0 2.5rem;
   padding: 0;
   list-style: none;
-  font-size: 0.875rem;
-  color: var(--ilanel-muted);
+  color: var(--rg-muted);
 }
 
 .ilanel-breadcrumbs li + li::before {
-  content: "/";
-  margin-right: 0.5rem;
-  color: var(--ilanel-rule);
+  content: '/';
+  margin-right: 0.4rem;
 }
 
-.ilanel-breadcrumbs a {
-  color: var(--ilanel-muted);
+.ilanel-breadcrumbs a:hover {
+  color: var(--rg-ink);
+}
+
+/* --- Range header + filters ---------------------------------------------- */
+
+.ilanel-range__header {
+  margin: 0 0 2rem;
+}
+
+.ilanel-range__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.ilanel-range__intro {
+  max-width: 46ch;
+  color: var(--rg-muted);
+  font-weight: 300;
+  font-size: 0.9375rem;
+}
+
+/* RG's filter row: a hairline rule with a small label sitting above it. */
+.ilanel-filters {
+  margin: 0 0 3.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rg-ink);
+}
+
+.ilanel-filters__label {
+  display: block;
+  margin-bottom: 1.25rem;
+  color: var(--rg-accent);
+}
+
+.ilanel-filters ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ilanel-filters a {
+  color: var(--rg-ink);
+  transition: opacity 0.15s ease;
+}
+
+.ilanel-filters a:hover {
+  opacity: 0.55;
+}
+
+.ilanel-filters .is-current a {
+  font-weight: 600;
+}
+
+.ilanel-filters__count {
+  color: var(--rg-muted);
+  letter-spacing: 0.04em;
+}
+
+/* --- Product grid --------------------------------------------------------- */
+
+ul.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3.25rem var(--rg-gut);
+  margin: 0 0 5rem;
+  padding: 0;
+  list-style: none;
+}
+
+ul.products li.product {
+  margin: 0;
+}
+
+/* The tile: flat grey, image floated inside generous padding. */
+ul.products li.product a img,
+ul.products li.product .ilanel-card__media {
+  background: var(--rg-tile);
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  padding: 3.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+
+ul.products li.product:nth-child(3n + 1) a img,
+ul.products li.product:nth-child(3n + 1) .ilanel-card__media {
+  background: var(--rg-tile-alt);
+}
+
+ul.products li.product a:hover img {
+  opacity: 0.85;
+}
+
+ul.products li.product h2,
+ul.products li.product .woocommerce-loop-product__title {
+  margin: 0 0 0.25rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+}
+
+/* "FROM AU$ 2,450" — RG's price line: small, tracked, muted. */
+ul.products li.product .price {
+  display: block;
+  color: var(--rg-muted);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+ul.products li.product .price::before {
+  content: 'From ';
+}
+
+ul.products li.product .price del,
+ul.products li.product .price ins {
   text-decoration: none;
 }
 
-.ilanel-breadcrumbs a:hover,
-.ilanel-breadcrumbs a:focus {
-  color: var(--ilanel-ink);
-  text-decoration: underline;
+/* --- Single product ------------------------------------------------------- */
+
+.ilanel-main .product {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 4.5rem;
+  align-items: start;
+  margin-bottom: 6rem;
 }
 
-/* --- Product title -------------------------------------------------------- */
+.woocommerce-product-gallery {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  margin: 0;
+}
+
+.woocommerce-product-gallery__image {
+  background: var(--rg-tile);
+}
+
+.woocommerce-product-gallery__image img {
+  padding: 4rem;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
 
 .ilanel-product-title {
-  margin: 0 0 1rem;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  grid-column: 1;
+  margin: 0 0 1.5rem;
+  font-size: 1.375rem;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.3;
 }
 
 .ilanel-product-title__type {
   display: block;
-  margin-top: 0.25rem;
-  color: var(--ilanel-muted);
-  font-size: 0.5em;
+  margin-top: 0.35rem;
+  color: var(--rg-muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+}
+
+.ilanel-main .product .summary {
+  grid-column: 1;
+  margin: 0;
+}
+
+.ilanel-main .product .price {
+  display: block;
+  margin-bottom: 2rem;
+  color: var(--rg-ink);
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.woocommerce-product-details__short-description {
+  max-width: 44ch;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  color: #2a2a2a;
+}
+
+/* Buttons: square, hairline, uppercase — RG's enquiry treatment. */
+.single_add_to_cart_button,
+.ilanel-specs__download a {
+  display: inline-block;
+  padding: 0.95rem 2.75rem;
+  border: 1px solid var(--rg-ink);
+  background: transparent;
+  color: var(--rg-ink);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.single_add_to_cart_button:hover,
+.ilanel-specs__download a:hover {
+  background: var(--rg-ink);
+  color: var(--rg-bg);
 }
 
 /* --- Specification block -------------------------------------------------- */
 
 .ilanel-specs {
-  margin: 3rem 0;
-  padding-top: 2rem;
-  border-top: 1px solid var(--ilanel-rule);
+  grid-column: 1;
+  margin: 2.5rem 0 0;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--rg-rule);
 }
 
 .ilanel-specs h2 {
   margin: 0 0 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  color: var(--rg-accent);
 }
 
 .ilanel-specs__list {
   display: grid;
-  grid-template-columns: minmax(8rem, 12rem) 1fr;
-  gap: 0.75rem 2rem;
-  margin: 0;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.65rem 1.5rem;
+  margin: 0 0 2rem;
+  font-size: 0.8125rem;
+  font-weight: 300;
 }
 
 .ilanel-specs__list dt {
-  color: var(--ilanel-muted);
-  font-size: 0.875rem;
+  color: var(--rg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+  padding-top: 0.15rem;
 }
 
 .ilanel-specs__list dd {
@@ -138,109 +390,81 @@ body::before {
 }
 
 .ilanel-specs__download {
-  margin-top: 1.5rem;
-  font-size: 0.9375rem;
+  margin: 0;
 }
 
-/* --- Range archive -------------------------------------------------------- */
+/* --- Footer --------------------------------------------------------------- */
 
-.ilanel-range__header {
-  margin: 2rem 0 3rem;
-}
-
-.ilanel-range__title {
-  margin: 0 0 1rem;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 400;
-}
-
-.ilanel-range__intro {
-  max-width: 60ch;
-  color: var(--ilanel-muted);
-}
-
-/* --- Filters -------------------------------------------------------------- */
-
-.ilanel-filters {
-  margin: 0 0 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--ilanel-rule);
-}
-
-.ilanel-filters__label {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: var(--ilanel-muted);
+.ilanel-sitefooter {
+  margin-top: 5rem;
+  padding: 3rem var(--rg-pad) 4rem;
+  border-top: 1px solid var(--rg-rule);
+  color: var(--rg-muted);
   font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-weight: 300;
+  letter-spacing: 0.04em;
 }
 
-.ilanel-filters ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.ilanel-sitefooter__note {
+  margin-top: 0.35rem;
+  font-size: 0.6875rem;
+  opacity: 0.75;
 }
 
-.ilanel-filters a {
-  color: var(--ilanel-ink);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
+/* --- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  :root {
+    --rg-pad: 3rem;
+  }
+
+  ul.products {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.ilanel-filters a:hover,
-.ilanel-filters a:focus {
-  border-bottom-color: var(--ilanel-ink);
+@media (max-width: 820px) {
+  .ilanel-main .product {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .woocommerce-product-gallery {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .ilanel-siteheader__inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 1.25rem;
+  }
+
+  .ilanel-siteheader__brand,
+  .ilanel-nav {
+    grid-column: 1;
+  }
+
+  .ilanel-nav {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
 }
 
-.ilanel-filters .is-current a {
-  border-bottom-color: var(--ilanel-ink);
-  font-weight: 600;
-}
+@media (max-width: 560px) {
+  :root {
+    --rg-pad: 1.25rem;
+  }
 
-.ilanel-filters__count {
-  color: var(--ilanel-muted);
-  font-size: 0.8125rem;
-}
+  ul.products {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
 
-/* --- Product grid --------------------------------------------------------- */
-
-ul.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--ilanel-gap);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-ul.products li.product a {
-  color: inherit;
-  text-decoration: none;
-}
-
-ul.products li.product img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin-bottom: 0.75rem;
-  background: #f4f4f4;
-}
-
-ul.products li.product h2,
-ul.products li.product .woocommerce-loop-product__title {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-@media (max-width: 640px) {
   .ilanel-specs__list {
     grid-template-columns: 1fr;
-    gap: 0.25rem;
+    gap: 0.2rem;
   }
 
   .ilanel-specs__list dd {

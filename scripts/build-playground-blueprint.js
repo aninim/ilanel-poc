@@ -97,6 +97,7 @@ function buildSeedPhp() {
     description: p.meta_description,
     spec_pdf: p.spec_pdf,
     range: p.range,
+    image: p.image,
   }));
 
   const payload = JSON.stringify({ products }, null, 2);
@@ -181,6 +182,21 @@ foreach ( $data['products'] as $item ) {
 
     if ( ! empty( $range_ids[ $item['range'] ] ) ) {
         wp_set_object_terms( $product_id, array( (int) $range_ids[ $item['range'] ] ), 'ilanel_range' );
+    }
+
+    // Sideload the product photograph from ILANEL's CDN so the demo shows
+    // the real piece rather than a placeholder tile. Skipped if already
+    // attached, so re-running does not duplicate media.
+    if ( ! empty( $item['image'] ) && ! get_post_thumbnail_id( $product_id ) ) {
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $attachment_id = media_sideload_image( $item['image'], $product_id, $item['name'], 'id' );
+
+        if ( ! is_wp_error( $attachment_id ) ) {
+            set_post_thumbnail( $product_id, $attachment_id );
+        }
     }
 
     update_post_meta( $product_id, '_ilanel_spec_pdf', $item['spec_pdf'] );

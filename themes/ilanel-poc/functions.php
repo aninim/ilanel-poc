@@ -36,16 +36,42 @@ add_action( 'after_setup_theme', 'ilanel_poc_theme_setup' );
 
 /**
  * Enqueue theme styles.
+ *
+ * Loaded after WooCommerce's own stylesheets so our rules win without
+ * needing !important everywhere. Fonts are enqueued rather than @imported —
+ * @import is unreliable inside the Playground sandbox.
  */
 function ilanel_poc_enqueue_assets() {
 	wp_enqueue_style(
+		'ilanel-poc-fonts',
+		'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;500&display=swap',
+		array(),
+		null
+	);
+
+	wp_enqueue_style(
 		'ilanel-poc',
 		get_stylesheet_directory_uri() . '/assets/css/main.css',
-		array(),
+		array( 'ilanel-poc-fonts', 'woocommerce-general' ),
 		ILANEL_POC_THEME_VERSION
 	);
 }
-add_action( 'wp_enqueue_scripts', 'ilanel_poc_enqueue_assets' );
+add_action( 'wp_enqueue_scripts', 'ilanel_poc_enqueue_assets', 20 );
+
+/**
+ * Drop WooCommerce's layout and smallscreen sheets.
+ *
+ * They fight the RG grid (and supply the default purple button). We keep
+ * woocommerce-general as a dependency so our sheet loads after it, then
+ * override what we need.
+ */
+function ilanel_poc_dequeue_woocommerce_layout( $enqueue_styles ) {
+	unset( $enqueue_styles['woocommerce-layout'] );
+	unset( $enqueue_styles['woocommerce-smallscreen'] );
+
+	return $enqueue_styles;
+}
+add_filter( 'woocommerce_enqueue_styles', 'ilanel_poc_dequeue_woocommerce_layout' );
 
 /*
  * ---------------------------------------------------------------------------
@@ -76,7 +102,41 @@ function ilanel_poc_strip_woocommerce_defaults() {
 	// Archive result count and default ordering — the range page uses filters.
 	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
+
+	// No cart. RG sell made-to-order pieces through enquiry, and so does
+	// ILANEL ("ENQUIRE" on the live product page). An Add to Cart button
+	// would misrepresent how the studio actually sells.
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+	remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
 }
+
+/**
+ * Short description, then an Enquire call to action.
+ *
+ * Replaces the cart flow removed above.
+ */
+function ilanel_poc_render_enquiry() {
+	global $product;
+
+	if ( ! $product instanceof WC_Product ) {
+		return;
+	}
+
+	$short = $product->get_short_description();
+
+	if ( $short ) {
+		echo '<div class="woocommerce-product-details__short-description">';
+		echo wp_kses_post( wpautop( $short ) );
+		echo '</div>';
+	}
+
+	echo '<p class="ilanel-enquire">';
+	echo '<a class="single_add_to_cart_button" href="' . esc_url( home_url( '/contact/' ) ) . '">';
+	echo esc_html__( 'Enquire', 'ilanel-poc' );
+	echo '</a></p>';
+}
+add_action( 'woocommerce_single_product_summary', 'ilanel_poc_render_enquiry', 25 );
 add_action( 'init', 'ilanel_poc_strip_woocommerce_defaults' );
 
 /**
