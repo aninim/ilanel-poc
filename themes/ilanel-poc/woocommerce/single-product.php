@@ -8,12 +8,13 @@
  *   1. Hero carousel, full-bleed behind a transparent overlaid header
  *      (RG: .slider--hero.slider--fade)
  *   2. Breadcrumbs
- *   3. Lead article: serif name + uppercase type qualifier
- *   4. Storytelling: two alternating rows — portrait image, then
- *      .article--reversed with a landscape image
- *   5. Configurator: "Configure your" + accordions of radio swatches,
- *      live price, BUY NOW / SEND ENQUIRY (RG: .section-configure)
- *   6. DOWNLOADS / section
+ *   3. Storytelling — the product name and copy open the journey paired
+ *      with a detail image, then an .article--reversed row. RG do not
+ *      separate the name into its own block above the story.
+ *   4. Configurator: "Configure your" + radio swatches, live price,
+ *      stacked BUY NOW / SEND ENQUIRY / SPECIFIER ENQUIRY
+ *   5. DOWNLOADS / section
+ *   6. Discover More — related products
  *
  * @package ILANEL_POC
  */
@@ -85,80 +86,74 @@ while ( have_posts() ) :
 	<main id="main" class="rg-main">
 		<article <?php wc_product_class( 'rg-product', $product ); ?>>
 
-			<?php // 3. Lead article ?>
-			<section class="rg-article rg-shell">
-				<div class="rg-article__row">
-					<div class="rg-article__col">
-						<?php wc_get_template( 'single-product/title.php' ); ?>
-					</div>
+			<?php
+			/*
+			 * 3. Storytelling.
+			 *
+			 * The product name and description are the FIRST row of the
+			 * journey, paired with a detail image — exactly as RG do it
+			 * (image left, "Liminal / LINEAR PENDANT" + copy right). It is
+			 * not a separate block above the story; it is the story's
+			 * opening beat.
+			 */
+			?>
+			<section class="rg-story">
 
-					<div class="rg-article__col rg-article__col--body">
-						<div class="rg-article__content">
-							<?php echo wp_kses_post( wpautop( $product->get_short_description() ) ); ?>
-						</div>
-
-						<p class="rg-cta">
-							<a class="rg-link" href="#configure"><?php esc_html_e( 'Configure yours', 'ilanel-poc' ); ?> /</a>
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<?php // 4. Storytelling — alternating rows, RG's .article--reversed pattern. ?>
-			<?php if ( $ilanel_story ) : ?>
-				<section class="rg-story">
-
-					<div class="rg-article rg-shell">
-						<div class="rg-article__row rg-article__row--middle">
-							<div class="rg-article__col rg-article__col--media">
+				<div class="rg-article rg-shell">
+					<div class="rg-article__row rg-article__row--middle">
+						<div class="rg-article__col rg-article__col--media">
+							<?php if ( isset( $ilanel_story[0] ) ) : ?>
 								<div class="rg-feature rg-feature--portrait">
 									<img src="<?php echo esc_url( $ilanel_story[0] ); ?>"
 										alt="<?php echo esc_attr( $product->get_name() ); ?>" loading="lazy">
 								</div>
+							<?php endif; ?>
+						</div>
+
+						<div class="rg-article__col">
+							<?php wc_get_template( 'single-product/title.php' ); ?>
+
+							<div class="rg-article__content">
+								<?php echo wp_kses_post( wpautop( $product->get_short_description() ) ); ?>
 							</div>
 
+							<p class="rg-cta">
+								<a class="rg-link" href="#configure"><?php esc_html_e( 'Configure yours', 'ilanel-poc' ); ?> /</a>
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<?php if ( isset( $ilanel_story[1] ) ) : ?>
+					<div class="rg-article rg-article--reversed rg-shell">
+						<div class="rg-article__row rg-article__row--middle">
 							<div class="rg-article__col">
 								<div class="rg-article__head">
-									<h2 class="rg-story__title"><?php esc_html_e( 'Made in Melbourne', 'ilanel-poc' ); ?></h2>
+									<h2 class="rg-story__title"><?php esc_html_e( 'Specified with confidence', 'ilanel-poc' ); ?></h2>
 								</div>
 								<div class="rg-article__content">
-									<p><?php esc_html_e( 'Every piece is assembled by hand in the studio\'s Melbourne workshop. Glass is blown, metal is spun and finished, and each fixture is built to order — which is why no two are identical and why lead times are measured in weeks, not days.', 'ilanel-poc' ); ?></p>
+									<p><?php esc_html_e( 'Selected for the National Gallery of Victoria, the Australian War Memorial, Four Seasons and The Hour Glass. Every piece is assembled by hand in the studio\'s Melbourne workshop and built to order, with custom lengths and finishes available on enquiry.', 'ilanel-poc' ); ?></p>
+								</div>
+								<?php if ( $ilanel_spec ) : ?>
+									<p class="rg-cta">
+										<a class="rg-link" href="<?php echo esc_url( $ilanel_spec ); ?>" target="_blank" rel="noopener">
+											<?php esc_html_e( 'Explore catalogue', 'ilanel-poc' ); ?> /
+										</a>
+									</p>
+								<?php endif; ?>
+							</div>
+
+							<div class="rg-article__col rg-article__col--media">
+								<div class="rg-feature rg-feature--landscape">
+									<img src="<?php echo esc_url( $ilanel_story[1] ); ?>"
+										alt="<?php echo esc_attr( $product->get_name() ); ?>" loading="lazy">
 								</div>
 							</div>
 						</div>
 					</div>
+				<?php endif; ?>
 
-					<?php if ( isset( $ilanel_story[1] ) ) : ?>
-						<div class="rg-article rg-article--reversed rg-shell">
-							<div class="rg-article__row rg-article__row--middle">
-								<div class="rg-article__col">
-									<div class="rg-article__head">
-										<h2 class="rg-story__title"><?php esc_html_e( 'Specified with confidence', 'ilanel-poc' ); ?></h2>
-									</div>
-									<div class="rg-article__content">
-										<p><?php esc_html_e( 'Selected for the National Gallery of Victoria, the Australian War Memorial, Four Seasons and The Hour Glass. Custom lengths, finishes and colourways are available on enquiry, with 3D files and full documentation supplied to the trade.', 'ilanel-poc' ); ?></p>
-									</div>
-									<?php if ( $ilanel_spec ) : ?>
-										<p class="rg-cta">
-											<a class="rg-link" href="<?php echo esc_url( $ilanel_spec ); ?>" target="_blank" rel="noopener">
-												<?php esc_html_e( 'Explore catalogue', 'ilanel-poc' ); ?> /
-											</a>
-										</p>
-									<?php endif; ?>
-								</div>
-
-								<div class="rg-article__col rg-article__col--media">
-									<div class="rg-feature rg-feature--landscape">
-										<img src="<?php echo esc_url( $ilanel_story[1] ); ?>"
-											alt="<?php echo esc_attr( $product->get_name() ); ?>" loading="lazy">
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php endif; ?>
-
-				</section>
-			<?php endif; ?>
+			</section>
 
 			<?php // 5. Configurator — end of funnel. ?>
 			<section class="rg-configure" id="configure">
@@ -310,8 +305,34 @@ while ( have_posts() ) :
 				</div>
 			</section>
 
+			<?php // 6. Downloads ?>
+			<section class="rg-section rg-section--details">
+				<div class="rg-shell">
+					<span class="rg-section__label"><?php esc_html_e( 'Downloads', 'ilanel-poc' ); ?> /</span>
+
+					<div class="rg-grid">
+						<div class="rg-grid__col">
+							<h2 class="rg-section__title">
+								<?php esc_html_e( 'All product details are located in one place to easily access & download.', 'ilanel-poc' ); ?>
+							</h2>
+						</div>
+
+						<div class="rg-grid__col">
+							<ul class="rg-section__list rg-section__list--links">
+								<?php if ( $ilanel_spec ) : ?>
+									<li><a href="<?php echo esc_url( $ilanel_spec ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Data sheet', 'ilanel-poc' ); ?></a></li>
+								<?php endif; ?>
+								<li><a href="#"><?php esc_html_e( 'Materials &amp; finishes', 'ilanel-poc' ); ?></a></li>
+								<li><a href="#"><?php esc_html_e( '3D models', 'ilanel-poc' ); ?></a></li>
+								<li><a href="#"><?php esc_html_e( 'Care &amp; maintenance', 'ilanel-poc' ); ?></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+
 			<?php
-			// 6. Discover More — RG's related-products section, centred cards.
+			// 7. Discover More — RG's related-products section, centred cards.
 			$ilanel_range_term = ILANEL_Taxonomies::get_primary_range( $ilanel_id );
 
 			$ilanel_related = get_posts(
@@ -381,32 +402,6 @@ while ( have_posts() ) :
 					</div>
 				</section>
 			<?php endif; ?>
-
-			<?php // 7. Downloads ?>
-			<section class="rg-section rg-section--details">
-				<div class="rg-shell">
-					<span class="rg-section__label"><?php esc_html_e( 'Downloads', 'ilanel-poc' ); ?> /</span>
-
-					<div class="rg-grid">
-						<div class="rg-grid__col">
-							<h2 class="rg-section__title">
-								<?php esc_html_e( 'All product details are located in one place to easily access & download.', 'ilanel-poc' ); ?>
-							</h2>
-						</div>
-
-						<div class="rg-grid__col">
-							<ul class="rg-section__list rg-section__list--links">
-								<?php if ( $ilanel_spec ) : ?>
-									<li><a href="<?php echo esc_url( $ilanel_spec ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Data sheet', 'ilanel-poc' ); ?></a></li>
-								<?php endif; ?>
-								<li><a href="#"><?php esc_html_e( 'Materials &amp; finishes', 'ilanel-poc' ); ?></a></li>
-								<li><a href="#"><?php esc_html_e( '3D models', 'ilanel-poc' ); ?></a></li>
-								<li><a href="#"><?php esc_html_e( 'Care &amp; maintenance', 'ilanel-poc' ); ?></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
 
 		</article>
 	</main>

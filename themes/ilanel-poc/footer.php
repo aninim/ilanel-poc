@@ -27,28 +27,32 @@ $ilanel_footer_nav = array(
 		<div class="rg-footer__inner">
 
 			<div class="rg-footer__content">
-				<p class="rg-footer__logo"><?php bloginfo( 'name' ); ?></p>
 
-				<address class="rg-footer__address">
-					<span>Melbourne</span>
-					<span>Victoria, Australia</span>
-					<span class="rg-footer__spacer">Phone —</span>
-					<a href="tel:+61390000000">+61 3 9000 0000</a>
-					<a href="mailto:studio@ilanel.com">STUDIO@ILANEL.COM</a>
-				</address>
-			</div>
+				<?php // Identity column — sits beside the nav, as RG do. ?>
+				<div class="rg-footer__identity">
+					<p class="rg-footer__logo"><?php bloginfo( 'name' ); ?></p>
 
-			<div class="rg-footer__navbar">
-				<?php foreach ( $ilanel_footer_nav as $ilanel_heading => $ilanel_items ) : ?>
-					<div class="rg-footer__nav">
-						<h2 class="rg-footer__navtitle"><?php echo esc_html( $ilanel_heading ); ?></h2>
-						<ul>
-							<?php foreach ( $ilanel_items as $ilanel_item ) : ?>
-								<li><a href="#"><?php echo esc_html( $ilanel_item ); ?></a></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				<?php endforeach; ?>
+					<address class="rg-footer__address">
+						<span>Melbourne</span>
+						<span>Victoria, Australia</span>
+						<span class="rg-footer__spacer">Phone — +61 3 9000 0000</span>
+						<a href="mailto:studio@ilanel.com">STUDIO@ILANEL.COM</a>
+					</address>
+				</div>
+
+				<div class="rg-footer__navbar">
+					<?php foreach ( $ilanel_footer_nav as $ilanel_heading => $ilanel_items ) : ?>
+						<div class="rg-footer__nav">
+							<h2 class="rg-footer__navtitle"><?php echo esc_html( $ilanel_heading ); ?></h2>
+							<ul>
+								<?php foreach ( $ilanel_items as $ilanel_item ) : ?>
+									<li><a href="#"><?php echo esc_html( $ilanel_item ); ?></a></li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endforeach; ?>
+				</div>
+
 			</div>
 
 			<div class="rg-footer__inline">
