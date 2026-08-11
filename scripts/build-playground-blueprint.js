@@ -268,6 +268,10 @@ const fragmentLength =
 // limit, so we don't ship the footgun. Use file upload or ?blueprint-url=.
 const FRAGMENT_SAFE_LIMIT = 32000;
 
+// Single-line copy, easier to select and paste into the Playground editor
+// than 1,400 pretty-printed lines.
+fs.writeFileSync(path.join(DIST, 'blueprint.min.json'), JSON.stringify(blueprint));
+
 fs.writeFileSync(
   path.join(DIST, 'DEMO.md'),
   buildDemoDoc(fragmentLength, fileCount, blueprint.steps.length)
@@ -282,7 +286,8 @@ if (fragmentLength > FRAGMENT_SAFE_LIMIT) {
   console.log('');
   console.log(`Too large for a #fragment URL (limit ~${FRAGMENT_SAFE_LIMIT}).`);
   console.log('Load it one of these two ways — see dist/DEMO.md:');
-  console.log('  1. playground.wordpress.net -> "Load Blueprint" -> upload blueprint.json');
+  console.log('  1. playground.wordpress.net -> bottom toolbar "New" ->');
+  console.log('     "Write a Blueprint" -> paste dist/blueprint.min.json');
   console.log('  2. host blueprint.json, then ?blueprint-url=<raw-url>');
 }
 
@@ -302,11 +307,27 @@ re-run the script instead.
 
 ## How to run it
 
-### Option 1 — file upload (no hosting, works now)
+### Option 1 — paste the JSON (no hosting, works now)
 
 1. Open <https://playground.wordpress.net/>
-2. Open the Playground **Dock** → **Load Blueprint**
-3. Upload \`dist/blueprint.json\`
+2. In the **bottom toolbar**, click **New** → **Write a Blueprint**
+3. Select all the example JSON in the editor and replace it with the
+   contents of **\`dist/blueprint.min.json\`** (one line — far easier to
+   copy than the pretty-printed \`blueprint.json\`)
+4. Click **Create Playground**
+
+To copy it to the clipboard on Windows:
+
+\`\`\`powershell
+Get-Content dist/blueprint.min.json -Raw | Set-Clipboard
+\`\`\`
+
+The editor holds the whole ${(blueprintJson.length / 1024).toFixed(0)} KB fine — the size limit only affects
+URLs, not pasted text.
+
+> Older docs describe a "Dock → Load Blueprint" file upload. The current UI
+> puts **New** in the bottom toolbar instead; there is no separate upload
+> button. Use **Write a Blueprint** and paste.
 
 ### Option 2 — one-click link (needs the JSON hosted)
 
@@ -316,6 +337,8 @@ Host \`blueprint.json\` anywhere public that sends
 \`\`\`
 https://playground.wordpress.net/?blueprint-url=<RAW_JSON_URL>
 \`\`\`
+
+This is the only path that gives a genuine one-click link.
 
 ### Why there is no #fragment URL
 
