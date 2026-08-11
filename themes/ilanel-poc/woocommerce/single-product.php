@@ -169,6 +169,25 @@ while ( have_posts() ) :
 							<img class="js-config-image"
 								src="<?php echo esc_url( $ilanel_swatches ? $ilanel_swatches[0]['image'] : ( $ilanel_gallery[0] ?? '' ) ); ?>"
 								alt="<?php echo esc_attr( $product->get_name() ); ?>" loading="lazy">
+
+							<?php
+							/*
+							 * Lit / unlit toggle.
+							 *
+							 * ILANEL photograph most colourways twice — with the
+							 * fixture on and off (the "_NB" suffix on their CDN means
+							 * no bulb). Buyers of decorative lighting care enormously
+							 * about how a piece reads when it is off, since it hangs
+							 * in the room all day. The toggle dims the preview and
+							 * lifts a warm glow to simulate it.
+							 */
+							?>
+							<button type="button" class="rg-lightswitch js-lightswitch"
+								aria-pressed="true"
+								aria-label="<?php esc_attr_e( 'Toggle light', 'ilanel-poc' ); ?>">
+								<span class="rg-lightswitch__dot"></span>
+								<span class="rg-lightswitch__text"><?php esc_html_e( 'Lit', 'ilanel-poc' ); ?></span>
+							</button>
 						</div>
 
 						<div class="rg-configure__panel">
@@ -236,6 +255,21 @@ while ( have_posts() ) :
 										<span class="rg-config__label"><?php esc_html_e( 'Lead time', 'ilanel-poc' ); ?></span>
 										<?php echo esc_html( $ilanel_lead ); ?>
 									</p>
+
+									<?php
+									// Concrete dispatch date beats an abstract lead time — RG show
+									// "ETA DISPATCH Thu 22 Oct 2026". Derived from the lead time's
+									// upper bound so it stays honest as the date moves.
+									$ilanel_weeks = 12;
+									if ( preg_match( '/(\d+)\s*(?:–|-|to)\s*(\d+)/u', $ilanel_lead, $ilanel_m ) ) {
+										$ilanel_weeks = (int) $ilanel_m[2];
+									}
+									$ilanel_eta = date_i18n( 'D j M Y', strtotime( '+' . $ilanel_weeks . ' weeks' ) );
+									?>
+									<p class="rg-config__eta">
+										<span class="rg-config__label"><?php esc_html_e( 'ETA dispatch', 'ilanel-poc' ); ?></span>
+										<?php echo esc_html( $ilanel_eta ); ?>
+									</p>
 								</div>
 
 								<div class="rg-config__actions">
@@ -244,6 +278,9 @@ while ( have_posts() ) :
 									</a>
 									<a class="rg-btn" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">
 										<?php esc_html_e( 'Send enquiry', 'ilanel-poc' ); ?>
+									</a>
+									<a class="rg-btn rg-btn--quiet" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">
+										<?php esc_html_e( 'Specifier enquiry', 'ilanel-poc' ); ?>
 									</a>
 								</div>
 
@@ -254,6 +291,18 @@ while ( have_posts() ) :
 										</a>
 									</p>
 								<?php endif; ?>
+
+								<?php // RG show a share row under the configurator. ?>
+								<div class="rg-share">
+									<span class="rg-config__label"><?php esc_html_e( 'Share', 'ilanel-poc' ); ?></span>
+									<?php
+									$ilanel_url   = rawurlencode( get_permalink( $ilanel_id ) );
+									$ilanel_title = rawurlencode( $product->get_name() );
+									?>
+									<a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo esc_attr( $ilanel_url ); ?>" target="_blank" rel="noopener">Facebook</a>
+									<a href="https://pinterest.com/pin/create/button/?url=<?php echo esc_attr( $ilanel_url ); ?>&amp;description=<?php echo esc_attr( $ilanel_title ); ?>" target="_blank" rel="noopener">Pin it</a>
+									<a href="mailto:?subject=<?php echo esc_attr( $ilanel_title ); ?>&amp;body=<?php echo esc_attr( $ilanel_url ); ?>">Email</a>
+								</div>
 							</form>
 						</div>
 
@@ -261,7 +310,79 @@ while ( have_posts() ) :
 				</div>
 			</section>
 
-			<?php // 6. Downloads ?>
+			<?php
+			// 6. Discover More — RG's related-products section, centred cards.
+			$ilanel_range_term = ILANEL_Taxonomies::get_primary_range( $ilanel_id );
+
+			$ilanel_related = get_posts(
+				array(
+					'post_type'      => 'product',
+					'posts_per_page' => 3,
+					'post__not_in'   => array( $ilanel_id ),
+					'orderby'        => 'rand',
+				)
+			);
+
+			if ( $ilanel_related ) :
+				?>
+				<section class="rg-section rg-discover">
+					<div class="rg-shell">
+						<h2 class="rg-discover__title"><?php esc_html_e( 'Discover More', 'ilanel-poc' ); ?></h2>
+
+						<ul class="rg-products rg-products--discover">
+							<?php
+							foreach ( $ilanel_related as $ilanel_post ) :
+								$ilanel_rel = wc_get_product( $ilanel_post->ID );
+
+								if ( ! $ilanel_rel ) {
+									continue;
+								}
+
+								$ilanel_rel_type = get_post_meta( $ilanel_post->ID, '_ilanel_product_type_label', true );
+								?>
+								<li class="rg-product-card">
+									<a href="<?php echo esc_url( get_permalink( $ilanel_post->ID ) ); ?>">
+										<div class="rg-product-card__media">
+											<?php echo get_the_post_thumbnail( $ilanel_post->ID, 'large' ); ?>
+										</div>
+										<h3 class="rg-product-card__title"><?php echo esc_html( $ilanel_rel->get_name() ); ?></h3>
+										<?php if ( $ilanel_rel_type ) : ?>
+											<p class="rg-product-card__type"><?php echo esc_html( $ilanel_rel_type ); ?></p>
+										<?php endif; ?>
+										<?php if ( $ilanel_rel->get_price() ) : ?>
+											<p class="rg-product-card__price">
+												<?php
+												printf(
+													/* translators: %s: formatted price */
+													esc_html__( 'From %s', 'ilanel-poc' ),
+													wp_kses_post( wc_price( $ilanel_rel->get_price() ) )
+												);
+												?>
+											</p>
+										<?php endif; ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+
+						<?php if ( $ilanel_range_term ) : ?>
+							<p class="rg-discover__cta">
+								<a class="rg-link" href="<?php echo esc_url( get_term_link( $ilanel_range_term ) ); ?>">
+									<?php
+									printf(
+										/* translators: %s: range name */
+										esc_html__( 'View all %s', 'ilanel-poc' ),
+										esc_html( $ilanel_range_term->name )
+									);
+									?> /
+								</a>
+							</p>
+						<?php endif; ?>
+					</div>
+				</section>
+			<?php endif; ?>
+
+			<?php // 7. Downloads ?>
 			<section class="rg-section rg-section--details">
 				<div class="rg-shell">
 					<span class="rg-section__label"><?php esc_html_e( 'Downloads', 'ilanel-poc' ); ?> /</span>
@@ -289,6 +410,41 @@ while ( have_posts() ) :
 
 		</article>
 	</main>
+
+	<?php
+	/*
+	 * Sticky enquiry bar — appears once the configurator is scrolled past,
+	 * so the CTA stays reachable on a long page without a second visit to
+	 * the top.
+	 */
+	?>
+	<div class="rg-stickybar js-stickybar" aria-hidden="false">
+		<div class="rg-shell">
+			<div class="rg-stickybar__inner">
+				<div class="rg-stickybar__meta">
+					<span class="rg-stickybar__name"><?php echo esc_html( $product->get_name() ); ?></span>
+					<?php if ( $product->get_price() ) : ?>
+						<span class="rg-stickybar__price">
+							<?php
+							printf(
+								/* translators: %s: formatted price */
+								esc_html__( 'From %s', 'ilanel-poc' ),
+								wp_kses_post( wc_price( $product->get_price() ) )
+							);
+							?>
+						</span>
+					<?php endif; ?>
+				</div>
+
+				<div class="rg-stickybar__actions">
+					<a class="rg-link" href="#configure"><?php esc_html_e( 'Configure', 'ilanel-poc' ); ?> /</a>
+					<a class="rg-btn rg-btn--solid rg-btn--small" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">
+						<?php esc_html_e( 'Enquire', 'ilanel-poc' ); ?>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<?php
 endwhile;

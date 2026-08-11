@@ -110,9 +110,110 @@
     update();
   }
 
+  /* --- Lit / unlit toggle -------------------------------------------- */
+
+  function initLightSwitch() {
+    var btn = document.querySelector('.js-lightswitch');
+    var preview = document.querySelector('.rg-configure__preview');
+    if (!btn || !preview) return;
+
+    var label = btn.querySelector('.rg-lightswitch__text');
+    var lit = true;
+
+    btn.addEventListener('click', function () {
+      lit = !lit;
+      preview.classList.toggle('is-unlit', !lit);
+      btn.setAttribute('aria-pressed', String(lit));
+      if (label) label.textContent = lit ? 'Lit' : 'Unlit';
+    });
+  }
+
+  /* --- Reveal on scroll ------------------------------------------------
+   * Sections fade and rise slightly as they enter the viewport. Kept
+   * subtle — a few hundred ms, small travel. Respects
+   * prefers-reduced-motion by simply not running.
+   */
+
+  function initReveal() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+
+    var targets = document.querySelectorAll(
+      '.rg-article__col, .rg-feature, .rg-section, .rg-product-card, .rg-configure__panel, .rg-configure__preview'
+    );
+
+    targets.forEach(function (el) {
+      el.classList.add('rg-reveal');
+    });
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+    );
+
+    targets.forEach(function (el) {
+      io.observe(el);
+    });
+  }
+
+  /* --- Sticky enquiry bar ----------------------------------------------
+   * Appears once the configurator scrolls out of view, so the call to
+   * action is never more than a tap away on a long page.
+   */
+
+  function initStickyBar() {
+    var config = document.getElementById('configure');
+    var bar = document.querySelector('.js-stickybar');
+    if (!config || !bar) return;
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          // Show only once the configurator has been scrolled past.
+          var past = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+          bar.classList.toggle('is-visible', past);
+        });
+      },
+      { threshold: 0 }
+    );
+
+    io.observe(config);
+  }
+
+  /* --- Header state on scroll ------------------------------------------
+   * Over the hero the header is white on photography; once past it, it
+   * needs to flip to dark on white.
+   */
+
+  function initHeaderState() {
+    var hero = document.querySelector('.rg-hero');
+    if (!hero || !document.body.classList.contains('has-hero')) return;
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          document.body.classList.toggle('is-past-hero', !entry.isIntersecting);
+        });
+      },
+      { threshold: 0, rootMargin: '-80px 0px 0px 0px' }
+    );
+
+    io.observe(hero);
+  }
+
   function init() {
     initHero();
     initConfigurator();
+    initLightSwitch();
+    initReveal();
+    initStickyBar();
+    initHeaderState();
   }
 
   if (document.readyState === 'loading') {
