@@ -81,9 +81,13 @@ scripts/build-playground-blueprint.js   inlines every file + generates the seed 
 4. **Two diverging price sources.** `build-playground-blueprint.js` has its own
    hardcoded `$demo_prices` map (2450/2680/1890/1240) that contradicts the real
    `price` in `products.json` (3195.5/3572.8/1870/2094.4). Kill the demo map.
-5. **The projection drops `commerce`.** `buildSeedPhp()` reshapes each product
-   into a smaller object and discards the whole `commerce` block. That
-   projection is where variant support starts.
+5. ~~**The projection drops `commerce`.**~~ Fixed in Task 1 — `buildSeedPhp()`
+   now carries `attributes` and `variants` through.
+6. **Two seeders that can drift.** `scripts/build-playground-blueprint.js`
+   generates the PHP inlined into the blueprint; `scripts/seed-products.php`
+   is the WP-CLI equivalent. Task 1 updated **only the first** —
+   `seed-products.php` still creates `WC_Product_Simple` with the old demo
+   prices. Fix it before anyone runs it against a real install.
 
 ### Two live bugs to fix on the way past
 
@@ -111,10 +115,28 @@ title and a purple default Woo button in earlier passes.
 
 ---
 
-## Task 1 — Variable products *(do first; 2–4 & schema depend on it)*
+## Task 1 — Variable products ✅ DONE (commit `4314bbf`)
 
 **Goal:** Comet becomes a real `WC_Product_Variable` with 36 variations, driven
 by real attributes and prices. The configurator stops being decorative.
+
+> **Shipped.** Comet is a real variable product — 36 variations across
+> Size × Color × Glass, $3,195–$7,437, real SKUs (`SQ0540475`). Kahdu 24,
+> Dais 4, Stardust 3. The configurator renders one fieldset per real
+> attribute, unreachable options are disabled before they can be clicked, the
+> price counts to its new value, and the preview preloads before cross-fading.
+>
+> Three bugs fixed on the way: a missing `[hidden]` CSS rule (the "combination
+> isn't made" warning showed permanently — caught by screenshotting, not
+> review), `get_spin_frames()` referencing an undefined constant, and the
+> custom product fields hooking the General tab, which Woo hides for variable
+> products.
+>
+> ⚠️ **`scripts/seed-products.php` was NOT updated** — the WP-CLI seeder still
+> creates `WC_Product_Simple`. Only the blueprint generator was changed. Bring
+> it in line before anyone relies on it, or the two will drift.
+>
+> The steps below are kept as the record of what was done.
 
 ### 1a. Seed variable products
 
@@ -300,14 +322,46 @@ Oren's two stated decision criteria.
 ### What is already known
 
 - **`?format=json` works** on ilanel.com and returns structured items:
-  `title`, `urlId`, `body`, `assetUrl`, `publishOn`, `id`, `recordType`.
+  `title`, `urlId`, `assetUrl`, `publishOn`, `id`, `recordType`.
   - `/projects?format=json` → **all 51 in one page**
   - `/news?format=json` → paginates at 20 (`pagination.nextPage`)
-- ⚠️ **Project bodies come back empty** (`body: ""`, no tags/categories) —
-  the content lives in Squarespace **blocks**, not the JSON body. Do not
-  assume JSON alone is sufficient; you will need a second pass (rendered HTML
-  parse, or the `/collection-item?format=json` per-item endpoint) for project
-  copy.
+
+### ⚠️ Premise revised 2026-08-12 — JSON does not carry the copy
+
+Measured, not assumed:
+
+| | Result |
+|---|---|
+| Projects returned | **51 / 51** |
+| With `title` and `assetUrl` | **51 / 51** |
+| With `body` | **0** |
+| With `excerpt` | **0** |
+| Per-item `/<slug>?format=json` body | **empty** (0 `blockType` occurrences) |
+
+So the collection endpoint **and** the per-item endpoint both return no copy.
+The content lives in Squarespace blocks that JSON does not expose. **"Read the
+JSON" is not a viable migration path for project or news bodies** — it yields
+titles and hero images only.
+
+**Test these in order before committing to an approach:**
+
+1. **Squarespace's own export** — Settings → Import/Export produces
+   **WordPress-format XML (WXR)**, which WP imports natively. This is very
+   likely the real answer and would make most of the custom scripting
+   unnecessary. **Ask Oren whether he can produce one from admin** — it needs
+   site-owner access. Note Squarespace's export historically covers pages,
+   posts and galleries but **not** products, and may cap at one blog
+   collection; verify what actually comes out before planning around it.
+2. **Rendered-HTML parse** of each live page — the copy is definitely in the
+   DOM. Slower and more brittle, but guaranteed to work and entirely
+   read-only.
+3. `/collection-item` or `?format=json-pretty` variants, in case a different
+   endpoint exposes block content.
+
+Whichever wins, the deliverable is unchanged: a **measured** migration cost,
+because that is one of Oren's two stated decision criteria and a wrong method
+makes the estimate meaningless.
+
 - **Reusable:** `ilanel-studio/scripts/sqsp_catalogue.py` — read-only
   Squarespace Commerce API reader, already written and documented.
 - Live content volumes: 79 news, 52 projects, 26 lighting-collection pages,

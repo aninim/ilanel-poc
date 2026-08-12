@@ -78,7 +78,8 @@ template, so content entry cannot reintroduce the defect.
 | Real ILANEL photography | ✅ Sideloaded from their CDN |
 | Running instance | ✅ **WordPress Playground — see above** |
 | 3D viewer | ⚙️ `<model-viewer>` wired; needs a `.glb` from the studio |
-| Prices / SKUs | ⚠️ **Invented for the demo — do not quote** |
+| Prices / SKUs | ✅ **Real** — from the authenticated Commerce export |
+| Variable products | ✅ Comet 36 variations, Size × Color × Glass, $3,195–$7,437 |
 
 Schema output was verified by running the generators against stubbed
 WordPress/WooCommerce in PHP 8.3 — not by inspection. See `docs/VERIFICATION.md`.
@@ -123,4 +124,5 @@ the JSON-LD.
 - Live URLs, slugs and canonicals are never to change — 1,110 of ~1,130
   backlinks point at the ilanel.com homepage.
 - Live Commerce inventory (73 records with real order history) is never edited.
-- Prices in `data/products.json` are **placeholders**. Do not quote them.
+- Prices in `data/products.json` → `commerce` are **real** (Commerce export,
+  2026-08-11). The demo table still inside `scripts/seed-products.php` is not.

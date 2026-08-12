@@ -6,22 +6,29 @@ real.
 
 ---
 
-## 1. Prices — placeholder
+## 1. Prices — ✅ RESOLVED (2026-08-11)
 
-`data/products.json` carries `"price": "PLACEHOLDER"` for every product, and
-the seeder deliberately skips setting a price when it sees that value.
+Real prices now come from the authenticated Squarespace Commerce export and
+live in `data/products.json` → `commerce.variants[].price`:
 
-Consequence: **products seed without a price, so the Offer node is omitted.**
-The schema harness used an invented `2450.00 AUD` to prove the Offer generator
-works — that figure is not an ILANEL price and must not be quoted.
+| Product | Variants | Real range |
+|---|---|---|
+| Comet | 36 (Size × Color × Glass) | $3,195.50 – $7,437.72 |
+| Kahdu | 24 (Color × Shape) | $1,870.00 – $3,080.00 |
+| Dais | 4 (Glass) | $2,094.40 – $2,818.20 |
+| Comet Stardust | 3 (Size) | $3,572.80 – $4,188.80 |
 
-**Needed:** real RRP per product from Commerce. Note the handoff's warning that
-the production store holds **73 inventory records against 25 product pages** —
-confirm which record is authoritative per product before pulling figures.
+The old invented figures (`2450.00` etc.) are gone from the blueprint seeder.
 
-## 2. SKUs — placeholder
+⚠️ **Still stale in one place:** `scripts/seed-products.php` (the WP-CLI
+seeder) was not updated in Task 1 and retains the demo price table. Anything
+it produces is not real.
 
-Same pattern. Real SKUs come from Commerce.
+## 2. SKUs — ✅ RESOLVED (2026-08-11)
+
+Real SKUs ship with the variant data (e.g. `SQ0540475`). The `DEMO-*` override
+was removed from the blueprint seeder. Same caveat as above for
+`seed-products.php`.
 
 ## 3. Finishes — not captured
 
