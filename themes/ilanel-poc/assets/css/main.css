@@ -5,7 +5,6 @@
  *   .article__content p  font-size 1.8rem / weight 300 / line-height 1.35
  *   .article__head       margin-bottom 4.1rem
  *   .section-details     padding 0 0 18rem
- *   .shell               padding 0 3rem (mobile 2rem)
  *   letter-spacing       .005 / .01 / .02 / .06 / .08em
  *   body                 #fff bg, #000 text, ABCFavorit
  *   font-weights         300 / 400 / 600 only
@@ -15,12 +14,39 @@
  * substitutes Inter and a Didone serif. Swap in the licensed faces for
  * production and the match tightens further.
  *
- * RG set html{font-size:62.5%} so 1rem = 10px. We do the same, which is
- * why the values above transfer directly.
+ * 1rem = 10px here, as on RG. They declare `html{font-size:10px}` rather
+ * than the 62.5% idiom — same computed result, so their rem values transfer
+ * directly. (An earlier comment here claimed 62.5%; that was never in their
+ * stylesheet. Verified against their served CSS 2026-08-12.)
+ *
+ * KNOWN DIVERGENCES from RG, measured against their live CSS — deliberate or
+ * not yet addressed, but do not "fix" them assuming they are typos:
+ *
+ *   .shell        RG 183.5rem max-width, 10rem side padding (5rem ≤1199,
+ *                 6rem ≤1023, 3rem mobile). Ours: 168rem / 3rem. Ours is a
+ *                 narrower, tighter page.
+ *   sections      RG's vertical rhythm is much larger than ours: 16.7rem
+ *                 top / 14.7rem bottom on desktop, collapsing to 10rem then
+ *                 5rem. Ours run ~4-7rem. This is the single biggest reason
+ *                 our page reads denser than theirs.
+ *   h2            RG 2.8rem/400/1.15 (2.6 ≤1023, 2.4 mobile) in the sans.
+ *                 Ours are serif and much larger — a deliberate departure,
+ *                 since our headings carry the page where RG lean on imagery.
+ *   h2 margin     RG .section h2 { margin-bottom: 9.8rem } — nearly 100px of
+ *                 air under every section heading.
+ *   "Latest       RG is NOT a product grid. It is a one-slide-at-a-time
+ *    Releases"    Flickity carousel, slide width 100%, image ratio via
+ *                 padding-top 55.4% (80% mobile), with the caption OVERLAID
+ *                 bottom-right on the image (position absolute, max-width
+ *                 58rem, padding 4.7rem 6.3rem, opacity .8) — not beneath it.
+ *                 Ours is a 4-up card grid. Different component by choice.
+ *   hover         RG have no image zoom on the homepage. Their motion is a
+ *                 1px underline scaleX(0) -> none over .4s ease. Ours scales
+ *                 the product image 1.03.
  */
 
 html {
-  font-size: 62.5%;
+  font-size: 10px;
 }
 
 /* --- Page transitions -----------------------------------------------------
@@ -1567,8 +1593,15 @@ body.has-hero.is-past-hero .rg-navbtn span {
   padding-top: 1rem;
 }
 
+/* Vertical rhythm, moved toward RG's measured values.
+   RG run 16.7rem top / 14.7rem bottom on desktop, collapsing to 10rem at
+   ≤1023px and 5rem on mobile. We were at 5-7rem throughout, which is why the
+   page read denser than theirs. These sit between the two: our headings are
+   serif and larger than RG's 2.8rem sans, so they need less surrounding air
+   to hold the page than RG's do. */
 .rg-section--releases {
-  padding-top: 7rem;
+  padding-top: 11rem;
+  padding-bottom: 2rem;
 }
 
 /* Four across on the homepage, against three on the range archive.
@@ -1589,9 +1622,12 @@ body.has-hero.is-past-hero .rg-navbtn span {
 
 /* Section headings across the homepage: the serif voice, one step down from
    the hero so the hierarchy stays obvious. */
+/* RG put 9.8rem (98px) under every section h2. Ours are serif and larger, so
+   the full value over-separates; 6.5rem keeps the generous feel without the
+   heading floating away from what it introduces. */
 .rg-section__heading {
   max-width: 30ch;
-  margin: 0 0 4.1rem;
+  margin: 0 0 6.5rem;
   font-family: var(--rg-serif);
   font-size: 3.6rem;
   font-weight: 400;
@@ -1599,8 +1635,12 @@ body.has-hero.is-past-hero .rg-navbtn span {
   letter-spacing: 0.01em;
 }
 
+/* Bottom padding is deliberately smaller than the top: it stacks with the
+   provenance section's own top padding, and at 9rem the two summed to a
+   visible hole between the About block and "Selected for". */
 .rg-section--about {
-  padding-top: 5rem;
+  padding-top: 10rem;
+  padding-bottom: 4rem;
 }
 
 /* On the homepage the About statement is the lede, so it runs larger than
@@ -1629,8 +1669,8 @@ body.has-hero.is-past-hero .rg-navbtn span {
 /* Provenance: names only, on a rule-separated row — the institutional
    credibility RG get from their "Tone" section. */
 .rg-section--provenance {
-  padding-top: 5rem;
-  padding-bottom: 6rem;
+  padding-top: 9rem;
+  padding-bottom: 10rem;
 }
 
 .rg-provenance {
@@ -1811,6 +1851,15 @@ body.has-hero.is-past-hero .rg-navbtn span {
   .rg-section__heading {
     font-size: 2.6rem;
     margin-bottom: 3rem;
+  }
+
+  /* RG collapse their 16.7rem desktop rhythm to 5rem on mobile; the generous
+     desktop spacing above would otherwise be dead scrolling on a phone. */
+  .rg-section--releases,
+  .rg-section--about,
+  .rg-section--provenance {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 
   .rg-section__title--about {
