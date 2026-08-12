@@ -79,6 +79,13 @@ html.is-transitions.is-leaving body {
   box-sizing: border-box;
 }
 
+/* Any rule that sets `display` beats the browser default for [hidden], so
+   state it explicitly — otherwise elements toggled via the hidden attribute
+   stay visible. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background: var(--rg-bg);
@@ -672,6 +679,52 @@ body.has-hero .rg-header::before {
 
 .rg-scale__caption .js-scale-caption {
   color: var(--rg-ink);
+}
+
+/* --- Unavailable options --------------------------------------------------
+ * An option that leads nowhere is dimmed and struck through *before* it is
+ * clicked. Cheaper than letting someone pick it and then explaining why the
+ * price vanished.
+ */
+
+.rg-config__pill.is-unavailable,
+.rg-config__swatch.is-unavailable {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.rg-config__pill.is-unavailable span {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.rg-config__pill.is-unavailable:hover span {
+  border-color: var(--rg-rule);
+}
+
+.rg-config__swatch.is-unavailable .rg-config__swatch-media {
+  filter: grayscale(1);
+}
+
+.rg-config__unavailable {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.4rem;
+  background: #fff;
+  border-left: 2px solid var(--rg-accent);
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: #444;
+}
+
+/* The price is the number people are deciding on — give the change a beat. */
+.js-config-price {
+  display: inline-block;
+  transition: opacity 0.2s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+.rg-config.is-unavailable .js-config-price {
+  opacity: 0.35;
 }
 
 /* --- Restored-selection note ---------------------------------------------- */

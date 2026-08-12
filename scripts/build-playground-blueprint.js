@@ -101,7 +101,11 @@ function buildSeedPhp() {
     gallery: p.gallery || [],
     story: p.story || [],
     swatches: (p.finishes || []).filter((f) => Array.isArray(f)).map(([name, image]) => ({ name, image })),
-    lengths: p.lengths || [],
+
+    // Real catalogue structure from the authenticated Squarespace Commerce
+    // export. Drives variable-product creation; see docs/PHASE-2-PLAN.md.
+    attributes: (p.commerce && p.commerce.attributes) || {},
+    variants: (p.commerce && p.commerce.variants) || [],
   }));
 
   const payload = JSON.stringify({ products }, null, 2);
@@ -150,38 +154,114 @@ if ( ! empty( $range_ids['pendants'] ) ) {
     );
 }
 
-foreach ( $data['products'] as $item ) {
-    $existing = get_page_by_path( $item['slug'], OBJECT, 'product' );
+/**
+ * Attribute names are used as meta keys on variations, so they must be
+ * normalised identically when the attribute is declared and when each
+ * variation is matched. "Drop Height" -> "drop-height".
+ */
+function ilanel_attr_key( $name ) {
+    return sanitize_title( $name );
+}
 
-    $product = $existing ? wc_get_product( $existing->ID ) : new WC_Product_Simple();
+foreach ( $data['products'] as $item ) {
+    $existing  = get_page_by_path( $item['slug'], OBJECT, 'product' );
+    $has_variants = ! empty( $item['variants'] );
+
+    /*
+     * Products with real variant data become variable products; everything
+     * else stays simple. Real ILANEL data: Comet is 36 variations across
+     * Size x Color x Glass, Kahdu 24 across Color x Shape.
+     */
+    if ( $existing ) {
+        $product = wc_get_product( $existing->ID );
+
+        // A previously-seeded simple product cannot gain variations; rebuild
+        // it as the right class rather than silently keeping the old type.
+        if ( $has_variants && ! $product->is_type( 'variable' ) ) {
+            $product = new WC_Product_Variable( $existing->ID );
+        }
+    } else {
+        $product = $has_variants ? new WC_Product_Variable() : new WC_Product_Simple();
+    }
 
     $product->set_name( $item['name'] );
     $product->set_slug( $item['slug'] );
     $product->set_status( 'publish' );
     $product->set_catalog_visibility( 'visible' );
     $product->set_short_description( $item['description'] );
-    $product->set_manage_stock( false );
-    $product->set_stock_status( 'onbackorder' );
 
-    // DEMO ONLY — illustrative prices so the Offer node renders.
-    // Real figures must come from Commerce. See docs/OPEN-QUESTIONS.md.
-    $demo_prices = array(
-        'comet-pendant'          => '2450.00',
-        'comet-stardust-pendant' => '2680.00',
-        'kahdu-pendant'          => '1890.00',
-        'dais-wall-light'        => '1240.00',
-    );
+    if ( $has_variants ) {
+        /*
+         * Local attributes (set_id(0)), not global pa_* taxonomies.
+         * Global attributes need their taxonomy registered and rewrite rules
+         * flushed before terms can be assigned, which is unreliable inside
+         * Playground's single runPHP step. The trade-off is no attribute
+         * archive pages, which this POC does not use.
+         */
+        $attributes = array();
+        $position   = 0;
 
-    if ( isset( $demo_prices[ $item['slug'] ] ) ) {
-        $product->set_regular_price( $demo_prices[ $item['slug'] ] );
+        foreach ( $item['attributes'] as $attr_name => $attr_values ) {
+            $attribute = new WC_Product_Attribute();
+            $attribute->set_id( 0 );
+            $attribute->set_name( $attr_name );
+            $attribute->set_options( array_values( $attr_values ) );
+            $attribute->set_position( $position++ );
+            $attribute->set_visible( true );
+            $attribute->set_variation( true );
+
+            $attributes[] = $attribute;
+        }
+
+        $product->set_attributes( $attributes );
+    } else {
+        $product->set_manage_stock( false );
+        $product->set_stock_status( 'onbackorder' );
+        $product->set_sku( 'DEMO-' . strtoupper( str_replace( '-', '', $item['slug'] ) ) );
     }
-
-    $product->set_sku( 'DEMO-' . strtoupper( str_replace( '-', '', $item['slug'] ) ) );
 
     $product_id = $product->save();
 
     if ( ! $product_id ) {
         continue;
+    }
+
+    if ( $has_variants ) {
+        // Re-seeding must not multiply children.
+        foreach ( $product->get_children() as $old_child_id ) {
+            $old_child = wc_get_product( $old_child_id );
+            if ( $old_child ) {
+                $old_child->delete( true );
+            }
+        }
+
+        foreach ( $item['variants'] as $variant ) {
+            $variation = new WC_Product_Variation();
+            $variation->set_parent_id( $product_id );
+            $variation->set_status( 'publish' );
+
+            $variation_attributes = array();
+            foreach ( $variant['options'] as $opt_name => $opt_value ) {
+                $variation_attributes[ ilanel_attr_key( $opt_name ) ] = $opt_value;
+            }
+            $variation->set_attributes( $variation_attributes );
+
+            $variation->set_regular_price( (string) $variant['price'] );
+
+            if ( ! empty( $variant['sku'] ) ) {
+                $variation->set_sku( $variant['sku'] );
+            }
+
+            // Made to order — every variation is a backorder, matching the
+            // 4-12 week lead time shown on the product page.
+            $variation->set_manage_stock( false );
+            $variation->set_stock_status( 'onbackorder' );
+
+            $variation->save();
+        }
+
+        // Without this the parent has no price range and shows no price.
+        WC_Product_Variable::sync( $product_id );
     }
 
     if ( ! empty( $range_ids[ $item['range'] ] ) ) {
@@ -210,9 +290,6 @@ foreach ( $data['products'] as $item ) {
     }
     if ( ! empty( $item['story'] ) ) {
         update_post_meta( $product_id, '_ilanel_story', array_map( 'esc_url_raw', $item['story'] ) );
-    }
-    if ( ! empty( $item['lengths'] ) ) {
-        update_post_meta( $product_id, '_ilanel_lengths', array_map( 'sanitize_text_field', $item['lengths'] ) );
     }
     if ( ! empty( $item['swatches'] ) ) {
         $clean = array();

@@ -161,6 +161,20 @@
   }
 
   /* --- Configurator: swap preview, update summary and price ----------- */
+  /* --- Configurator ----------------------------------------------------
+   * Drives real WooCommerce variations. Every price, image and stock state
+   * comes from Woo; nothing here is invented.
+   *
+   * Three things this does that a naive variation picker does not:
+   *
+   *   1. Options that cannot be reached from the current selection are
+   *      disabled *before* you click them, so you never land on a dead
+   *      combination and have to back out.
+   *   2. The price cross-fades between values instead of snapping, and
+   *      counts to the new figure — a change you can follow.
+   *   3. Selection state is announced to screen readers and persisted
+   *      between visits.
+   */
 
   function initConfigurator() {
     var form = document.querySelector('.rg-config');
@@ -169,60 +183,173 @@
     var preview = document.querySelector('.js-config-image');
     var summary = form.querySelector('.js-config-summary');
     var priceEl = form.querySelector('.js-config-price');
-    var base = parseFloat(form.dataset.basePrice || '0');
+    var unavailableEl = form.querySelector('.js-config-unavailable');
 
-    // Read the currency symbol off the server-rendered price so we don't
-    // hardcode it — Woo may be configured for any currency.
-    var rendered = priceEl ? priceEl.textContent.trim() : '';
-    var symbol = (rendered.match(/^[^\d]*/) || [''])[0] || '$';
-
-    function money(value) {
-      return (
-        symbol +
-        value.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
-      );
+    var variations = [];
+    try {
+      variations = JSON.parse(form.dataset.variations || '[]');
+    } catch (e) {
+      variations = [];
     }
 
-    /* Scale drawing: draw the chosen length against a 2400mm table. */
+    // Axis keys, in the order the fieldsets appear.
+    var axes = Array.prototype.map.call(
+      form.querySelectorAll('.rg-config__group[data-axis]'),
+      function (g) {
+        return g.dataset.axis;
+      }
+    );
+
+    if (!axes.length) return;
+
+    function inputsFor(axis) {
+      return form.querySelectorAll('input[name="attribute_' + axis + '"]');
+    }
+
+    function selected() {
+      var out = {};
+      axes.forEach(function (axis) {
+        var checked = form.querySelector('input[name="attribute_' + axis + '"]:checked');
+        out[axis] = checked ? checked.value : null;
+      });
+      return out;
+    }
+
+    /* A variation matches when every axis either agrees or is unconstrained
+     * ("any" — Woo leaves the attribute blank when it applies to all). */
+    function matches(variation, choice, ignoreAxis) {
+      return axes.every(function (axis) {
+        if (axis === ignoreAxis) return true;
+        var want = choice[axis];
+        if (!want) return true;
+        var have = variation.attributes['attribute_' + axis];
+        return !have || have === want;
+      });
+    }
+
+    function findVariation(choice) {
+      for (var i = 0; i < variations.length; i++) {
+        if (matches(variations[i], choice, null)) return variations[i];
+      }
+      return null;
+    }
+
+    /* --- Reachability ---------------------------------------------------
+     * For each option, ask: if I picked this, would any variation exist?
+     * If not, dim and disable it. This is the difference between a picker
+     * that guides you and one that lets you walk into a wall.
+     */
+    function updateReachability(choice) {
+      if (!variations.length) return;
+
+      axes.forEach(function (axis) {
+        Array.prototype.forEach.call(inputsFor(axis), function (input) {
+          var hypothetical = Object.assign({}, choice);
+          hypothetical[axis] = input.value;
+
+          var reachable = variations.some(function (v) {
+            return matches(v, hypothetical, null);
+          });
+
+          input.disabled = !reachable;
+          var label = input.closest('label');
+          if (label) label.classList.toggle('is-unavailable', !reachable);
+        });
+      });
+    }
+
+    /* --- Price animation ------------------------------------------------
+     * Counts from the old figure to the new one over ~420ms. Digits are
+     * rewritten in place, so the currency symbol and any "from" wording
+     * from Woo's price_html survive untouched.
+     */
+    var priceAnim = null;
+
+    function animatePrice(html, from, to) {
+      if (priceAnim) window.cancelAnimationFrame(priceAnim);
+
+      var reduced =
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduced || !from || !to || from === to) {
+        priceEl.innerHTML = html;
+        return;
+      }
+
+      var start = performance.now();
+      var DURATION = 420;
+
+      // Rewrite the first number in the markup, preserving everything else.
+      var numberPattern = /([\d][\d,]*\.?\d*)/;
+
+      function frame(now) {
+        var t = Math.min(1, (now - start) / DURATION);
+        // easeOutCubic — fast then settling, matching the page's motion.
+        var eased = 1 - Math.pow(1 - t, 3);
+        var value = from + (to - from) * eased;
+
+        priceEl.innerHTML = html.replace(
+          numberPattern,
+          value.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+
+        if (t < 1) priceAnim = window.requestAnimationFrame(frame);
+      }
+
+      priceAnim = window.requestAnimationFrame(frame);
+    }
+
+    /* --- Preview image --------------------------------------------------
+     * Cross-fades rather than swapping, and preloads before showing so the
+     * panel never flashes an empty frame.
+     */
+    function setPreview(src) {
+      if (!preview || !src || preview.src === src) return;
+
+      var next = new Image();
+      next.onload = function () {
+        preview.style.opacity = '0';
+        window.setTimeout(function () {
+          preview.src = src;
+          preview.style.opacity = '';
+        }, 180);
+      };
+      next.src = src;
+    }
+
+    /* --- Scale drawing --------------------------------------------------- */
     var scaleFixture = document.querySelector('.js-scale-fixture');
     var scaleCaption = document.querySelector('.js-scale-caption');
     var TABLE_MM = 2400;
 
-    function updateScale(lengthInput) {
-      if (!scaleFixture || !lengthInput) return;
+    function updateScale() {
+      if (!scaleFixture) return;
 
-      var mm = parseInt(lengthInput.dataset.mm || '0', 10);
+      var sized = form.querySelector('input[data-mm]:checked');
+      if (!sized) return;
+
+      var mm = parseInt(sized.dataset.mm || '0', 10);
       if (!mm) return;
 
       // The table is drawn at 78% of the stage; scale the fixture to match.
-      var pct = (mm / TABLE_MM) * 78;
-      scaleFixture.style.width = pct + '%';
-
+      scaleFixture.style.width = (mm / TABLE_MM) * 78 + '%';
       if (scaleCaption) scaleCaption.textContent = mm + ' mm';
     }
 
-    /* Remember the configuration between visits.
-     *
-     * People shopping for lighting compare for weeks. Losing their
-     * selection on every return visit is a needless drop-off. */
+    /* --- Persistence -----------------------------------------------------
+     * People compare lighting for weeks. Losing the selection on every
+     * return visit is needless drop-off.
+     */
     var KEY = 'ilanel-config-' + (document.body.className.match(/postid-(\d+)/) || [, 'x'])[1];
 
     function save() {
       try {
-        var length = form.querySelector('input[name="ilanel_length"]:checked');
-        var finish = form.querySelector('input[name="ilanel_finish"]:checked');
-        window.localStorage.setItem(
-          KEY,
-          JSON.stringify({
-            length: length ? length.value : null,
-            finish: finish ? finish.value : null,
-          })
-        );
+        window.localStorage.setItem(KEY, JSON.stringify(selected()));
       } catch (e) {
-        /* Storage can be unavailable (private mode, quota). Not fatal. */
+        /* Private mode or quota. Not fatal. */
       }
     }
 
@@ -233,43 +360,59 @@
       } catch (e) {
         return false;
       }
-      if (!saved) return false;
+      if (!saved || !window.CSS || !window.CSS.escape) return false;
 
       var restored = false;
-
-      ['length', 'finish'].forEach(function (field) {
-        if (!saved[field]) return;
+      axes.forEach(function (axis) {
+        if (!saved[axis]) return;
         var input = form.querySelector(
-          'input[name="ilanel_' + field + '"][value="' + window.CSS.escape(saved[field]) + '"]'
+          'input[name="attribute_' + axis + '"][value="' + window.CSS.escape(saved[axis]) + '"]'
         );
         if (input && !input.checked) {
           input.checked = true;
           restored = true;
         }
       });
-
       return restored;
     }
 
+    /* --- Main update ----------------------------------------------------- */
+    var lastPrice = null;
+
     function update() {
-      var length = form.querySelector('input[name="ilanel_length"]:checked');
-      var finish = form.querySelector('input[name="ilanel_finish"]:checked');
+      var choice = selected();
 
-      if (finish && preview && finish.dataset.image) {
-        preview.src = finish.dataset.image;
-      }
+      updateReachability(choice);
 
-      var parts = [];
-      if (length) parts.push(length.value);
-      if (finish) parts.push(finish.value);
+      var variation = findVariation(choice);
+
+      // Human-readable selection, e.g. "1800mm · Brushed Brass · Smoke".
+      var parts = axes
+        .map(function (axis) {
+          return choice[axis];
+        })
+        .filter(Boolean);
       if (summary) summary.textContent = parts.join(' · ');
 
-      if (priceEl) {
-        var increment = length ? parseFloat(length.dataset.increment || '0') : 0;
-        priceEl.textContent = money(base + increment);
+      if (variation) {
+        if (unavailableEl) unavailableEl.hidden = true;
+        form.classList.remove('is-unavailable');
+
+        if (priceEl && variation.price_html) {
+          animatePrice(variation.price_html, lastPrice, variation.display);
+          lastPrice = variation.display;
+        }
+
+        setPreview(variation.image);
+      } else if (variations.length) {
+        // Reachability should prevent this, but a restored selection from an
+        // older catalogue can land here. Say so plainly rather than showing
+        // a stale price.
+        if (unavailableEl) unavailableEl.hidden = false;
+        form.classList.add('is-unavailable');
       }
 
-      updateScale(length);
+      updateScale();
     }
 
     form.addEventListener('change', function () {
@@ -277,7 +420,7 @@
       save();
     });
 
-    if (window.CSS && window.CSS.escape && restore()) {
+    if (restore()) {
       var note = form.querySelector('.js-config-restored');
       if (note) note.hidden = false;
     }

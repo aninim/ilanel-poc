@@ -33,7 +33,18 @@ $ilanel_id      = $product->get_id();
 $ilanel_gallery = ILANEL_Product_Meta::get_gallery( $ilanel_id );
 $ilanel_story   = ILANEL_Product_Meta::get_story_images( $ilanel_id );
 $ilanel_swatches = ILANEL_Product_Meta::get_swatches( $ilanel_id );
-$ilanel_lengths = ILANEL_Product_Meta::get_lengths( $ilanel_id );
+
+/*
+ * Real WooCommerce attributes and variations drive the configurator.
+ * Simple products return empty arrays and the controls simply do not render.
+ */
+$ilanel_attributes = array_filter(
+	$product->get_attributes(),
+	static function ( $attribute ) {
+		return $attribute->get_variation();
+	}
+);
+$ilanel_variations = $product->is_type( 'variable' ) ? $product->get_available_variations() : array();
 $ilanel_spec    = ILANEL_Product_Meta::get( $ilanel_id, ILANEL_Product_Meta::FIELD_SPEC_PDF );
 $ilanel_lead    = ILANEL_Product_Meta::get( $ilanel_id, ILANEL_Product_Meta::FIELD_LEAD_TIME, '4–12 weeks' );
 $ilanel_type    = ILANEL_Product_Meta::get( $ilanel_id, ILANEL_Product_Meta::FIELD_TYPE_LABEL );
@@ -224,7 +235,36 @@ while ( have_posts() ) :
 								</p>
 							</div>
 
-							<form class="rg-config" data-base-price="<?php echo esc_attr( $product->get_price() ); ?>">
+							<?php
+							/*
+							 * Real variation data for the client.
+							 *
+							 * Deliberately not WooCommerce's own variations_form: that markup
+							 * expects <select> elements and its script is jQuery-bound, which
+							 * would fight the RG design language. We render our own controls
+							 * and match against this payload in product.js — prices, images
+							 * and stock all come from Woo, so nothing is invented.
+							 */
+							$ilanel_variation_data = array();
+
+							foreach ( $ilanel_variations as $ilanel_variation ) {
+								$ilanel_variation_data[] = array(
+									'attributes'  => $ilanel_variation['attributes'],
+									'price_html'  => $ilanel_variation['price_html'],
+									'display'     => (float) $ilanel_variation['display_price'],
+									'image'       => isset( $ilanel_variation['image']['full_src'] )
+										? $ilanel_variation['image']['full_src']
+										: '',
+									'sku'         => $ilanel_variation['sku'],
+									'in_stock'    => (bool) $ilanel_variation['is_in_stock'],
+								);
+							}
+							?>
+
+							<form class="rg-config"
+								<?php if ( $ilanel_variation_data ) : ?>
+									data-variations="<?php echo esc_attr( wp_json_encode( $ilanel_variation_data ) ); ?>"
+								<?php endif; ?>>
 
 								<?php // Shown only when a previous selection is restored. ?>
 								<p class="rg-config__restored js-config-restored" hidden>
@@ -232,72 +272,99 @@ while ( have_posts() ) :
 								</p>
 
 
-								<?php if ( $ilanel_lengths ) : ?>
-									<fieldset class="rg-config__group">
-										<legend class="rg-config__label"><?php esc_html_e( 'Configurations', 'ilanel-poc' ); ?></legend>
-										<div class="rg-config__options">
-											<?php
-											foreach ( $ilanel_lengths as $ilanel_i => $ilanel_length ) :
-												// Numeric mm, used by the scale drawing.
-												$ilanel_mm = (int) preg_replace( '/\D/', '', $ilanel_length );
-												?>
-												<label class="rg-config__pill">
-													<input type="radio" name="ilanel_length"
-														value="<?php echo esc_attr( $ilanel_length ); ?>"
-														data-increment="<?php echo esc_attr( $ilanel_i * 320 ); ?>"
-														data-mm="<?php echo esc_attr( $ilanel_mm ); ?>"
-														<?php checked( 0, $ilanel_i ); ?>>
-													<span><?php echo esc_html( $ilanel_length ); ?></span>
-												</label>
+								<?php
+								/*
+								 * Attribute controls, one fieldset per axis.
+								 *
+								 * Driven by the product's real WooCommerce attributes, so Comet
+								 * renders three axes (Size x Color x Glass) and Dais one (Glass)
+								 * without any per-product code.
+								 *
+								 * A colour axis renders as image swatches when the product has
+								 * matching swatch imagery; everything else renders as pills.
+								 */
+								$ilanel_swatch_by_name = array();
+								foreach ( $ilanel_swatches as $ilanel_swatch ) {
+									$ilanel_swatch_by_name[ $ilanel_swatch['name'] ] = $ilanel_swatch['image'];
+								}
+
+								foreach ( $ilanel_attributes as $ilanel_attr ) :
+									$ilanel_axis    = $ilanel_attr->get_name();
+									$ilanel_key     = sanitize_title( $ilanel_axis );
+									$ilanel_options = $ilanel_attr->get_options();
+
+									// Does every option on this axis have swatch imagery?
+									$ilanel_is_swatch = true;
+									foreach ( $ilanel_options as $ilanel_option ) {
+										if ( empty( $ilanel_swatch_by_name[ $ilanel_option ] ) ) {
+											$ilanel_is_swatch = false;
+											break;
+										}
+									}
+
+									// Sizes carry a millimetre value the scale drawing can use.
+									$ilanel_is_size = (bool) preg_match( '/size|length|drop/i', $ilanel_axis );
+									?>
+									<fieldset class="rg-config__group" data-axis="<?php echo esc_attr( $ilanel_key ); ?>">
+										<legend class="rg-config__label"><?php echo esc_html( $ilanel_axis ); ?></legend>
+
+										<div class="rg-config__options<?php echo $ilanel_is_swatch ? ' rg-config__options--swatches' : ''; ?>">
+											<?php foreach ( $ilanel_options as $ilanel_i => $ilanel_option ) : ?>
+												<?php if ( $ilanel_is_swatch ) : ?>
+													<label class="rg-config__swatch">
+														<input type="radio"
+															name="attribute_<?php echo esc_attr( $ilanel_key ); ?>"
+															value="<?php echo esc_attr( $ilanel_option ); ?>"
+															data-image="<?php echo esc_url( $ilanel_swatch_by_name[ $ilanel_option ] ); ?>"
+															<?php checked( 0, $ilanel_i ); ?>>
+														<span class="rg-config__swatch-media">
+															<img src="<?php echo esc_url( $ilanel_swatch_by_name[ $ilanel_option ] ); ?>"
+																alt="<?php echo esc_attr( $ilanel_option ); ?>" loading="lazy">
+														</span>
+														<span class="rg-config__swatch-name"><?php echo esc_html( $ilanel_option ); ?></span>
+													</label>
+												<?php else : ?>
+													<label class="rg-config__pill">
+														<input type="radio"
+															name="attribute_<?php echo esc_attr( $ilanel_key ); ?>"
+															value="<?php echo esc_attr( $ilanel_option ); ?>"
+															<?php if ( $ilanel_is_size ) : ?>
+																data-mm="<?php echo esc_attr( (int) preg_replace( '/\D/', '', $ilanel_option ) ); ?>"
+															<?php endif; ?>
+															<?php checked( 0, $ilanel_i ); ?>>
+														<span><?php echo esc_html( $ilanel_option ); ?></span>
+													</label>
+												<?php endif; ?>
 											<?php endforeach; ?>
 										</div>
 
 										<?php
 										/*
-										 * Scale drawing.
+										 * Scale drawing, on the size axis only.
 										 *
-										 * "1800 mm" means nothing to most buyers. Drawn against a
+										 * "1800mm" means nothing to most buyers. Drawn against a
 										 * 2400 mm dining table and a 1.7 m human silhouette, the
-										 * choice becomes obvious at a glance. This is the single
-										 * biggest cause of wrong-size orders in lighting.
+										 * choice becomes obvious at a glance — wrong-size ordering
+										 * is the costliest mistake in made-to-order lighting.
 										 */
-										?>
-										<div class="rg-scale" aria-hidden="true">
-											<div class="rg-scale__stage">
-												<div class="rg-scale__fixture js-scale-fixture"></div>
-												<div class="rg-scale__table">
-													<span class="rg-scale__tablelabel"><?php esc_html_e( 'Dining table 2400 mm', 'ilanel-poc' ); ?></span>
+										if ( $ilanel_is_size ) :
+											?>
+											<div class="rg-scale" aria-hidden="true">
+												<div class="rg-scale__stage">
+													<div class="rg-scale__fixture js-scale-fixture"></div>
+													<div class="rg-scale__table">
+														<span class="rg-scale__tablelabel"><?php esc_html_e( 'Dining table 2400 mm', 'ilanel-poc' ); ?></span>
+													</div>
+													<div class="rg-scale__person"></div>
 												</div>
-												<div class="rg-scale__person"></div>
+												<p class="rg-scale__caption">
+													<span class="js-scale-caption"></span>
+													<?php esc_html_e( 'shown over a 2400 mm table', 'ilanel-poc' ); ?>
+												</p>
 											</div>
-											<p class="rg-scale__caption">
-												<span class="js-scale-caption"></span>
-												<?php esc_html_e( 'shown over a 2400 mm table', 'ilanel-poc' ); ?>
-											</p>
-										</div>
+										<?php endif; ?>
 									</fieldset>
-								<?php endif; ?>
-
-								<?php if ( $ilanel_swatches ) : ?>
-									<fieldset class="rg-config__group">
-										<legend class="rg-config__label"><?php esc_html_e( 'Colourway', 'ilanel-poc' ); ?></legend>
-										<div class="rg-config__options rg-config__options--swatches">
-											<?php foreach ( $ilanel_swatches as $ilanel_i => $ilanel_swatch ) : ?>
-												<label class="rg-config__swatch">
-													<input type="radio" name="ilanel_finish"
-														value="<?php echo esc_attr( $ilanel_swatch['name'] ); ?>"
-														data-image="<?php echo esc_url( $ilanel_swatch['image'] ); ?>"
-														<?php checked( 0, $ilanel_i ); ?>>
-													<span class="rg-config__swatch-media">
-														<img src="<?php echo esc_url( $ilanel_swatch['image'] ); ?>"
-															alt="<?php echo esc_attr( $ilanel_swatch['name'] ); ?>" loading="lazy">
-													</span>
-													<span class="rg-config__swatch-name"><?php echo esc_html( $ilanel_swatch['name'] ); ?></span>
-												</label>
-											<?php endforeach; ?>
-										</div>
-									</fieldset>
-								<?php endif; ?>
+								<?php endforeach; ?>
 
 								<div class="rg-config__summary">
 									<p class="rg-config__selection">
@@ -307,7 +374,13 @@ while ( have_posts() ) :
 
 									<p class="rg-config__price">
 										<span class="rg-config__label"><?php esc_html_e( 'Price', 'ilanel-poc' ); ?></span>
-										<span class="js-config-price"><?php echo wp_kses_post( wc_price( $product->get_price() ) ); ?></span>
+										<?php // get_price_html() handles ranges, currency and tax display. ?>
+										<span class="js-config-price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
+									</p>
+
+									<?php // Shown only when a chosen combination is not made. ?>
+									<p class="rg-config__unavailable js-config-unavailable" hidden role="status">
+										<?php esc_html_e( 'This combination isn’t made — the studio can quote it as a custom piece.', 'ilanel-poc' ); ?>
 									</p>
 
 									<p class="rg-config__lead">

@@ -39,7 +39,14 @@ class ILANEL_Product_Meta {
 	 * Hook registration.
 	 */
 	public static function init() {
-		add_action( 'woocommerce_product_options_general_product_data', array( __CLASS__, 'render_fields' ) );
+		/*
+		 * Rendered on the Inventory tab, not General.
+		 *
+		 * WooCommerce hides the General tab for variable products (price is
+		 * per-variation there), which would take these seven fields with it.
+		 * Inventory is shown for every product type.
+		 */
+		add_action( 'woocommerce_product_options_inventory_product_data', array( __CLASS__, 'render_fields' ) );
 		add_action( 'woocommerce_process_product_meta', array( __CLASS__, 'save_fields' ) );
 	}
 
@@ -220,19 +227,6 @@ class ILANEL_Product_Meta {
 	 */
 	public static function get_lengths( $product_id ) {
 		$value = get_post_meta( $product_id, self::FIELD_LENGTHS, true );
-
-		return is_array( $value ) ? $value : array();
-	}
-
-
-	/**
-	 * 360° spin frames, in rotation order.
-	 *
-	 * @param int $product_id Product post ID.
-	 * @return string[]
-	 */
-	public static function get_spin_frames( $product_id ) {
-		$value = get_post_meta( $product_id, self::FIELD_SPIN, true );
 
 		return is_array( $value ) ? $value : array();
 	}
