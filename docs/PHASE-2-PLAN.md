@@ -124,6 +124,23 @@ chrome --headless --disable-gpu --hide-scrollbars \
 **Always screenshot before shipping.** Static review missed a clipped product
 title and a purple default Woo button in earlier passes.
 
+**Mobile screenshots need real device emulation, not just `--window-size`.**
+A `--window-size=390` headless capture lays the page out at Chrome's default
+980px and *looks* catastrophically broken — text clipped mid-word, columns
+off-screen — when nothing is wrong. Use CDP `Emulation.setDeviceMetricsOverride`
+with `mobile: true`, and **navigate before applying** the override (applying it
+to `about:blank` lets the real document load at 980px anyway). Assert on
+`document.documentElement.scrollWidth === clientWidth` rather than trusting the
+image.
+
+**Codex CLI cannot reach the internet on this machine.** Its headless browser
+returns `ERR_NETWORK_ACCESS_DENIED` — it will still write PNGs, but they are
+firewall error pages, not the site. Do not delegate "go look at the reference
+site" to Codex; it produces confident-looking artefacts of nothing. (`curl` of
+the markup *does* work, which is how RG's homepage anatomy was read.) Two other
+CLI gotchas: `--skip-git-repo-check` is required outside a git repo, and
+`< /dev/null` is mandatory or it hangs on stdin.
+
 ---
 
 ## Task 1 — Variable products ✅ DONE (commit `4314bbf`)
