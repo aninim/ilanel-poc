@@ -1720,6 +1720,121 @@ body.has-hero.is-past-hero .rg-navbtn span {
   color: #333;
 }
 
+/* --- Menu overlay --------------------------------------------------------- */
+
+/* RG's menu links are 4rem, dropping to 3rem at ≤1023px — measured from their
+   stylesheet, not estimated. See docs/reference/RG-HOMEPAGE-SPEC-2026-08-12.md */
+.rg-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--rg-bg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  overflow-y: auto;
+}
+
+.rg-menu.is-open {
+  opacity: 1;
+}
+
+/* Content sits below the header rather than pinned to the bottom of the
+   viewport: `align-items: end` on a 100vh grid left a large void above the
+   links and stranded the studio block low-right, unrelated to them. */
+.rg-menu__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 8rem;
+  align-items: start;
+  min-height: 100vh;
+  padding-top: 16rem;
+  padding-bottom: 8rem;
+}
+
+.rg-menu__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rg-menu__list li + li {
+  margin-top: 1.4rem;
+}
+
+.rg-menu__list a {
+  display: inline-block;
+  font-family: var(--rg-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  line-height: 1.15;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease;
+}
+
+.rg-menu__list a:hover {
+  border-bottom-color: var(--rg-ink);
+}
+
+/* A hairline ties the aside to the link column, matching the rule-over-label
+   pattern used by the section headers elsewhere. */
+.rg-menu__aside {
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rg-rule);
+}
+
+.rg-menu__label {
+  margin: 0 0 1.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rg-accent);
+}
+
+.rg-menu__detail {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #333;
+}
+
+/* The button sits above the overlay and becomes a close affordance. */
+body.is-menu-open .rg-header {
+  z-index: 70;
+}
+
+/* Over the white overlay the bars must be dark even on hero pages, where
+   .has-hero would otherwise keep them white and invisible. */
+body.is-menu-open .rg-navbtn span,
+body.has-hero.is-menu-open .rg-navbtn span {
+  background: var(--rg-ink);
+}
+
+body.is-menu-open .rg-header__logo,
+body.is-menu-open .rg-utilities {
+  color: var(--rg-ink);
+}
+
+/* The hero scrim behind the header would tint the white overlay. */
+body.is-menu-open .rg-header::before {
+  opacity: 0;
+}
+
+.rg-navbtn span {
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+body.is-menu-open .rg-navbtn span:nth-child(1) {
+  transform: translateY(0.65rem) rotate(45deg);
+}
+
+body.is-menu-open .rg-navbtn span:nth-child(2) {
+  opacity: 0;
+}
+
+body.is-menu-open .rg-navbtn span:nth-child(3) {
+  transform: translateY(-0.65rem) rotate(-45deg);
+}
+
 /* --- Projects ------------------------------------------------------------- */
 
 .rg-hero--project {
@@ -1994,5 +2109,18 @@ body.has-hero.is-past-hero .rg-navbtn span {
   .rg-products--used,
   .rg-project-gallery {
     grid-template-columns: 1fr;
+  }
+
+  /* RG drop their menu links to 3rem at ≤1023px; stacking the aside beneath
+     keeps the links reachable without scrolling on a phone. */
+  .rg-menu__inner {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: start;
+    padding-top: 11rem;
+  }
+
+  .rg-menu__list a {
+    font-size: 3rem;
   }
 }

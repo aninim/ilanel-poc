@@ -97,4 +97,83 @@
       revealPage();
     }
   });
+
+  /* --- Menu overlay -----------------------------------------------------
+   * Lives here rather than in product.js because this is the only script
+   * loaded on every page; the header is global, so its behaviour must be too.
+   */
+
+  function initMenu() {
+    var button = document.querySelector('.js-navbtn');
+    var menu = document.getElementById('rg-menu');
+
+    if (!button || !menu) return;
+
+    var lastFocus = null;
+
+    function open() {
+      lastFocus = document.activeElement;
+      menu.hidden = false;
+
+      // Force a frame before adding the class so the opacity transition
+      // actually plays — going from [hidden] straight to .is-open paints
+      // the final state with no animation.
+      window.requestAnimationFrame(function () {
+        menu.classList.add('is-open');
+      });
+
+      button.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('is-menu-open');
+
+      var first = menu.querySelector('a');
+      if (first) first.focus();
+    }
+
+    function close() {
+      menu.classList.remove('is-open');
+      button.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('is-menu-open');
+
+      // Keep it out of the accessibility tree once the fade has finished.
+      window.setTimeout(function () {
+        if (!menu.classList.contains('is-open')) menu.hidden = true;
+      }, 320);
+
+      if (lastFocus) lastFocus.focus();
+    }
+
+    button.addEventListener('click', function () {
+      if (menu.classList.contains('is-open')) close();
+      else open();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) close();
+    });
+
+    /* Trap focus inside the overlay while it is open. */
+    menu.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+
+      var focusable = menu.querySelectorAll('a[href], button:not([disabled])');
+      if (!focusable.length) return;
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMenu);
+  } else {
+    initMenu();
+  }
 })();
