@@ -1,5 +1,12 @@
 # ILANEL POC — Phase 2 Action Plan
 
+**Status: ✅ all 4 tasks complete (2026-08-12).** Kept as the record of what
+was planned and what actually shipped — each task section below is marked
+done with a summary of the real result, which in several places went further
+than originally scoped (51 projects and 13 Light Art works seeded, not 2–3;
+a Light Art CPT that wasn't in the original plan at all; AU commerce
+configured end-to-end). See `project_ilanel_poc` memory for current state.
+
 Four extensions. **Do them in this order** — each depends on the one before.
 
 Everything here is written to be **reusable in production**. Only
@@ -342,40 +349,63 @@ into the range and a product.
 
 ---
 
-## Task 3 — Projects ↔ products cross-linking
+## Task 3 — Projects ↔ products cross-linking ✅ DONE (commit `e4856fd`, extended since)
 
 **Goal:** demonstrate the argument for WooCommerce over Shopify. Currently
 *asserted*, never *shown*. ILANEL sells on provenance — NGV, War Memorial,
 Four Seasons — and one database makes that native.
 
-- The seed already exists: `data/products.json` → every product has
-  `related_projects[]`, populated for Kahdu → Chatswood Hill Tavern with
-  `name`/`url`/`description`. **Nothing reads it today.**
-- Register a `project` **custom post type** in a new
-  `plugins/ilanel-poc-core/includes/class-ilanel-projects.php` — follow the
-  shape of `class-ilanel-taxonomies.php`. Add it to the `require_once` list and
-  the `init()` chain in `ilanel-poc-core.php`.
-- Relate them. Simplest durable option: a `_ilanel_related_projects` post-meta
-  array of project IDs on the product, plus a reciprocal query for the reverse
-  direction (project → products) so there is one source of truth.
-- Render both directions:
-  - product page → a "Featured in" section (reuse `.rg-section` +
-    `.rg-grid` markup)
-  - project page → "Lighting used" cards (reuse `.rg-product-card`)
-- Add a `single-project.php` template; the RG article rows work as-is.
-- Seed 2–3 real projects. Chatswood Hill Tavern already has copy and an image
-  in the repo (`Cafe+Brass...jpg` is the café install used in the Comet story
-  row).
+> **Shipped, then extended well past the original 2–3-project scope.**
+> `ILANEL_Projects` registers both the `project` CPT and a `light_art` CPT.
+> The relation is `_ilanel_related_projects` post-meta on the product only —
+> the reverse direction is a live query (`get_products_for_project()`), never
+> a mirrored list, so the two can't disagree.
+>
+> **Round trip verified in a real WordPress** (not just the seed data) via
+> Codex driving the Playground demo: Kahdu → Chatswood Hill Tavern → Kahdu
+> holds, "Featured in" and "Lighting used" both render.
+>
+> Seeded content grew far beyond "2–3 projects": all **51 projects** and all
+> **13 Light Art works** are scraped and seeded (`scripts/scrape-squarespace.js`),
+> not just the ones with a product relation — an early cut that only kept
+> linking projects was caught and fixed when Oren asked for the full set.
+>
+> Templates were rebuilt a second time, against Codex-measured references
+> rather than invented patterns — see
+> `docs/reference/PROJECTS-DESIGN-SPEC-2026-08-12.md`. RG has **no dedicated
+> Projects section** (confirmed 404); their pattern lives in Journal, measured
+> on *Orrong by Studio Cobe*. ILANEL's own Light Art page is a full-bleed
+> cinematic sequence, not a grid — a grid version was built first and
+> discarded once the real page was measured.
 
 **Done when:** Kahdu's page links to Chatswood Hill Tavern and that project
-page links back to Kahdu — a round trip, with no manual join.
+page links back to Kahdu — a round trip, with no manual join. ✅
 
 ---
 
-## Task 4 — Real migration test
+## Task 4 — Real migration test ✅ DONE (`scripts/scrape-catalogue.js`, `scrape-squarespace.js`)
 
 **Goal:** measure migration cost instead of estimating it. This is one of
 Oren's two stated decision criteria.
+
+> **Shipped.** Approach 2 below (rendered-HTML parse) turned out to be the
+> answer — approach 1 (Squarespace's own WXR export) was tried first and gave
+> pages + 45/79 news but **zero of 51 projects**, confirming exports cap at
+> one blog collection as flagged below. The read-only scraper recovered
+> everything public: **93 pages fetched, 0 failures, ~2.5 minutes total** —
+> 51 projects (34,318 chars of copy, 283 images), 13 Light Art works
+> (23,746 chars, 104 images), full product catalogue copy/imagery for the
+> other 23 products beyond the original 4.
+>
+> **Migration cost is measured, not estimated**: minutes of scripting plus
+> ~3 items needing manual attention (thin source pages, not scraper
+> failures), not the multi-day custom-import job the original premise
+> implied. Full detail in the `project_ilanel_data_pipeline` memory note.
+>
+> Still open, and it is a **separate** gap from migration cost: variant/price
+> data for 30 of 34 products needs an authenticated Products-Read API key —
+> no unauthenticated endpoint exposes it, verified three ways. See
+> `docs/OPEN-QUESTIONS.md`.
 
 ### What is already known
 
