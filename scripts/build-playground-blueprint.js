@@ -108,7 +108,24 @@ function buildSeedPhp() {
     variants: (p.commerce && p.commerce.variants) || [],
   }));
 
-  const payload = JSON.stringify({ products }, null, 2);
+  /*
+   * Projects that feature a seeded product, with real copy and photography
+   * recovered by scripts/scrape-squarespace.js (Squarespace's own WXR export
+   * omitted projects entirely).
+   *
+   * Only the linking four are inlined — the blueprint is already ~190KB and
+   * all 51 would bloat it for no demonstrative gain. The scraper produces the
+   * full set for a real import.
+   */
+  let projects = [];
+
+  try {
+    projects = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'projects.json'), 'utf8'));
+  } catch (e) {
+    console.warn('  ! data/projects.json missing — seeding no projects');
+  }
+
+  const payload = JSON.stringify({ products, projects }, null, 2);
 
   return `<?php
 require_once '/wordpress/wp-load.php';
@@ -318,6 +335,72 @@ foreach ( $data['products'] as $item ) {
             "Brushed Brass\\nBlackened Steel\\nPolished Nickel\\n(placeholder — confirm from spec sheet)"
         );
     }
+}
+
+/*
+ * Projects, and the product <-> project relation.
+ *
+ * This is the WooCommerce argument made concrete: products and projects are
+ * both posts in one database, so the join is native rather than a page-builder
+ * embed. Copy and photography are ILANEL's own, recovered from the live site.
+ */
+if ( ! empty( $data['projects'] ) && post_type_exists( 'project' ) ) {
+
+    foreach ( $data['projects'] as $proj ) {
+        $existing = get_page_by_path( $proj['slug'], OBJECT, 'project' );
+
+        $content = '';
+        foreach ( $proj['paragraphs'] as $para ) {
+            $content .= '<p>' . wp_kses_post( $para ) . "</p>\\n\\n";
+        }
+
+        if ( $existing ) {
+            $project_id = $existing->ID;
+        } else {
+            $project_id = wp_insert_post(
+                array(
+                    'post_title'   => sanitize_text_field( $proj['title'] ),
+                    'post_name'    => sanitize_title( $proj['slug'] ),
+                    'post_type'    => 'project',
+                    'post_status'  => 'publish',
+                    'post_content' => $content,
+                )
+            );
+        }
+
+        if ( ! $project_id || is_wp_error( $project_id ) ) {
+            continue;
+        }
+
+        // Featured image, sideloaded from ILANEL's CDN.
+        if ( ! empty( $proj['image'] ) && ! get_post_thumbnail_id( $project_id ) ) {
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+
+            $att_id = media_sideload_image( $proj['image'], $project_id, $proj['title'], 'id' );
+
+            if ( ! is_wp_error( $att_id ) ) {
+                set_post_thumbnail( $project_id, $att_id );
+            }
+        }
+
+        if ( ! empty( $proj['gallery'] ) ) {
+            update_post_meta( $project_id, '_ilanel_project_gallery', array_map( 'esc_url_raw', $proj['gallery'] ) );
+        }
+
+        // The relation itself. Stored on the product only — the reverse
+        // direction is a query, so the two can never disagree.
+        foreach ( $proj['products'] as $product_slug ) {
+            $product_post = get_page_by_path( $product_slug, OBJECT, 'product' );
+
+            if ( $product_post && class_exists( 'ILANEL_Projects' ) ) {
+                ILANEL_Projects::link( $product_post->ID, $project_id );
+            }
+        }
+    }
+
+    echo "Seeded " . count( $data['projects'] ) . " projects\\n";
 }
 
 /*

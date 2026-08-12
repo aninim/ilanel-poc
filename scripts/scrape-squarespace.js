@@ -154,6 +154,14 @@ function extractBody(html) {
 
   const scoped = clean(scope);
 
+  /*
+   * Text comes from the block wrappers. Note this regex is non-greedy and so
+   * stops at the first </div> — fine for prose blocks, but it means nested
+   * markup (notably Squarespace's image blocks) is NOT captured here. Images
+   * are therefore collected from the whole <main> scope below, not from these
+   * blocks: an earlier version took them from `blocks` and silently produced
+   * zero images on every project.
+   */
   const blocks = [...scoped.matchAll(/<div class="sqs-block-content"[^>]*>([\s\S]*?)<\/div>/gi)]
     .map((m) => m[1].trim())
     .filter(Boolean);
@@ -209,6 +217,14 @@ function toWxr(items, collection) {
 		<description></description>
 		<content:encoded>${cdata(it.body.html)}</content:encoded>
 		<excerpt:encoded>${cdata('')}</excerpt:encoded>
+${it.body.images
+  .map(
+    (u, n) => `		<wp:postmeta>
+			<wp:meta_key>${cdata('_ilanel_source_image_' + n)}</wp:meta_key>
+			<wp:meta_value>${cdata(u)}</wp:meta_value>
+		</wp:postmeta>`
+  )
+  .join('\n')}
 		<wp:post_id>${90000 + i}</wp:post_id>
 		<wp:post_date>${cdata(iso)}</wp:post_date>
 		<wp:post_date_gmt>${cdata(iso)}</wp:post_date_gmt>
@@ -221,15 +237,6 @@ function toWxr(items, collection) {
 		<wp:post_type>${cdata(postType)}</wp:post_type>
 		<wp:post_password>${cdata('')}</wp:post_password>
 		<wp:is_sticky>0</wp:is_sticky>
-${it.body.images
-  .slice(0, 1)
-  .map(
-    (u) => `		<wp:postmeta>
-			<wp:meta_key>${cdata('_ilanel_source_featured_image')}</wp:meta_key>
-			<wp:meta_value>${cdata(u)}</wp:meta_value>
-		</wp:postmeta>`
-  )
-  .join('\n')}
 		<wp:postmeta>
 			<wp:meta_key>${cdata('_ilanel_source_url')}</wp:meta_key>
 			<wp:meta_value>${cdata(SITE + it.fullUrl)}</wp:meta_value>

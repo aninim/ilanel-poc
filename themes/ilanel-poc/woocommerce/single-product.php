@@ -469,17 +469,80 @@ while ( have_posts() ) :
 			</section>
 
 			<?php
-			// 7. Discover More — RG's related-products section, centred cards.
+			// 7. Featured in — the projects this piece appears in.
+			//
+			// This is the WooCommerce case in one section: products and
+			// projects are posts in the same database, so provenance is a
+			// native join rather than a hand-maintained embed.
+			$ilanel_projects = class_exists( 'ILANEL_Projects' )
+				? ILANEL_Projects::get_projects_for_product( $ilanel_id )
+				: array();
+
+			if ( $ilanel_projects ) :
+				?>
+				<section class="rg-section rg-section--featured">
+					<div class="rg-shell">
+						<span class="rg-section__label"><?php esc_html_e( 'Featured in /', 'ilanel-poc' ); ?></span>
+
+						<h2 class="rg-section__heading"><?php esc_html_e( 'Specified for these spaces', 'ilanel-poc' ); ?></h2>
+
+						<ul class="rg-projects">
+							<?php foreach ( $ilanel_projects as $ilanel_project ) : ?>
+								<li class="rg-project-card">
+									<a href="<?php echo esc_url( get_permalink( $ilanel_project->ID ) ); ?>">
+										<div class="rg-project-card__media">
+											<?php
+											if ( has_post_thumbnail( $ilanel_project->ID ) ) {
+												echo get_the_post_thumbnail( $ilanel_project->ID, 'large' );
+											}
+											?>
+										</div>
+
+										<h3 class="rg-project-card__title"><?php echo esc_html( get_the_title( $ilanel_project->ID ) ); ?></h3>
+
+										<p class="rg-project-card__cta"><?php esc_html_e( 'View project /', 'ilanel-poc' ); ?></p>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				</section>
+				<?php
+			endif;
+
+			// 8. Discover More — RG's related-products section, centred cards.
 			$ilanel_range_term = ILANEL_Taxonomies::get_primary_range( $ilanel_id );
 
-			$ilanel_related = get_posts(
-				array(
-					'post_type'      => 'product',
-					'posts_per_page' => 3,
-					'post__not_in'   => array( $ilanel_id ),
-					'orderby'        => 'rand',
-				)
+			/*
+			 * Constrained to the same range. Previously this queried the whole
+			 * catalogue at random while the CTA beneath said "View all
+			 * {range}" — the cards and the link disagreed.
+			 */
+			$ilanel_related_args = array(
+				'post_type'      => 'product',
+				'posts_per_page' => 3,
+				'post__not_in'   => array( $ilanel_id ),
+				'orderby'        => 'rand',
 			);
+
+			if ( $ilanel_range_term ) {
+				$ilanel_related_args['tax_query'] = array(
+					array(
+						'taxonomy' => ILANEL_Taxonomies::RANGE_TAXONOMY,
+						'field'    => 'term_id',
+						'terms'    => $ilanel_range_term->term_id,
+					),
+				);
+			}
+
+			$ilanel_related = get_posts( $ilanel_related_args );
+
+			// A range with nothing else in it would render an empty section;
+			// fall back to the wider catalogue rather than showing nothing.
+			if ( ! $ilanel_related && $ilanel_range_term ) {
+				unset( $ilanel_related_args['tax_query'] );
+				$ilanel_related = get_posts( $ilanel_related_args );
+			}
 
 			if ( $ilanel_related ) :
 				?>
