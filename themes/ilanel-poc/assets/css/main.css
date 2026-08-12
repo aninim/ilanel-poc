@@ -1962,7 +1962,142 @@ ul.products li.product .button {
   border-bottom-color: var(--rg-ink);
 }
 
-/* --- Index pages (projects, light art) ------------------------------------ */
+/* --- Projects archive: RG's Journal pattern -------------------------------
+ * Measured 2026-08-12 against rossgardam.com.au/journal/ — RG has no
+ * dedicated Projects section (confirmed: /projects/ 404s, their sitemap
+ * lists no project archive), and installation work is published inside the
+ * Journal. See docs/reference/PROJECTS-DESIGN-SPEC-2026-08-12.md.
+ */
+
+.rg-main--journal {
+  padding-top: 4rem;
+}
+
+.rg-journal__header {
+  padding-bottom: 2.2rem;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid var(--rg-rule-strong, var(--rg-rule));
+}
+
+.rg-journal__title {
+  margin: 0;
+  font-family: var(--rg-sans);
+  font-size: 2.8rem;
+  font-weight: 400;
+}
+
+/* Featured item: a large 5:3 crop set apart above the grid — RG's own
+   ratio, not an approximation. */
+.rg-journal__featured {
+  margin-bottom: 7rem;
+  text-align: center;
+}
+
+.rg-journal__featured-label {
+  display: block;
+  margin-bottom: 1.6rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rg-muted);
+}
+
+.rg-journal__featured-media {
+  aspect-ratio: 5 / 3;
+  background: var(--rg-tile);
+  overflow: hidden;
+  margin-bottom: 2.4rem;
+}
+
+.rg-journal__featured-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rg-journal__featured a:hover .rg-journal__featured-media img {
+  transform: scale(1.03);
+}
+
+/* RG measure their featured title at 24px/25.2px — larger than the general
+   body scale, since it is the one title-bearing element on the page. */
+.rg-journal__featured-copy h2 {
+  margin: 0 0 0.8rem;
+  font-family: var(--rg-sans);
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+/* Ordinary tiles: 3-up, image + synopsis + link — no title. RG's cards
+   carry body copy, not a name/location/year field; measured at 1.868:1. */
+.rg-journal__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5rem 2.8rem;
+  margin: 0 0 5rem;
+  padding: 3.5rem 0 0;
+  border-top: 1px solid var(--rg-rule);
+  list-style: none;
+}
+
+.rg-journal__tile-media {
+  aspect-ratio: 1.868 / 1;
+  background: var(--rg-tile);
+  overflow: hidden;
+  margin-bottom: 1.8rem;
+}
+
+.rg-journal__tile-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rg-journal__tile a:hover .rg-journal__tile-media img {
+  transform: scale(1.04);
+}
+
+.rg-journal__synopsis {
+  margin: 0 0 1rem;
+  max-width: 46rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--rg-ink);
+}
+
+/* Always visible here, unlike the hover-reveal CTA on the portrait grids —
+   RG print "EXPLORE PROJECT /" under every card regardless of hover, and a
+   Codex finding flagged hover-only captions as invisible on mobile touch. */
+.rg-index__more--static {
+  opacity: 1;
+  position: static;
+}
+
+.rg-journal__more {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.rg-journal__more a {
+  display: inline-block;
+  padding: 1.5rem 3.5rem;
+  background: var(--rg-ink);
+  color: #fff;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+}
+
+.rg-journal__more a:hover {
+  background: var(--rg-accent);
+}
+
+/* --- Index pages (light art, editions) ------------------------------------- */
 
 .rg-main--projects,
 .rg-main--lightart {
@@ -2107,6 +2242,136 @@ ul.products li.product .button {
   color: var(--rg-muted);
 }
 
+/* --- Light Art archive: full-bleed cinematic sequence ----------------------
+ * Measured 2026-08-12 on ilanel.com/light-art — this is NOT a grid. Every
+ * work is its own 66vh full-bleed band, title+cta centred over the image,
+ * separated by 10vh of plain silence. A 3-up portrait grid was built first
+ * and discarded once the live page was actually measured — it made
+ * exhibition work look like catalogue stock. See
+ * docs/reference/PROJECTS-DESIGN-SPEC-2026-08-12.md.
+ */
+
+.rg-main--lightart-index {
+  background: #000;
+}
+
+.rg-lightart__head {
+  padding: 6rem 0 5rem;
+  color: #fff;
+}
+
+.rg-lightart__head .rg-section__label {
+  color: var(--rg-accent);
+}
+
+.rg-lightart__title {
+  margin: 0;
+  font-family: var(--rg-serif);
+  font-size: 3.4rem;
+  font-weight: 400;
+}
+
+.rg-lightart__band {
+  position: relative;
+  height: 66vh;
+  min-height: 40rem;
+  max-height: 76rem;
+}
+
+.rg-lightart__band-link {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.rg-lightart__band-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rg-lightart__band-link:hover .rg-lightart__band-media {
+  transform: scale(1.03);
+}
+
+.rg-lightart__band-copy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  padding: 3rem;
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.28);
+  transition: background 0.3s ease;
+}
+
+.rg-lightart__band-link:hover .rg-lightart__band-copy {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.rg-lightart__band-name {
+  margin: 0;
+  font-family: var(--rg-sans);
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rg-lightart__band-venue {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.rg-lightart__band-cta {
+  margin-top: 0.8rem;
+  padding: 1rem 2.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.rg-lightart__band-link:hover .rg-lightart__band-cta {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+/* The 10vh silence between bands — plain black, no content. */
+.rg-lightart__gap {
+  height: 10vh;
+  min-height: 6rem;
+  background: #000;
+}
+
+.rg-main--lightart-index .pagination,
+.rg-main--lightart-index .nav-links {
+  padding: 4rem 0 6rem;
+  color: #fff;
+}
+
+.rg-main--lightart-index .page-numbers {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.rg-main--lightart-index a.page-numbers:hover,
+.rg-main--lightart-index .page-numbers.current {
+  color: #fff;
+}
+
 /* --- Single project / light art ------------------------------------------- */
 
 .rg-hero__eyebrow {
@@ -2129,51 +2394,130 @@ ul.products li.product .button {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.rg-project__intro {
+/* --- Single project: RG's Orrong pattern -----------------------------------
+ * Measured 2026-08-12 on rossgardam.com.au/article/orrong-by-studio-cobe/,
+ * the nearest RG equivalent (they have no dedicated Projects section). Three
+ * departures from the first version of this template, all evidenced:
+ *   - hero is CONTAINED in the shell, title sits ABOVE it, not overlaid
+ *   - copy/image rows are ASYMMETRIC and alternate side, not a uniform grid
+ *   - credits sit inline under the hero, not in a separate metadata rail
+ * See docs/reference/PROJECTS-DESIGN-SPEC-2026-08-12.md.
+ */
+
+.rg-project__head {
+  padding: 5rem 0 3rem;
+}
+
+.rg-project__hero-figure {
+  margin: 0 0 3rem;
+}
+
+.rg-project__hero-figure img {
+  width: 100%;
+  aspect-ratio: 1.87 / 1;
+  object-fit: cover;
+  background: var(--rg-tile);
+}
+
+/* RG's inline uppercase credit list beneath the hero — title / category /
+   architect / photography. Ours: title / studio / lighting used. */
+.rg-project__credits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.6rem;
+  margin: 0 0 6rem;
+  padding: 0;
+  list-style: none;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--rg-muted);
+}
+
+.rg-project__credits li:first-child {
+  color: var(--rg-ink);
+}
+
+/* Story rows: asymmetric two-column, alternating which side carries the
+   image. RG measure 35.5/64.5 on reversed rows and 40.5/59.5 on forward
+   ones — never an even split, so every row shifts visual weight. */
+.rg-project__row {
+  padding: 4.5rem 0;
+}
+
+/* RG's measured ratios (40.5/59.5 forward, 35.5/64.5 reversed) are for their
+   183.5rem shell; ours is narrower (168rem), so the same percentage split
+   reads cramped. Widened toward parity while keeping forward/reversed
+   asymmetric — the row still visibly shifts weight side to side. */
+.rg-project__row-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+  gap: 5rem;
+  align-items: center;
+}
+
+.rg-project__row--reversed .rg-project__row-inner {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+}
+
+.rg-project__row--reversed .rg-project__row-copy {
+  order: 2;
+}
+
+.rg-project__row-copy p {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #222;
+}
+
+/* RG's own measurement keeps natural image ratios uncropped, but their shell
+   is wider (183.5rem vs ours 168rem) and their copy columns run 40-64%. On
+   our narrower shell a tall portrait photo rendered 2-3x the height of its
+   short copy partner, badly unbalancing the row — capped rather than left
+   to the source photo's raw proportions. */
+.rg-project__row-media img {
+  width: 100%;
+  max-height: 52rem;
+  object-fit: cover;
+  background: var(--rg-tile);
+}
+
+.rg-project__row--image-only .rg-project__row-media img {
+  max-height: 64rem;
+}
+
+/* An image with no paired paragraph — still alternates side, still full
+   width of its column, just without the copy block. */
+.rg-project__row--image-only .rg-project__row-inner {
+  grid-template-columns: 1fr;
+}
+
+/* --- Single Light Art: ILANEL's own pattern --------------------------------
+ * Measured 2026-08-12 on ilanel.com/light-art/formandphenomenon — genuinely
+ * different from a project page, not a re-skin: wide intro column, studies
+ * with per-piece facts, a horizontal reel, BACK/HOME/next exit instead of a
+ * single next-work band. See docs/reference/PROJECTS-DESIGN-SPEC-2026-08-12.md.
+ */
+
+.rg-main--art {
+  padding-bottom: 2rem;
+}
+
+.rg-art__intro {
   padding: 6rem 0 4rem;
 }
 
-/* Standfirst carries the page; the facts sit beside it as a narrow column,
-   the way RG pair copy with a metadata rail. */
-.rg-project__intro-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-  gap: 8rem;
-  align-items: start;
+/* ILANEL's own intro column measured unusually wide (1128px at 1440) rather
+   than a narrow editorial measure — kept close to that rather than forced
+   into the tighter width used elsewhere. */
+.rg-art__intro-measure {
+  max-width: 78rem;
 }
 
-.rg-project__lede p {
-  margin: 0;
-  font-size: 2.4rem;
-  font-weight: 300;
-  line-height: 1.32;
-  letter-spacing: -0.005em;
-}
-
-.rg-project__facts {
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--rg-rule);
-}
-
-.rg-project__facts dl {
-  margin: 0 0 2.5rem;
-}
-
-.rg-project__facts dd {
-  margin: 0;
-}
-
-.rg-project__body {
-  padding-bottom: 5rem;
-}
-
-/* Body copy is held to a measure rather than running the full shell —
-   line lengths past ~70 characters stop being readable. */
-.rg-project__measure {
-  max-width: 66rem;
-}
-
-.rg-project__measure p {
+.rg-art__intro-measure p {
   margin: 0 0 2.2rem;
   font-size: 1.7rem;
   font-weight: 300;
@@ -2181,88 +2525,182 @@ ul.products li.product .button {
   color: #222;
 }
 
-/* Gallery as a sequence: one full-bleed image, then pairs. */
-.rg-project__gallery {
-  padding: 2rem 0 6rem;
+.rg-art__facts {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rg-rule);
 }
 
-.rg-project__wide {
-  margin: 0 0 3rem;
+.rg-art__facts p {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: var(--rg-ink);
 }
 
-.rg-project__wide img {
+.rg-art__facts strong {
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  color: var(--rg-muted);
+}
+
+/* Studies: alternating 50/50 image/copy — the measured pattern from
+   Form & Phenomenon's three artwork sections. */
+.rg-art__study {
+  padding: 4rem 0;
+}
+
+.rg-art__study-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6rem;
+  align-items: center;
+}
+
+.rg-art__study--reversed .rg-art__study-media {
+  order: 2;
+}
+
+.rg-art__study-media img {
   width: 100%;
-  aspect-ratio: 21 / 9;
+  height: auto;
+  background: var(--rg-tile);
+}
+
+.rg-art__study-copy p {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #222;
+}
+
+/* Reel: a horizontal scroll strip, not a static grid — the closest CSS-only
+   equivalent to ILANEL's 19-image side-scrolling gallery. */
+.rg-art__reel {
+  margin: 3rem 0 5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+.rg-art__reel-track {
+  display: flex;
+  gap: 1.6rem;
+  margin: 0;
+  padding: 0 var(--rg-shell);
+  list-style: none;
+}
+
+.rg-art__reel-track li {
+  flex: 0 0 auto;
+  width: 44rem;
+  scroll-snap-align: start;
+}
+
+.rg-art__reel-track img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   background: var(--rg-tile);
 }
 
-.rg-project__pairs {
+/* Exit: outlined buttons, matching ILANEL's own BACK TO LIGHT ART / HOME
+   treatment, plus a plain next-work link. */
+.rg-art__exit {
+  padding: 5rem 0 7rem;
+  text-align: center;
+}
+
+.rg-art__exit-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.4rem;
+  margin-bottom: 3rem;
+}
+
+.rg-art__button {
+  display: inline-block;
+  padding: 1.3rem 3rem;
+  border: 1px solid var(--rg-ink);
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.rg-art__button:hover {
+  background: var(--rg-ink);
+  color: #fff;
+}
+
+.rg-art__next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--rg-serif);
+  font-size: 1.8rem;
+  color: var(--rg-ink);
+}
+
+.rg-art__next-arrow {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+/* --- Discover More: RG's exit device, several related items not one ------- */
+
+.rg-discover--projects {
+  padding: 6rem 0 8rem;
+  margin-top: 2rem;
+  background: var(--rg-tile-alt, var(--rg-tile));
+}
+
+.rg-discover--projects .rg-discover__title {
+  margin: 0 0 3.5rem;
+  font-family: var(--rg-serif);
+  font-size: 2.6rem;
+  font-weight: 400;
+}
+
+.rg-discover__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 3rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.rg-project__pairs img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  background: var(--rg-tile);
-}
-
-/* Next project: a full-bleed band that ends the page on an invitation
-   rather than trailing off. */
-.rg-project__next {
-  position: relative;
-  margin-top: 2rem;
-}
-
-.rg-project__next a {
-  display: block;
-  position: relative;
-  min-height: 34rem;
+.rg-discover__media {
+  aspect-ratio: 3 / 2;
   overflow: hidden;
+  background: var(--rg-tile);
+  margin-bottom: 1.2rem;
 }
 
-.rg-project__next-media {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+.rg-discover__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
-.rg-project__next a:hover .rg-project__next-media {
+.rg-discover__grid a:hover .rg-discover__media img {
   transform: scale(1.04);
 }
 
-.rg-project__next-copy {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 34rem;
-  padding: 4rem 2rem;
-  text-align: center;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.42);
-}
-
-.rg-project__next-copy .rg-section__label {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.rg-project__next-title {
-  margin: 0;
+.rg-discover--projects .rg-index__more {
+  opacity: 1;
+  position: static;
+  color: var(--rg-ink);
   font-family: var(--rg-serif);
-  font-size: 3.6rem;
+  font-size: 1.7rem;
   font-weight: 400;
-  line-height: 1.1;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 /* --- Projects ------------------------------------------------------------- */
@@ -2366,6 +2804,27 @@ ul.products li.product .button {
   .rg-article--reversed .rg-article__row {
     grid-template-columns: 1fr;
     gap: 3.5rem;
+  }
+
+  /* RG's own Journal breaks 3-up to 2-up at max-width:1023px, exactly. */
+  .rg-journal__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rg-project__row-inner,
+  .rg-project__row--reversed .rg-project__row-inner,
+  .rg-art__study-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .rg-project__row--reversed .rg-project__row-copy,
+  .rg-art__study--reversed .rg-art__study-media {
+    order: 0;
+  }
+
+  .rg-discover__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   /* Keep the image below the copy on reversed rows when stacked. */
@@ -2474,6 +2933,50 @@ ul.products li.product .button {
   .rg-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+  }
+
+  .rg-journal__grid {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+    padding-top: 2.5rem;
+  }
+
+  .rg-journal__title {
+    font-size: 2.2rem;
+  }
+
+  .rg-journal__featured {
+    margin-bottom: 4.5rem;
+  }
+
+  .rg-project__row,
+  .rg-art__study {
+    padding: 3rem 0;
+  }
+
+  .rg-project__credits {
+    margin-bottom: 3.5rem;
+  }
+
+  .rg-art__reel-track li {
+    width: 28rem;
+  }
+
+  .rg-art__exit-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rg-lightart__title {
+    font-size: 2.6rem;
+  }
+
+  .rg-lightart__band-name {
+    font-size: 1.6rem;
+  }
+
+  .rg-discover__grid {
+    grid-template-columns: 1fr;
   }
 
   .rg-section__list {

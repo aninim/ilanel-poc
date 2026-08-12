@@ -2,13 +2,18 @@
 /**
  * Light Art archive.
  *
- * Shares the projects index anatomy but reads darker and slower: this is
- * exhibition work — Melbourne Design Week, Goldstone Gallery, JAHM, City of
- * Melbourne — and the pieces are shown as artworks rather than as installs.
+ * Rebuilt against ilanel.com/light-art measured 2026-08-12
+ * (docs/reference/PROJECTS-DESIGN-SPEC-2026-08-12.md) rather than reusing the
+ * projects grid. The live page is **not a grid at all** — it is a one-column
+ * full-bleed sequence: every exhibition is its own 66vh band with the title
+ * and an EXPLORE cta centred over the image, separated by a 10vh band of
+ * silence. That rhythm, repeated across every work, is what makes the page
+ * read as an exhibition walk-through rather than a card list — the single
+ * most transferable idea the measurement found.
  *
- * The practical difference is the tile ratio. Project photography is interiors
- * (landscape); light art is objects and installations, often shot portrait, so
- * the grid is taller and runs three-up instead of two.
+ * A 3-up portrait grid was tried first and discarded once the real page was
+ * measured: it made the studio's exhibition work look like catalogue stock,
+ * which is the opposite of what this section is for.
  *
  * @package ILANEL_POC
  */
@@ -16,77 +21,64 @@
 defined( 'ABSPATH' ) || exit;
 
 get_header();
-
-$ilanel_total = (int) $GLOBALS['wp_query']->found_posts;
 ?>
 
-<main id="main" class="rg-main rg-main--archive rg-main--lightart">
-	<div class="rg-shell">
+<main id="main" class="rg-main rg-main--lightart-index">
 
-		<header class="rg-index__header">
+	<header class="rg-lightart__head">
+		<div class="rg-shell">
 			<span class="rg-section__label"><?php esc_html_e( 'Light art /', 'ilanel-poc' ); ?></span>
+			<h1 class="rg-lightart__title"><?php esc_html_e( 'Light as the material', 'ilanel-poc' ); ?></h1>
+		</div>
+	</header>
 
-			<h1 class="rg-index__title"><?php esc_html_e( 'Light as the material', 'ilanel-poc' ); ?></h1>
+	<?php if ( have_posts() ) : ?>
 
-			<p class="rg-index__intro">
-				<?php
-				printf(
-					/* translators: %d: number of works */
-					esc_html__( '%d exhibitions and commissions — gallery shows, Melbourne Design Week and public works, where the studio treats light as a medium rather than a fitting.', 'ilanel-poc' ),
-					absint( $ilanel_total )
-				);
-				?>
-			</p>
-		</header>
+		<?php
+		while ( have_posts() ) :
+			the_post();
 
-		<?php if ( have_posts() ) : ?>
+			/*
+			 * Split "Work / Venue / Occasion" so the venue can sit as a
+			 * smaller line under the work name — same convention used on the
+			 * single template and the earlier grid version of this archive.
+			 */
+			$ilanel_full  = get_the_title();
+			$ilanel_parts = array_map( 'trim', explode( '/', $ilanel_full ) );
+			$ilanel_name  = $ilanel_parts[0];
+			$ilanel_venue = count( $ilanel_parts ) > 1 ? implode( ' · ', array_slice( $ilanel_parts, 1 ) ) : '';
 
-			<ul class="rg-index rg-index--art">
-				<?php while ( have_posts() ) : ?>
-					<?php
-					the_post();
+			$ilanel_bg = get_the_post_thumbnail_url( get_the_ID(), 'large' );
+			?>
 
-					/*
-					 * ILANEL title these "Work / Venue / Occasion" — e.g.
-					 * "Form & Phenomenon / Goldstone Gallery / Melbourne Design
-					 * Week 2026", up to 69 characters. Printed whole, the long
-					 * ones wrap to three lines and break the baseline that makes
-					 * the grid read as composed rather than a list. Only the
-					 * work name goes in the tile; the venue becomes a smaller
-					 * caption line, same split the single template uses for
-					 * the H1/eyebrow.
-					 */
-					$ilanel_full  = get_the_title();
-					$ilanel_parts = array_map( 'trim', explode( '/', $ilanel_full ) );
-					$ilanel_name  = $ilanel_parts[0];
-					$ilanel_venue = count( $ilanel_parts ) > 1 ? implode( ' · ', array_slice( $ilanel_parts, 1 ) ) : '';
-					?>
-					<li class="rg-index__item">
-						<a href="<?php the_permalink(); ?>">
-							<div class="rg-index__media">
-								<?php
-								if ( has_post_thumbnail() ) {
-									the_post_thumbnail( 'medium_large' );
-								}
-								?>
-							</div>
+			<section class="rg-lightart__band" aria-label="<?php echo esc_attr( $ilanel_full ); ?>">
+				<a href="<?php the_permalink(); ?>" class="rg-lightart__band-link">
+					<?php if ( $ilanel_bg ) : ?>
+						<div class="rg-lightart__band-media"
+							style="background-image:url('<?php echo esc_url( $ilanel_bg ); ?>')"
+							role="img"
+							aria-label="<?php echo esc_attr( $ilanel_full ); ?>"></div>
+					<?php endif; ?>
 
-							<div class="rg-index__meta">
-								<div>
-									<h2 class="rg-index__name"><?php echo esc_html( $ilanel_name ); ?></h2>
+					<div class="rg-lightart__band-copy">
+						<h2 class="rg-lightart__band-name"><?php echo esc_html( $ilanel_name ); ?></h2>
 
-									<?php if ( $ilanel_venue ) : ?>
-										<p class="rg-index__type"><?php echo esc_html( $ilanel_venue ); ?></p>
-									<?php endif; ?>
-								</div>
+						<?php if ( $ilanel_venue ) : ?>
+							<p class="rg-lightart__band-venue"><?php echo esc_html( $ilanel_venue ); ?></p>
+						<?php endif; ?>
 
-								<span class="rg-index__more"><?php esc_html_e( 'View work /', 'ilanel-poc' ); ?></span>
-							</div>
-						</a>
-					</li>
-				<?php endwhile; ?>
-			</ul>
+						<span class="rg-lightart__band-cta"><?php esc_html_e( 'Explore', 'ilanel-poc' ); ?></span>
+					</div>
+				</a>
+			</section>
 
+			<div class="rg-lightart__gap" aria-hidden="true"></div>
+
+			<?php
+		endwhile;
+		?>
+
+		<div class="rg-shell">
 			<?php
 			the_posts_pagination(
 				array(
@@ -97,14 +89,16 @@ $ilanel_total = (int) $GLOBALS['wp_query']->found_posts;
 				)
 			);
 			?>
+		</div>
 
-		<?php else : ?>
+	<?php else : ?>
 
+		<div class="rg-shell">
 			<p class="rg-range__empty"><?php esc_html_e( 'No works yet.', 'ilanel-poc' ); ?></p>
+		</div>
 
-		<?php endif; ?>
+	<?php endif; ?>
 
-	</div>
 </main>
 
 <?php

@@ -2,22 +2,25 @@
 /**
  * Single project.
  *
- * A project page names the pieces installed in it, and each product page names
- * the projects it appears in. The two directions read the same relation from
- * opposite ends, so they cannot fall out of step.
+ * Rebuilt against a measured reference (docs/reference/
+ * PROJECTS-DESIGN-SPEC-2026-08-12.md), not invented. RG's real project item
+ * — measured on Orrong by Studio Cobe, the nearest equivalent since RG has
+ * no dedicated Projects section — differs from the first version of this
+ * template in three ways that matter:
  *
- * Rebuilt as an editorial page rather than "hero, paragraph, image grid":
+ *   1. The hero is CONTAINED inside the shell, not full-bleed, and the title
+ *      sits ABOVE it, not overlaid on the image.
+ *   2. The story alternates image/copy in ASYMMETRIC two-column rows
+ *      (35.5/64.5 reversed, 40.5/59.5 forward) rather than a uniform gallery
+ *      grid — every row is a deliberate change of mass.
+ *   3. Credits (architect, photography, products used) are woven into the
+ *      copy near the top, not held in a separate metadata rail.
+ *   4. The page exits on a "Discover More" related-items carousel, not a
+ *      single next-project link.
  *
- *   1. Full-bleed hero with the title overlaid
- *   2. Standfirst + a metadata column (studio facts, lighting used)
- *   3. Body copy at a readable measure, not full width
- *   4. Gallery that alternates full-bleed and paired, so it reads as a
- *      sequence instead of a contact sheet
- *   5. Lighting used — the reverse of the product page's "Featured in"
- *   6. Next project
- *
- * Spacing follows the RG rhythm measured in
- * docs/reference/RG-HOMEPAGE-SPEC-2026-08-12.md.
+ * A project page names the pieces installed in it, and each product page
+ * names the projects it appears in — the relation is read from opposite ends
+ * of the same stored data, so the two directions cannot fall out of step.
  *
  * @package ILANEL_POC
  */
@@ -38,34 +41,16 @@ while ( have_posts() ) :
 	$ilanel_gallery = get_post_meta( $ilanel_project_id, '_ilanel_project_gallery', true );
 	$ilanel_gallery = is_array( $ilanel_gallery ) ? $ilanel_gallery : array();
 
-	$ilanel_hero = get_the_post_thumbnail_url( $ilanel_project_id, 'full' );
+	$ilanel_hero = get_the_post_thumbnail_url( $ilanel_project_id, 'large' );
 
-	// The first paragraph carries the page as a standfirst; the rest is body.
+	/*
+	 * Split content into paragraphs so it can alternate against gallery
+	 * images row by row, RG-style, instead of running as one block followed
+	 * by a separate image grid.
+	 */
 	$ilanel_content = apply_filters( 'the_content', get_the_content() );
 	$ilanel_paras   = array_values( array_filter( preg_split( '#(?=<p)#', $ilanel_content ) ) );
-	$ilanel_lede    = isset( $ilanel_paras[0] ) ? $ilanel_paras[0] : '';
-	$ilanel_body    = implode( '', array_slice( $ilanel_paras, 1 ) );
 	?>
-
-	<?php if ( $ilanel_hero ) : ?>
-		<link rel="preload" as="image" fetchpriority="high" href="<?php echo esc_url( $ilanel_hero ); ?>">
-
-		<section class="rg-hero rg-hero--project" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
-			<div class="rg-hero__slide is-active"
-				style="background-image:url('<?php echo esc_url( $ilanel_hero ); ?>')"
-				role="img"
-				aria-label="<?php echo esc_attr( get_the_title() ); ?>"></div>
-
-			<div class="rg-hero__overlay">
-				<div class="rg-shell">
-					<div class="rg-hero__copy">
-						<span class="rg-hero__eyebrow"><?php esc_html_e( 'Project', 'ilanel-poc' ); ?></span>
-						<h1 class="rg-hero__title rg-hero__title--project"><?php the_title(); ?></h1>
-					</div>
-				</div>
-			</div>
-		</section>
-	<?php endif; ?>
 
 	<main id="main" class="rg-main rg-main--project">
 
@@ -81,116 +66,130 @@ while ( have_posts() ) :
 			</div>
 		</div>
 
-		<?php // Title fallback when there is no hero to carry it. ?>
-		<?php if ( ! $ilanel_hero ) : ?>
+		<?php // 1. Title above the hero, both inside the shell. ?>
+		<header class="rg-project__head">
 			<div class="rg-shell">
 				<h1 class="rg-product__name"><?php the_title(); ?></h1>
 			</div>
-		<?php endif; ?>
+		</header>
 
-		<?php // 2. Standfirst beside the facts. ?>
-		<section class="rg-project__intro">
+		<?php if ( $ilanel_hero ) : ?>
+			<link rel="preload" as="image" fetchpriority="high" href="<?php echo esc_url( $ilanel_hero ); ?>">
+
 			<div class="rg-shell">
-				<div class="rg-project__intro-row">
-					<div class="rg-project__lede">
-						<?php echo wp_kses_post( $ilanel_lede ); ?>
-					</div>
-
-					<aside class="rg-project__facts">
-						<dl>
-							<div class="rg-meta">
-								<dt class="rg-meta__label"><?php esc_html_e( 'Studio', 'ilanel-poc' ); ?></dt>
-								<dd class="rg-meta__value"><?php esc_html_e( 'Melbourne, Australia', 'ilanel-poc' ); ?></dd>
-							</div>
-
-							<?php if ( $ilanel_products ) : ?>
-								<div class="rg-meta">
-									<dt class="rg-meta__label"><?php esc_html_e( 'Lighting', 'ilanel-poc' ); ?></dt>
-									<dd class="rg-meta__value">
-										<?php
-										$ilanel_names = array();
-
-										foreach ( $ilanel_products as $ilanel_product ) {
-											$ilanel_names[] = $ilanel_product->get_name();
-										}
-
-										echo esc_html( implode( ', ', $ilanel_names ) );
-										?>
-									</dd>
-								</div>
-							<?php endif; ?>
-
-							<div class="rg-meta">
-								<dt class="rg-meta__label"><?php esc_html_e( 'Made to order', 'ilanel-poc' ); ?></dt>
-								<dd class="rg-meta__value"><?php esc_html_e( '4–12 weeks', 'ilanel-poc' ); ?></dd>
-							</div>
-						</dl>
-
-						<p class="rg-cta">
-							<a class="rg-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">
-								<?php esc_html_e( 'Enquire about a project /', 'ilanel-poc' ); ?>
-							</a>
-						</p>
-					</aside>
-				</div>
+				<figure class="rg-project__hero-figure">
+					<img src="<?php echo esc_url( $ilanel_hero ); ?>"
+						alt="<?php echo esc_attr( get_the_title() ); ?>"
+						fetchpriority="high" />
+				</figure>
 			</div>
-		</section>
-
-		<?php // 3. Body copy, held to a readable measure. ?>
-		<?php if ( trim( wp_strip_all_tags( $ilanel_body ) ) ) : ?>
-			<section class="rg-project__body">
-				<div class="rg-shell">
-					<div class="rg-project__measure">
-						<?php echo wp_kses_post( $ilanel_body ); ?>
-					</div>
-				</div>
-			</section>
 		<?php endif; ?>
 
 		<?php
 		/*
-		 * 4. Gallery as a sequence.
+		 * 2. Credits, woven into the intro rather than a metadata rail.
 		 *
-		 * The first image runs full-bleed edge to edge; the remainder pair up.
-		 * A uniform grid of identical thumbnails is what made this page read as
-		 * a contact sheet rather than a story.
+		 * RG print title / date-ish category / architect / photography as an
+		 * inline uppercase list directly beneath the hero. ILANEL's own
+		 * project pages carry no such credit block, so the studio's own facts
+		 * fill that slot — still a small inline list under the hero, same
+		 * position and treatment as RG's.
 		 */
 		?>
-		<?php if ( $ilanel_gallery ) : ?>
-			<section class="rg-project__gallery">
-				<?php foreach ( $ilanel_gallery as $ilanel_index => $ilanel_src ) : ?>
-					<?php if ( 0 === $ilanel_index ) : ?>
-						<figure class="rg-project__wide">
-							<img src="<?php echo esc_url( $ilanel_src ); ?>"
-								alt="<?php
-								/* translators: %s: project name */
-								printf( esc_attr__( '%s — installation', 'ilanel-poc' ), esc_attr( get_the_title() ) );
-								?>"
-								loading="lazy" />
-						</figure>
-					<?php endif; ?>
-				<?php endforeach; ?>
+		<div class="rg-shell">
+			<ul class="rg-project__credits">
+				<li><?php the_title(); ?></li>
+				<li><?php esc_html_e( 'Made in Melbourne, Australia', 'ilanel-poc' ); ?></li>
 
-				<?php if ( count( $ilanel_gallery ) > 1 ) : ?>
+				<?php if ( $ilanel_products ) : ?>
+					<li>
+						<?php esc_html_e( 'Lighting', 'ilanel-poc' ); ?>
+						<?php
+						$ilanel_names = array();
+
+						foreach ( $ilanel_products as $ilanel_product ) {
+							$ilanel_names[] = $ilanel_product->get_name();
+						}
+						?>
+						<?php echo esc_html( implode( ', ', $ilanel_names ) ); ?>
+					</li>
+				<?php endif; ?>
+			</ul>
+		</div>
+
+		<?php
+		/*
+		 * 3. The story: asymmetric alternating rows.
+		 *
+		 * Each paragraph pairs with one gallery image, alternating text-left
+		 * and text-right so the copy ratio flips row to row (35.5/64.5,
+		 * 40.5/59.5) — the specific device the measurement identified as what
+		 * keeps RG's pages from feeling like a stack of equal blocks.
+		 */
+		?>
+		<div class="rg-project__story">
+			<?php
+			$ilanel_row = 0;
+
+			foreach ( $ilanel_paras as $ilanel_i => $ilanel_para ) :
+				if ( ! trim( wp_strip_all_tags( $ilanel_para ) ) ) {
+					continue;
+				}
+
+				$ilanel_img  = isset( $ilanel_gallery[ $ilanel_i ] ) ? $ilanel_gallery[ $ilanel_i ] : '';
+				$ilanel_flip = ( 1 === $ilanel_row % 2 );
+				$ilanel_row++;
+				?>
+				<div class="rg-project__row<?php echo $ilanel_flip ? ' rg-project__row--reversed' : ''; ?>">
 					<div class="rg-shell">
-						<ul class="rg-project__pairs">
-							<?php foreach ( array_slice( $ilanel_gallery, 1 ) as $ilanel_index => $ilanel_src ) : ?>
-								<li>
-									<img src="<?php echo esc_url( $ilanel_src ); ?>"
+						<div class="rg-project__row-inner">
+							<div class="rg-project__row-copy">
+								<?php echo wp_kses_post( $ilanel_para ); ?>
+							</div>
+
+							<?php if ( $ilanel_img ) : ?>
+								<div class="rg-project__row-media">
+									<img src="<?php echo esc_url( $ilanel_img ); ?>"
 										alt="<?php
-										/* translators: 1: project name, 2: image number */
-										printf( esc_attr__( '%1$s — installation photograph %2$d', 'ilanel-poc' ), esc_attr( get_the_title() ), absint( $ilanel_index ) + 2 );
+										/* translators: %s: project name */
+										printf( esc_attr__( '%s — installation', 'ilanel-poc' ), esc_attr( get_the_title() ) );
 										?>"
 										loading="lazy" />
-								</li>
-							<?php endforeach; ?>
-						</ul>
+								</div>
+							<?php endif; ?>
+						</div>
 					</div>
-				<?php endif; ?>
-			</section>
-		<?php endif; ?>
+				</div>
+				<?php
+			endforeach;
 
-		<?php // 5. Lighting used — the reverse of "Featured in". ?>
+			// Any gallery images beyond what the copy consumed still deserve a place.
+			$ilanel_remaining = array_slice( $ilanel_gallery, count( $ilanel_paras ) );
+			?>
+
+			<?php foreach ( $ilanel_remaining as $ilanel_index => $ilanel_src ) : ?>
+				<?php $ilanel_flip = ( 1 === $ilanel_row % 2 ); ?>
+				<div class="rg-project__row rg-project__row--image-only<?php echo $ilanel_flip ? ' rg-project__row--reversed' : ''; ?>">
+					<div class="rg-shell">
+						<div class="rg-project__row-inner">
+							<div class="rg-project__row-media">
+								<img src="<?php echo esc_url( $ilanel_src ); ?>"
+									alt="<?php
+									/* translators: 1: project name, 2: image number */
+									printf( esc_attr__( '%1$s — installation photograph %2$d', 'ilanel-poc' ), esc_attr( get_the_title() ), absint( $ilanel_index ) + count( $ilanel_paras ) + 1 );
+									?>"
+									loading="lazy" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php
+				$ilanel_row++;
+			endforeach;
+			?>
+		</div>
+
+		<?php // 4. Lighting used — the reverse of "Featured in" on the product page. ?>
 		<?php if ( $ilanel_products ) : ?>
 			<section class="rg-section rg-section--used">
 				<div class="rg-shell">
@@ -232,40 +231,50 @@ while ( have_posts() ) :
 		<?php endif; ?>
 
 		<?php
-		// 6. Next project — keeps people moving through the portfolio.
-		$ilanel_next = get_previous_post();
-
-		if ( ! $ilanel_next ) {
-			// Wrap to the newest so the last project is not a dead end.
-			$ilanel_recent = get_posts(
-				array(
-					'post_type'      => 'project',
-					'posts_per_page' => 1,
-					'post__not_in'   => array( $ilanel_project_id ),
-					'orderby'        => 'date',
-					'order'          => 'DESC',
-				)
-			);
-
-			$ilanel_next = $ilanel_recent ? $ilanel_recent[0] : null;
-		}
+		/*
+		 * 5. Discover More — a related-projects exit, not a single next link.
+		 *
+		 * RG close every article on a "Discover More" band with several
+		 * related cards, not one next-item pointer. Pull up to 3 other
+		 * projects, most recent first.
+		 */
+		$ilanel_discover = get_posts(
+			array(
+				'post_type'      => 'project',
+				'posts_per_page' => 3,
+				'post__not_in'   => array( $ilanel_project_id ),
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+			)
+		);
 		?>
 
-		<?php if ( $ilanel_next ) : ?>
-			<section class="rg-project__next">
-				<a href="<?php echo esc_url( get_permalink( $ilanel_next->ID ) ); ?>">
-					<?php $ilanel_next_img = get_the_post_thumbnail_url( $ilanel_next->ID, 'large' ); ?>
-					<?php if ( $ilanel_next_img ) : ?>
-						<div class="rg-project__next-media"
-							style="background-image:url('<?php echo esc_url( $ilanel_next_img ); ?>')"
-							role="presentation"></div>
-					<?php endif; ?>
+		<?php if ( $ilanel_discover ) : ?>
+			<section class="rg-discover rg-discover--projects">
+				<div class="rg-shell">
+					<h2 class="rg-discover__title"><?php esc_html_e( 'Discover More', 'ilanel-poc' ); ?></h2>
 
-					<div class="rg-project__next-copy">
-						<span class="rg-section__label"><?php esc_html_e( 'Next project /', 'ilanel-poc' ); ?></span>
-						<h2 class="rg-project__next-title"><?php echo esc_html( get_the_title( $ilanel_next->ID ) ); ?></h2>
-					</div>
-				</a>
+					<ul class="rg-discover__grid">
+						<?php foreach ( $ilanel_discover as $ilanel_related ) : ?>
+							<li>
+								<a href="<?php echo esc_url( get_permalink( $ilanel_related->ID ) ); ?>">
+									<div class="rg-discover__media">
+										<?php
+										$ilanel_related_img = get_the_post_thumbnail_url( $ilanel_related->ID, 'medium_large' );
+
+										if ( $ilanel_related_img ) {
+											echo '<img src="' . esc_url( $ilanel_related_img ) . '" alt="' . esc_attr( get_the_title( $ilanel_related->ID ) ) . '" loading="lazy" />';
+										}
+										?>
+									</div>
+									<span class="rg-index__more rg-index__more--static">
+										<?php echo esc_html( get_the_title( $ilanel_related->ID ) ); ?>
+									</span>
+								</a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
 			</section>
 		<?php endif; ?>
 

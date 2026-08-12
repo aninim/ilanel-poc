@@ -2,18 +2,25 @@
 /**
  * Projects archive.
  *
- * Previously there was no archive template at all, so 51 projects fell through
- * to index.php and rendered as an unstyled list of titles — the reason this
- * section looked unfinished next to the product pages.
+ * Rebuilt against a measured reference rather than invention. Ross Gardam has
+ * no dedicated Projects section — confirmed 2026-08-12: /projects/ 404s,
+ * /journal/projects/ redirects to the unfiltered index, and their sitemap
+ * lists no project archive. Their installation work is published inside the
+ * Journal, and that page's structure is what this template follows:
  *
- * The layout follows the editorial logic ILANEL already use on their own live
- * project pages: a name paired with its place ("Olive Street Reimagined |
- * SS&A Albury"). Here the place becomes a standing subtitle under each tile.
+ *   - one large FEATURED item, a 5:3 background crop, set apart above a rule
+ *   - a uniform 3-up grid beneath it (2-up at ~1024px, 1-up mobile)
+ *   - grid cards carry SYNOPSIS COPY, not a title — RG's ordinary tiles have
+ *     no distinct name/location/year field, only body text and an
+ *     "EXPLORE PROJECT /" link
+ *   - "LOAD MORE" rather than numbered pagination
  *
- * Rhythm borrowed from the RG homepage measurements in
- * docs/reference/RG-HOMEPAGE-SPEC-2026-08-12.md: generous section padding, a
- * hairline rule under the label, and imagery carrying the page rather than
- * type.
+ * See docs/reference/PROJECTS-DESIGN-SPEC-2026-08-12.md for the full
+ * measurement set (column widths, gaps, hover behaviour) this was built from.
+ *
+ * ILANEL's own project pages don't have synopsis blurbs distinct from body
+ * copy, so the excerpt is taken from the first ~140 characters of post
+ * content — the same lede the single template uses as its standfirst.
  *
  * @package ILANEL_POC
  */
@@ -25,57 +32,57 @@ get_header();
 $ilanel_total = (int) $GLOBALS['wp_query']->found_posts;
 ?>
 
-<main id="main" class="rg-main rg-main--archive rg-main--projects">
+<main id="main" class="rg-main rg-main--archive rg-main--journal">
 	<div class="rg-shell">
 
-		<header class="rg-index__header">
-			<span class="rg-section__label"><?php esc_html_e( 'Projects /', 'ilanel-poc' ); ?></span>
-
-			<h1 class="rg-index__title"><?php esc_html_e( 'Lighting in place', 'ilanel-poc' ); ?></h1>
-
-			<p class="rg-index__intro">
-				<?php
-				printf(
-					/* translators: %d: number of projects */
-					esc_html__( '%d installations — hotels, galleries, bars and private homes, lit by pieces made in the Melbourne studio.', 'ilanel-poc' ),
-					absint( $ilanel_total )
-				);
-				?>
-			</p>
+		<header class="rg-journal__header">
+			<h1 class="rg-journal__title"><?php esc_html_e( 'Projects', 'ilanel-poc' ); ?></h1>
 		</header>
 
 		<?php if ( have_posts() ) : ?>
 
-			<ul class="rg-index">
-				<?php
-				$ilanel_i = 0;
+			<?php
+			the_post();
+			$ilanel_featured_excerpt = wp_trim_words( wp_strip_all_tags( get_the_content() ), 24, '…' );
+			?>
 
+			<section class="rg-journal__featured">
+				<a href="<?php the_permalink(); ?>">
+					<span class="rg-journal__featured-label"><?php esc_html_e( 'Featured project /', 'ilanel-poc' ); ?></span>
+
+					<div class="rg-journal__featured-media">
+						<?php
+						if ( has_post_thumbnail() ) {
+							the_post_thumbnail( 'large' );
+						}
+						?>
+					</div>
+
+					<div class="rg-journal__featured-copy">
+						<h2><?php the_title(); ?></h2>
+						<span class="rg-index__more"><?php esc_html_e( 'Explore project /', 'ilanel-poc' ); ?></span>
+					</div>
+				</a>
+			</section>
+
+			<ul class="rg-journal__grid">
+				<?php
 				while ( have_posts() ) :
 					the_post();
-
-					/*
-					 * Every fifth tile runs full width. A flat grid of 51 identical
-					 * cards reads as a contact sheet; breaking the rhythm gives the
-					 * page a sense of edit, which is what makes RG's pages feel
-					 * composed rather than dumped.
-					 */
-					$ilanel_is_feature = ( 0 === $ilanel_i % 5 );
-					$ilanel_i++;
+					$ilanel_excerpt = wp_trim_words( wp_strip_all_tags( get_the_content() ), 26, '…' );
 					?>
-					<li class="rg-index__item<?php echo $ilanel_is_feature ? ' rg-index__item--feature' : ''; ?>">
+					<li class="rg-journal__tile">
 						<a href="<?php the_permalink(); ?>">
-							<div class="rg-index__media">
+							<div class="rg-journal__tile-media">
 								<?php
 								if ( has_post_thumbnail() ) {
-									the_post_thumbnail( $ilanel_is_feature ? 'large' : 'medium_large' );
+									the_post_thumbnail( 'medium_large' );
 								}
 								?>
 							</div>
 
-							<div class="rg-index__meta">
-								<h2 class="rg-index__name"><?php the_title(); ?></h2>
-								<span class="rg-index__more"><?php esc_html_e( 'View project /', 'ilanel-poc' ); ?></span>
-							</div>
+							<p class="rg-journal__synopsis"><?php echo esc_html( $ilanel_excerpt ); ?></p>
+							<span class="rg-index__more rg-index__more--static"><?php esc_html_e( 'Explore project /', 'ilanel-poc' ); ?></span>
 						</a>
 					</li>
 					<?php
@@ -84,15 +91,13 @@ $ilanel_total = (int) $GLOBALS['wp_query']->found_posts;
 			</ul>
 
 			<?php
-			// 51 projects is a long page; paginate rather than scroll forever.
-			the_posts_pagination(
-				array(
-					'mid_size'           => 2,
-					'prev_text'          => esc_html__( 'Previous', 'ilanel-poc' ),
-					'next_text'          => esc_html__( 'Next', 'ilanel-poc' ),
-					'screen_reader_text' => esc_html__( 'Projects navigation', 'ilanel-poc' ),
-				)
-			);
+			$ilanel_next = get_next_posts_link( esc_html__( 'Load more', 'ilanel-poc' ) );
+
+			if ( $ilanel_next ) :
+				?>
+				<div class="rg-journal__more"><?php echo wp_kses_post( $ilanel_next ); ?></div>
+				<?php
+			endif;
 			?>
 
 		<?php else : ?>
