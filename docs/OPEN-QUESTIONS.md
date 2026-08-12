@@ -46,11 +46,42 @@ are in the spec PDFs, which the crawl recorded as URLs but did not parse:
 **Needed:** the finish list per product. Extracting from the PDFs is
 straightforward once someone confirms they're current.
 
-## 4. Photography — not included
+### 3a. Per-finish photography keyed to the Commerce attributes — needed
 
-No product images. The studio is supplying photography, so the POC renders
-grey placeholder blocks. The gallery markup and `image` schema field are wired
-and will populate as soon as images exist.
+Found while fixing the configurator preview (2026-08-12). The swatch images in
+`finishes` and the Commerce `Color` axis are **different vocabularies**, so a
+variation usually cannot be matched to a photograph of its own finish:
+
+| Product | Swatch names | Commerce colour axis | Matches |
+|---|---|---|---|
+| Kahdu | Natural, Black, Brown | Black, Brown, … | ✅ 8/24 |
+| Comet | Golds, Teals, Whites, Grey & Gold, Amber & Bronze | "Brushed Brass - Patina (Bronze)" etc. | ❌ 0/36 |
+| Dais | Brass, Bronze | Glass axis only, no colour axis | ❌ 0/4 |
+| Comet Stardust | Black, Brass | Size axis only | ❌ n/a |
+
+So on every product except Kahdu the configurator preview cannot change when
+you pick a finish — the price moves and the image does not.
+
+A substring match was tried and **deliberately rejected**: "Amber" matched
+Comet's *Glass* axis and gave 18 variations the same wrong photograph. A
+confident wrong picture is worse than no change.
+
+**Needed:** one photograph per finish, named to match the Commerce attribute
+values (or a mapping table from swatch name → attribute value). Until then
+non-Kahdu variations correctly fall back to the parent image.
+
+## 4. Photography — ✅ RESOLVED (superseded)
+
+No longer accurate. The POC renders **ILANEL's own photography**, pulled from
+their Squarespace CDN — product heroes, galleries, story rows, finish swatches
+and project installation shots. Nothing renders as a grey placeholder.
+
+⚠️ That photography is ILANEL's, served from their CDN and used here for a
+demo. Flag it before this repo is shared any wider, and host the assets
+properly for anything beyond a POC.
+
+The outstanding gap is narrower and lives in §3a: photography **per finish**,
+named to match the Commerce attribute values.
 
 ## 5. Range structure — assumed
 

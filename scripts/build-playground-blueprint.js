@@ -138,6 +138,12 @@ if ( ! class_exists( 'WooCommerce' ) ) {
     return;
 }
 
+// Loaded once, up front: media_sideload_image() is used in three places
+// below and lives in wp-admin, which is not loaded in this context.
+require_once ABSPATH . 'wp-admin/includes/media.php';
+require_once ABSPATH . 'wp-admin/includes/file.php';
+require_once ABSPATH . 'wp-admin/includes/image.php';
+
 $data = json_decode( <<<'JSON'
 ${payload}
 JSON
@@ -263,6 +269,31 @@ foreach ( $data['products'] as $item ) {
             }
         }
 
+        /*
+         * Map colour name -> attachment id, so a variation can carry the
+         * photograph of its own finish.
+         *
+         * The Commerce export gives variants no imagery of their own, so
+         * without this every variation falls back to the parent image and
+         * the configurator preview never changes when you pick a colour —
+         * the price moves and the picture does not, which reads as broken.
+         * The finish swatches ARE real per-colour photographs, so they are
+         * the right source.
+         */
+        $swatch_attachments = array();
+
+        foreach ( $item['swatches'] as $swatch ) {
+            if ( empty( $swatch['image'] ) || empty( $swatch['name'] ) ) {
+                continue;
+            }
+
+            $swatch_att = media_sideload_image( $swatch['image'], $product_id, $item['name'] . ' - ' . $swatch['name'], 'id' );
+
+            if ( ! is_wp_error( $swatch_att ) ) {
+                $swatch_attachments[ $swatch['name'] ] = $swatch_att;
+            }
+        }
+
         foreach ( $item['variants'] as $variant ) {
             $variation = new WC_Product_Variation();
             $variation->set_parent_id( $product_id );
@@ -278,6 +309,37 @@ foreach ( $data['products'] as $item ) {
 
             if ( ! empty( $variant['sku'] ) ) {
                 $variation->set_sku( $variant['sku'] );
+            }
+
+            /*
+             * Attach the finish photograph for this variation, where one
+             * genuinely corresponds.
+             *
+             * Deliberately limited to an exact match on a colour/finish axis.
+             * A looser substring match was tried and rejected: it matched
+             * "Amber" from Comet's *Glass* axis against the "Amber & Bronze"
+             * swatch and gave 18 variations the same wrong photograph. A
+             * confident wrong picture is worse than no change at all.
+             *
+             * In practice this covers Kahdu (swatch names and Color values
+             * share a vocabulary) and nothing else: Comet's swatches are
+             * colour families ("Golds", "Teals") that do not correspond to
+             * its finish names, and Comet Stardust varies only by Size. Those
+             * variations keep the parent image, which is correct.
+             *
+             * To extend coverage the studio needs to supply a photograph per
+             * finish keyed to the Commerce attribute values — noted in
+             * docs/OPEN-QUESTIONS.md.
+             */
+            foreach ( $variant['options'] as $opt_name => $opt_value ) {
+                if ( ! preg_match( '/colou?r|finish/i', $opt_name ) ) {
+                    continue;
+                }
+
+                if ( isset( $swatch_attachments[ $opt_value ] ) ) {
+                    $variation->set_image_id( $swatch_attachments[ $opt_value ] );
+                    break;
+                }
             }
 
             // Made to order — every variation is a backorder, matching the

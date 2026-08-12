@@ -197,6 +197,32 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 			}
 		}
 
+		/*
+		 * Colour name -> attachment id, so each variation can carry the
+		 * photograph of its own finish. The Commerce export gives variants no
+		 * imagery, so without this every variation inherits the parent image
+		 * and the configurator preview never changes — price moves, picture
+		 * does not, which reads as broken.
+		 */
+		$ilanel_swatch_attachments = array();
+
+		foreach ( (array) $ilanel_item['finishes'] as $ilanel_finish ) {
+			if ( ! is_array( $ilanel_finish ) || empty( $ilanel_finish[0] ) || empty( $ilanel_finish[1] ) ) {
+				continue;
+			}
+
+			$ilanel_swatch_att = media_sideload_image(
+				$ilanel_finish[1],
+				$ilanel_product_id,
+				$ilanel_item['name'] . ' - ' . $ilanel_finish[0],
+				'id'
+			);
+
+			if ( ! is_wp_error( $ilanel_swatch_att ) ) {
+				$ilanel_swatch_attachments[ $ilanel_finish[0] ] = $ilanel_swatch_att;
+			}
+		}
+
 		foreach ( $ilanel_variants as $ilanel_variant ) {
 			$ilanel_variation = new WC_Product_Variation();
 			$ilanel_variation->set_parent_id( $ilanel_product_id );
@@ -216,6 +242,24 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 
 			if ( ! empty( $ilanel_variant['sku'] ) ) {
 				$ilanel_variation->set_sku( $ilanel_variant['sku'] );
+			}
+
+			/*
+			 * Attach the finish photograph where one genuinely corresponds —
+			 * exact match on a colour/finish axis only. A looser substring
+			 * match was tried and rejected: it matched "Amber" from Comet's
+			 * Glass axis and gave 18 variations the same wrong photograph.
+			 * See the equivalent block in build-playground-blueprint.js.
+			 */
+			foreach ( $ilanel_variant['options'] as $ilanel_opt_name => $ilanel_opt_value ) {
+				if ( ! preg_match( '/colou?r|finish/i', $ilanel_opt_name ) ) {
+					continue;
+				}
+
+				if ( isset( $ilanel_swatch_attachments[ $ilanel_opt_value ] ) ) {
+					$ilanel_variation->set_image_id( $ilanel_swatch_attachments[ $ilanel_opt_value ] );
+					break;
+				}
 			}
 
 			$ilanel_variation->set_manage_stock( false );
