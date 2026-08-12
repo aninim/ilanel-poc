@@ -1877,6 +1877,368 @@ body.is-menu-open .rg-navbtn span:nth-child(3) {
   transform: translateY(-0.65rem) rotate(-45deg);
 }
 
+/* --- WooCommerce shop archive --------------------------------------------- */
+
+/* The main shop page renders Woo's own ul.products markup, which this
+   stylesheet never targeted — so it fell back to WooCommerce's defaults and
+   the tiles came out far too large. Matched to the range archive's rhythm. */
+.woocommerce ul.products,
+ul.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4rem 2.4rem;
+  margin: 0 0 5rem;
+  padding: 0;
+  list-style: none;
+}
+
+/* Woo ships float-based widths and percentage margins on these; both fight
+   the grid and must be cleared or the columns collapse to one wide row. */
+.woocommerce ul.products li.product,
+ul.products li.product {
+  width: auto !important;
+  margin: 0 !important;
+  float: none !important;
+  clear: none !important;
+  text-align: left;
+}
+
+.woocommerce ul.products li.product a img,
+ul.products li.product a img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  margin: 0 0 1.6rem;
+  background: var(--rg-tile);
+  transition: transform 0.5s ease;
+}
+
+.woocommerce ul.products li.product a:hover img,
+ul.products li.product a:hover img {
+  transform: scale(1.03);
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title,
+ul.products li.product .woocommerce-loop-product__title {
+  margin: 0 0 0.4rem;
+  padding: 0;
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.woocommerce ul.products li.product .price,
+ul.products li.product .price {
+  display: block;
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--rg-ink);
+}
+
+/* Woo's default "Add to cart" under every tile is a purple pill; the site
+   uses a tracked uppercase link instead. */
+.woocommerce ul.products li.product .button,
+ul.products li.product .button {
+  display: inline-block;
+  margin-top: 0.8rem;
+  padding: 0 0 0.3rem;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--rg-rule);
+  border-radius: 0;
+  color: var(--rg-ink);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+.woocommerce ul.products li.product .button:hover {
+  background: none;
+  color: var(--rg-ink);
+  border-bottom-color: var(--rg-ink);
+}
+
+/* --- Index pages (projects, light art) ------------------------------------ */
+
+.rg-main--projects,
+.rg-main--lightart {
+  padding-top: 4rem;
+}
+
+.rg-index__header {
+  max-width: 68rem;
+  margin-bottom: 7rem;
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid var(--rg-rule);
+}
+
+.rg-index__title {
+  margin: 0 0 1.8rem;
+  font-family: var(--rg-serif);
+  font-size: 5.2rem;
+  font-weight: 400;
+  line-height: 1.06;
+}
+
+.rg-index__intro {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 300;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* Two-up by default. A 51-item grid of identical tiles reads as a contact
+   sheet, so every fifth item runs full width to break the rhythm. */
+.rg-index {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6rem 3rem;
+  margin: 0 0 6rem;
+  padding: 0;
+  list-style: none;
+}
+
+.rg-index__item--feature {
+  grid-column: 1 / -1;
+}
+
+.rg-index__media {
+  overflow: hidden;
+  background: var(--rg-tile);
+  aspect-ratio: 3 / 2;
+}
+
+.rg-index__item--feature .rg-index__media {
+  aspect-ratio: 21 / 9;
+}
+
+.rg-index__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rg-index__item a:hover .rg-index__media img {
+  transform: scale(1.04);
+}
+
+.rg-index__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1.8rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rg-rule);
+}
+
+.rg-index__name {
+  margin: 0;
+  font-family: var(--rg-serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.rg-index__item--feature .rg-index__name {
+  font-size: 3.2rem;
+}
+
+/* The CTA is a hover affordance, not a permanent label — it would compete
+   with 51 titles otherwise. */
+.rg-index__more {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rg-muted);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.rg-index__item a:hover .rg-index__more {
+  opacity: 1;
+}
+
+/* Light art is shot portrait and reads as objects, so it runs three-up and
+   taller than the projects grid. */
+.rg-index--art {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5rem 2.4rem;
+}
+
+.rg-index--art .rg-index__media {
+  aspect-ratio: 4 / 5;
+}
+
+.rg-index--art .rg-index__name {
+  font-size: 2rem;
+}
+
+/* --- Single project / light art ------------------------------------------- */
+
+.rg-hero__eyebrow {
+  display: block;
+  margin-bottom: 1.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.rg-hero__title--project {
+  font-size: 5.2rem;
+}
+
+.rg-hero__venue {
+  margin: 1.4rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.rg-project__intro {
+  padding: 6rem 0 4rem;
+}
+
+/* Standfirst carries the page; the facts sit beside it as a narrow column,
+   the way RG pair copy with a metadata rail. */
+.rg-project__intro-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 8rem;
+  align-items: start;
+}
+
+.rg-project__lede p {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 300;
+  line-height: 1.32;
+  letter-spacing: -0.005em;
+}
+
+.rg-project__facts {
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rg-rule);
+}
+
+.rg-project__facts dl {
+  margin: 0 0 2.5rem;
+}
+
+.rg-project__facts dd {
+  margin: 0;
+}
+
+.rg-project__body {
+  padding-bottom: 5rem;
+}
+
+/* Body copy is held to a measure rather than running the full shell —
+   line lengths past ~70 characters stop being readable. */
+.rg-project__measure {
+  max-width: 66rem;
+}
+
+.rg-project__measure p {
+  margin: 0 0 2.2rem;
+  font-size: 1.7rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: #222;
+}
+
+/* Gallery as a sequence: one full-bleed image, then pairs. */
+.rg-project__gallery {
+  padding: 2rem 0 6rem;
+}
+
+.rg-project__wide {
+  margin: 0 0 3rem;
+}
+
+.rg-project__wide img {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  object-fit: cover;
+  background: var(--rg-tile);
+}
+
+.rg-project__pairs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rg-project__pairs img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--rg-tile);
+}
+
+/* Next project: a full-bleed band that ends the page on an invitation
+   rather than trailing off. */
+.rg-project__next {
+  position: relative;
+  margin-top: 2rem;
+}
+
+.rg-project__next a {
+  display: block;
+  position: relative;
+  min-height: 34rem;
+  overflow: hidden;
+}
+
+.rg-project__next-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rg-project__next a:hover .rg-project__next-media {
+  transform: scale(1.04);
+}
+
+.rg-project__next-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 34rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.rg-project__next-copy .rg-section__label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.rg-project__next-title {
+  margin: 0;
+  font-family: var(--rg-serif);
+  font-size: 3.6rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
 /* --- Projects ------------------------------------------------------------- */
 
 .rg-hero--project {
@@ -2028,6 +2390,32 @@ body.is-menu-open .rg-navbtn span:nth-child(3) {
   .rg-projects {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .woocommerce ul.products,
+  ul.products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .rg-index--art {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rg-project__intro-row {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .rg-index__title {
+    font-size: 4rem;
+  }
+
+  .rg-hero__title--project {
+    font-size: 4rem;
+  }
+
+  .rg-project__lede p {
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2151,6 +2539,61 @@ body.is-menu-open .rg-navbtn span:nth-child(3) {
   .rg-products--used,
   .rg-project-gallery {
     grid-template-columns: 1fr;
+  }
+
+  /* Single column everywhere on a phone: two-up tiles at 390px are too small
+     to show an interior properly. */
+  .rg-index,
+  .rg-index--art,
+  .rg-project__pairs {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .woocommerce ul.products,
+  ul.products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem 1.6rem;
+  }
+
+  .rg-index__item--feature .rg-index__media {
+    aspect-ratio: 3 / 2;
+  }
+
+  .rg-index__header {
+    margin-bottom: 4rem;
+  }
+
+  .rg-index__title,
+  .rg-hero__title--project {
+    font-size: 3.2rem;
+  }
+
+  .rg-index__name,
+  .rg-index__item--feature .rg-index__name {
+    font-size: 2rem;
+  }
+
+  .rg-project__lede p {
+    font-size: 1.8rem;
+  }
+
+  .rg-project__wide img {
+    aspect-ratio: 3 / 2;
+  }
+
+  .rg-project__next a,
+  .rg-project__next-copy {
+    min-height: 24rem;
+  }
+
+  .rg-project__next-title {
+    font-size: 2.6rem;
+  }
+
+  /* The CTA never reveals on touch, so show it permanently there. */
+  .rg-index__more {
+    opacity: 1;
   }
 
   /* RG drop their menu links to 3rem at ≤1023px; stacking the aside beneath

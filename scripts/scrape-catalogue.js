@@ -247,11 +247,17 @@ async function main() {
         gallery: data.images.slice(0, 4),
         /*
          * Story rows are the editorial image+copy blocks the product template
-         * renders below the configurator. Comet has two from the Commerce
-         * pull; scraped products take theirs from later page imagery, which
-         * is the in-situ photography rather than the cut-outs used up top.
+         * renders below the configurator. Prefer later page imagery — that is
+         * the in-situ photography rather than the cut-outs used up top.
+         *
+         * Products with few images (XYZ has 3, Nimbus 4) would otherwise get
+         * none at all and render a visibly thinner page than Comet. Falling
+         * back to the tail of the gallery reuses a shot rather than leaving
+         * the row empty; a repeated image beats a missing section.
          */
-        story: data.images.slice(4, 6),
+        story: data.images.length > 5
+          ? data.images.slice(4, 6)
+          : data.images.slice(-2),
         spec_pdf: data.specPdf,
         paragraphs: data.paragraphs.slice(0, 4),
       });

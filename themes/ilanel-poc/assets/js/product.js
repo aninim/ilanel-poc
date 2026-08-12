@@ -57,7 +57,9 @@
 
     function restart() {
       window.clearInterval(timer);
-      timer = window.setInterval(advance, 6000);
+      // 4s rather than 6s: at six the hero felt static, and a visitor could
+      // scroll past without ever seeing a second view of the piece.
+      timer = window.setInterval(advance, 4000);
     }
 
     hero.querySelector('.js-hero-next').addEventListener('click', function () {
