@@ -18,7 +18,7 @@
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_COMET_PENDANT_2026_V2-c772.pdf",
       "range": "pendants",
       "sku": "PLACEHOLDER-COMET-01",
-      "price": "PLACEHOLDER",
+      "price": 3195.5,
       "finishes": [
         [
           "Golds",
@@ -52,11 +52,389 @@
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6a418d12-12f6-4375-8f79-6219f2266e46/comet_Scene4V2.jpg?format=1600w",
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/76a04f66-051f-4c31-b7bf-155c96b7eb8d/Cafe%2BBrass%2B-%2BBespoke%2BLinear%2BPendants1.jpg?format=1600w"
       ],
-      "lengths": [
-        "1200 mm",
-        "1800 mm",
-        "2400 mm"
-      ]
+      "commerce": {
+        "source_title": "Comet - Pendant",
+        "attributes": {
+          "Size": [
+            "1800mm",
+            "2100mm",
+            "2400mm"
+          ],
+          "Color": [
+            "Brushed Brass - Living Metal (Raw)",
+            "Brushed Brass - Patina (Bronze)",
+            "Brushed Brass - Patina (Slate Black)"
+          ],
+          "Glass": [
+            "Cloudy White / Smoke / Frosted Smoke",
+            "Cloudy White / Cloudy White / Frosted Amber",
+            "Cloudy White / Frosted Amber / Frosted Smoke",
+            "None"
+          ]
+        },
+        "variants": [
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 6668.72,
+            "sku": "SQ0540475",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 6668.72,
+            "sku": "SQ5249056",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 6668.72,
+            "sku": "SQ0404595",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "None"
+            },
+            "price": 3195.5,
+            "sku": "SQ6369480",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 7101.72,
+            "sku": "SQ2120219",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 7101.72,
+            "sku": "SQ6934034",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 7101.72,
+            "sku": "SQ2500463",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "None"
+            },
+            "price": 3634.4,
+            "sku": "SQ1677401",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 7101.72,
+            "sku": "SQ8820106",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 7101.72,
+            "sku": "SQ4224179",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 7101.72,
+            "sku": "SQ6739299",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "1800mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "None"
+            },
+            "price": 3634.4,
+            "sku": "SQ3203018",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 6829.72,
+            "sku": "SQ3938022",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 6829.72,
+            "sku": "SQ8037302",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 6829.72,
+            "sku": "SQ9263589",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "None"
+            },
+            "price": 3364.9,
+            "sku": "SQ7918804",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 7269.72,
+            "sku": "SQ9371893",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 7269.72,
+            "sku": "SQ4182552",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 7269.72,
+            "sku": "SQ0314999",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "None"
+            },
+            "price": 3796.1,
+            "sku": "SQ6102674",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 7269.72,
+            "sku": "SQ5321673",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 7269.72,
+            "sku": "SQ9046308",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 7269.72,
+            "sku": "SQ4871146",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "None"
+            },
+            "price": 3769.1,
+            "sku": "SQ7297513",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 6997.72,
+            "sku": "SQ1523622",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 6997.72,
+            "sku": "SQ1288187",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 6997.72,
+            "sku": "SQ8549884",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Living Metal (Raw)",
+              "Glass": "None"
+            },
+            "price": 3526.6,
+            "sku": "SQ2300642",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 7437.72,
+            "sku": "SQ2726208",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 7437.72,
+            "sku": "SQ1382883",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 7437.72,
+            "sku": "SQ7694236",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Bronze)",
+              "Glass": "None"
+            },
+            "price": 3965.5,
+            "sku": "SQ0754441",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Smoke / Frosted Smoke"
+            },
+            "price": 7437.72,
+            "sku": "SQ0057722",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Cloudy White / Frosted Amber"
+            },
+            "price": 7437.72,
+            "sku": "SQ5051023",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "Cloudy White / Frosted Amber / Frosted Smoke"
+            },
+            "price": 7437.72,
+            "sku": "SQ2222942",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm",
+              "Color": "Brushed Brass - Patina (Slate Black)",
+              "Glass": "None"
+            },
+            "price": 3965.5,
+            "sku": "SQ3847142",
+            "stock": "Unlimited"
+          }
+        ]
+      }
     },
     {
       "slug": "comet-stardust-pendant",
@@ -69,7 +447,7 @@
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_COMET_STARDUST_PENDANT_23V1.pdf",
       "range": "pendants",
       "sku": "PLACEHOLDER-COMETSD-01",
-      "price": "PLACEHOLDER",
+      "price": 3572.8,
       "finishes": [
         [
           "Black",
@@ -90,11 +468,42 @@
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=1600w",
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=1600w"
       ],
-      "lengths": [
-        "1200 mm",
-        "1800 mm",
-        "2400 mm"
-      ]
+      "commerce": {
+        "source_title": "Comet Stardust - Pendant",
+        "attributes": {
+          "Size": [
+            "1800mm",
+            "2100mm",
+            "2400mm"
+          ]
+        },
+        "variants": [
+          {
+            "options": {
+              "Size": "1800mm"
+            },
+            "price": 3572.8,
+            "sku": "SQ7485282",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2100mm"
+            },
+            "price": 3880.8,
+            "sku": "SQ7979625",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Size": "2400mm"
+            },
+            "price": 4188.8,
+            "sku": "SQ6113150",
+            "stock": "Unlimited"
+          }
+        ]
+      }
     },
     {
       "slug": "kahdu-pendant",
@@ -107,7 +516,7 @@
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_KAHDU_PENDANT_2026_V1.pdf",
       "range": "pendants",
       "sku": "PLACEHOLDER-KAHDU-01",
-      "price": "PLACEHOLDER",
+      "price": 1870.0,
       "finishes": [
         [
           "Natural",
@@ -138,11 +547,243 @@
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=1600w",
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1468ca57-74fd-47c0-9710-777689cf5d6c/ILANEL_Kahdu800_Black-01.jpg?format=1600w"
       ],
-      "lengths": [
-        "600 mm",
-        "800 mm",
-        "1000 mm"
-      ]
+      "commerce": {
+        "source_title": "Kahdu - Pendant",
+        "attributes": {
+          "Color": [
+            "White",
+            "Black",
+            "Blue",
+            "Brown",
+            "Orange",
+            "Olive"
+          ],
+          "Shape": [
+            "Ø600 Sphere",
+            "Ø800 Sphere",
+            "600mm Diamond",
+            "1200mm Diamond"
+          ]
+        },
+        "variants": [
+          {
+            "options": {
+              "Color": "White",
+              "Shape": "Ø600 Sphere"
+            },
+            "price": 2356.2,
+            "sku": "SQ1611491",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "White",
+              "Shape": "Ø800 Sphere"
+            },
+            "price": 3080.0,
+            "sku": "SQ7298999",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "White",
+              "Shape": "600mm Diamond"
+            },
+            "price": 2356.2,
+            "sku": "SQ6816864",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "White",
+              "Shape": "1200mm Diamond"
+            },
+            "price": 3080.0,
+            "sku": "SQ9738588",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Black",
+              "Shape": "Ø600 Sphere"
+            },
+            "price": 1870.0,
+            "sku": "SQ6500090",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Black",
+              "Shape": "Ø800 Sphere"
+            },
+            "price": 3080.0,
+            "sku": "SQ5857472",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Black",
+              "Shape": "600mm Diamond"
+            },
+            "price": 2356.2,
+            "sku": "SQ4004739",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Black",
+              "Shape": "1200mm Diamond"
+            },
+            "price": 3080.0,
+            "sku": "SQ9063462",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Blue",
+              "Shape": "Ø600 Sphere"
+            },
+            "price": 2356.2,
+            "sku": "SQ3762807",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Blue",
+              "Shape": "Ø800 Sphere"
+            },
+            "price": 3080.0,
+            "sku": "SQ0538175",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Blue",
+              "Shape": "600mm Diamond"
+            },
+            "price": 2356.2,
+            "sku": "SQ0092659",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Blue",
+              "Shape": "1200mm Diamond"
+            },
+            "price": 3080.0,
+            "sku": "SQ4360768",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Brown",
+              "Shape": "Ø600 Sphere"
+            },
+            "price": 2356.2,
+            "sku": "SQ6612664",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Brown",
+              "Shape": "Ø800 Sphere"
+            },
+            "price": 3080.0,
+            "sku": "SQ9783444",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Brown",
+              "Shape": "600mm Diamond"
+            },
+            "price": 2356.2,
+            "sku": "SQ4137335",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Brown",
+              "Shape": "1200mm Diamond"
+            },
+            "price": 3080.0,
+            "sku": "SQ4351698",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Orange",
+              "Shape": "Ø600 Sphere"
+            },
+            "price": 2356.2,
+            "sku": "SQ8143586",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Orange",
+              "Shape": "Ø800 Sphere"
+            },
+            "price": 3080.0,
+            "sku": "SQ9423650",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Orange",
+              "Shape": "600mm Diamond"
+            },
+            "price": 2356.2,
+            "sku": "SQ3283349",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Orange",
+              "Shape": "1200mm Diamond"
+            },
+            "price": 3080.0,
+            "sku": "SQ6406214",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Olive",
+              "Shape": "Ø600 Sphere"
+            },
+            "price": 2356.2,
+            "sku": "SQ4334745",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Olive",
+              "Shape": "Ø800 Sphere"
+            },
+            "price": 3080.0,
+            "sku": "SQ5554290",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Olive",
+              "Shape": "600mm Diamond"
+            },
+            "price": 2356.2,
+            "sku": "SQ0005510",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Color": "Olive",
+              "Shape": "1200mm Diamond"
+            },
+            "price": 3080.0,
+            "sku": "SQ6423423",
+            "stock": "Unlimited"
+          }
+        ]
+      }
     },
     {
       "slug": "dais-wall-light",
@@ -155,7 +796,7 @@
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_DAIS_WALL_2026_V2.pdf",
       "range": "wall-lights",
       "sku": "PLACEHOLDER-DAIS-01",
-      "price": "PLACEHOLDER",
+      "price": 2094.4,
       "finishes": [
         [
           "Brass",
@@ -176,10 +817,51 @@
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=1600w",
         "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=1600w"
       ],
-      "lengths": [
-        "Single",
-        "Dual"
-      ]
+      "commerce": {
+        "source_title": "Dais - Wall Light",
+        "attributes": {
+          "Glass": [
+            "Dais Sphere (Brushed Brass Raw)",
+            "Dais Sphere (Hand-patina Sealed)",
+            "Dais Tube (Brushed Brass Raw)",
+            "Dais Tube (Hand-patina Sealed)"
+          ]
+        },
+        "variants": [
+          {
+            "options": {
+              "Glass": "Dais Sphere (Brushed Brass Raw)"
+            },
+            "price": 2094.4,
+            "sku": "SQ8087573",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Glass": "Dais Sphere (Hand-patina Sealed)"
+            },
+            "price": 2502.5,
+            "sku": "SQ1769311",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Glass": "Dais Tube (Brushed Brass Raw)"
+            },
+            "price": 2410.1,
+            "sku": "SQ9440989",
+            "stock": "Unlimited"
+          },
+          {
+            "options": {
+              "Glass": "Dais Tube (Hand-patina Sealed)"
+            },
+            "price": 2818.2,
+            "sku": "SQ2119691",
+            "stock": "Unlimited"
+          }
+        ]
+      }
     }
   ],
   "studio_constants": {
@@ -195,5 +877,6 @@
     ],
     "made_in": "Melbourne, Australia"
   },
-  "_image_note": "Product photography is ILANEL's own, referenced from their Squarespace CDN for demo purposes only."
+  "_image_note": "Product photography is ILANEL's own, referenced from their Squarespace CDN for demo purposes only.",
+  "_commerce_note": "Attributes and variants extracted from the authenticated Squarespace Commerce export (2026-08-11, via Codex). Prices are REAL. SKUs are real where present."
 }
