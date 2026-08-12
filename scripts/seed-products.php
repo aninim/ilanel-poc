@@ -87,6 +87,8 @@ function ilanel_seed_range( $slug, $name, $description = '' ) {
 $ilanel_range_names = array(
 	'pendants'    => 'Pendants',
 	'wall-lights' => 'Wall Lights',
+	'chandeliers' => 'Chandeliers',
+	'lamps'       => 'Lamps',
 );
 
 $ilanel_range_ids = array();
@@ -140,6 +142,17 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 	$ilanel_product->set_status( 'publish' );
 	$ilanel_product->set_catalog_visibility( 'visible' );
 	$ilanel_product->set_short_description( $ilanel_item['meta_description'] );
+
+	// Full body copy scraped from the live product page.
+	if ( ! empty( $ilanel_item['paragraphs'] ) ) {
+		$ilanel_body = '';
+
+		foreach ( $ilanel_item['paragraphs'] as $ilanel_para ) {
+			$ilanel_body .= '<p>' . wp_kses_post( $ilanel_para ) . "</p>\n\n";
+		}
+
+		$ilanel_product->set_description( $ilanel_body );
+	}
 
 	if ( $ilanel_has_variants ) {
 		/*

@@ -15,3 +15,12 @@ Thumbs.db
 # Scraped Squarespace content — regenerate with scripts/scrape-squarespace.js
 # (kept out of the public repo; it is ILANEL's copy, not POC code)
 data/scraped-*.wxr.xml
+
+# Squarespace's own WordPress/WXR export.
+# NEVER commit this to the public repo: it carries real email addresses
+# (staff, customers and third parties) and comment authors. Re-export from
+# Squarespace admin if it is needed again.
+data/Squarespace-Wordpress-Export-*.xml
+
+# Scraped catalogue intermediate — regenerate with scripts/scrape-catalogue.js
+data/catalogue.json

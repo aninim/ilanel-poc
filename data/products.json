@@ -1,14 +1,257 @@
 {
   "_source": "Real ILANEL content extracted from reports/crawl-2026-08-10-live.json (ilanel-studio), crawl dated 2026-08-10.",
-  "_note": "Copy, titles and meta descriptions are verbatim from the live site. Prices and SKUs are marked PLACEHOLDER and must be confirmed against Commerce before any real use. Spec PDFs are real live URLs.",
+  "_note": "Merged 2026-08-12: four products carry real Commerce data (variants, prices, SKUs) from an authenticated API pull; the rest were scraped read-only from the live site and have copy and imagery but no variants. Regenerate with scripts/scrape-catalogue.js + scripts/merge-catalogue.js.",
   "range": {
     "slug": "pendants",
     "name": "Pendants",
     "description": "Sculptural pendant lighting, handmade in Melbourne. Each piece is made to order in a choice of finishes, with lead times of 4–12 weeks for collection pieces."
   },
+  "studio_constants": {
+    "lead_time": "4–12 weeks for collection pieces; longer for custom/commissioned work",
+    "response_time": "within 2 business days",
+    "trade_programme": "20% off RRP + 3D files",
+    "provenance": [
+      "NGV",
+      "Australian War Memorial",
+      "The Hour Glass",
+      "Four Seasons",
+      "Ritz-Carlton"
+    ],
+    "made_in": "Melbourne, Australia"
+  },
   "products": [
     {
-      "slug": "comet-pendant",
+      "slug": "pipi",
+      "name": "Pipi",
+      "type": "Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/pipi",
+      "live_h1": "Pipi / Pendant",
+      "seo_title": "Pipi — Pendant · ILANEL",
+      "meta_description": "The pendant light, inspired by a pipi clam, features two shallow, decorative forged glass domes facing each other like a clamshell. The glass, slightly tra",
+      "spec_pdf": "",
+      "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/44816445-2671-4cd8-af74-b9e95942363a/Pipi_GAI.png",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/2f106e66-df03-4b8c-b31a-c2470c680577/IMG_20250422_135042040_HDR.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/ed604f34-22dd-4bb7-a2ae-0ef50773a3c8/IMG_9039.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/9a34638d-673c-4d92-bc76-576d5ef8dd13/IMG_20250422_134935594_HDR.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/4512fc53-abb7-4e41-a894-a07293cdda0c/IMG_20250422_135022896_HDR.png"
+      ],
+      "story": {},
+      "paragraphs": [
+        "The pendant light, inspired by a pipi clam, features two shallow, decorative forged glass domes facing each other like a clamshell. The glass, slightly translucent with a subtle iridescence, captures light to mimic the ocean’s shimmer. Nestled between the domes, the light source glows softly, creating a pearl-like effect and casting a warm, inviting ambiance.",
+        "This design blends modern elegance with natural beauty, making it a stunning and refined centrepiece. Available in various sizes and finishes. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Slide 5 Slide 5 (current slide) Back to Lighting home Featured Projects View fullsize CHARLES ROSE Previous Previous Finishes Next Next Wisteria"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "wisteria-chandelier-contemporary-design",
+      "name": "Wisteria",
+      "type": "Chandelier",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/wisteria-chandelier-contemporary-design",
+      "live_h1": "Wisteria / Chandelier",
+      "seo_title": "Wisteria — Chandelier · ILANEL",
+      "meta_description": "Wisteria is a contemporary take on the traditional chandelier. Inspired by the magnificent Wisteria vine in full bloom, thousands of smooth and faceted gla",
+      "spec_pdf": "",
+      "range": "chandeliers",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1703023710526-2T8QU2T40UW80Y0DU98O/Wisteria1_LowRes.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/849dedc8-e8f2-4221-bad4-424f69b87179/Wisteria1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/98233f85-56df-4443-af6d-417b313aa91a/Wisteria1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/9a4b9727-1e36-4d2a-8e76-635e92e67bee/1212_0001.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/7c1ddac6-8923-45c4-887d-5734eadd5aab/1212_0009.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Wisteria is a contemporary take on the traditional chandelier. Inspired by the magnificent Wisteria vine in full bloom, thousands of smooth and faceted glass spheres are encased in glass flutes that are suspended from tiered LED rings. When lit, the Wisteria transforms into a glistening jewel.",
+        "Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Back to Lighting home Featured Projects View fullsize CHARLES ROSE Previous Previous Pipi Next Next Nimbus"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "nimbus",
+      "name": "Nimbus",
+      "type": "Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/nimbus",
+      "live_h1": "Nimbus / Pendant",
+      "seo_title": "Nimbus — Pendant · ILANEL",
+      "meta_description": "Three distinct orbs of hand-blown molten glass define the Nimbus pendant. Suspended by a network of fine wires, the spheres form a luminous, linear arrange",
+      "spec_pdf": "",
+      "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/41b5c867-90e8-4595-94f0-13664093a719/CHW001-013-BOARDROOM+%282%29+copy.webp",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6e6e3655-ca42-480f-bd83-923ab969a107/CHW001-013-BOARDROOM+%282%29.webp",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/8ef2c85a-e8f9-42b2-ae93-f23c9117d45e/171_level3_Grace%2BPetrou-22+%281%29.webp",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/aed910dd-3f18-4f2a-a039-1facf63bad98/1212_0026.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/83875dde-f1ca-46ba-aea2-70626609c7a5/171_level3_Grace%2BPetrou-22+%281%29.webp"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Three distinct orbs of hand-blown molten glass define the Nimbus pendant. Suspended by a network of fine wires, the spheres form a luminous, linear arrangement that introduces an organic yet ethereal texture to the space. They diffuse a soft, tactile glow, anchoring the centrepiece beneath while maintaining a sense of visual transparency.",
+        "Available in various sizes and glass finishes. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Back to Lighting home Featured Projects CHARLES ROSE 171 Collins street Previous Previous Wisteria Next Next Tree of Light"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "tree-of-light-custom-chandelier",
+      "name": "Tree Of Light",
+      "type": "Chandelier",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/tree-of-light-custom-chandelier",
+      "live_h1": "Tree Of Light / Chandelier",
+      "seo_title": "Tree Of Light — Chandelier · ILANEL",
+      "meta_description": "Nine hand-blown glass spheres are suspended from tiered branches that radiate out from its centre. At once organic and completely functional, the trunk is ",
+      "spec_pdf": "",
+      "range": "chandeliers",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866424066-KONR2RJ3KD7YIENA1GQU/Tree+of+Light2_LowRes+3.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/a6c53a5b-9151-4356-b0e3-50b96066837b/Tree+of+Light2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/57d2409f-ab25-4703-8ef2-287dadffcdee/Tree+of+Light2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/dc070c54-6351-4769-8a17-cbe6a49f2776/ILANEL_TreeOfLight-01.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5da7a15f-c786-40bb-924a-7227e7be6040/TreeofLight_002_Ilanel_CGI_Indermuhle.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Nine hand-blown glass spheres are suspended from tiered branches that radiate out from its centre. At once organic and completely functional, the trunk is made from individual brass tubes, and the hand-blown glass spheres congregate like a cloud of floret.",
+        "Tree of Light can be ceiling mounted or have the option to be suspended at any height. Custom metal and glass finishes are available. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) ColoUr Disclaimer Actual colours may vary.",
+        "We do our best to ensure that our photos and renders are as true to colour as possible. However, due to photographic l ighting sources, inconsistencies of various monitors settings,  we cannot guarantee that the colour you see accurately portrays the true colour of the product.",
+        "Furthermore, every individual may see these colours differently. Screen images are intended as a guide only and should not be regarded as absolutely correct. If an EXACT COLOUR MATCH is required please get in touch with us. Back to Lighting Featured Projects View fullsize CAFE BRASS View fullsize NICK AND NORA'S View fullsize CAULFIELD VILLAGE Previous Previous Nimbus Next Next Astro"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "astro-wall-light",
+      "name": "Astro",
+      "type": "Wall Light",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/astro-wall-light",
+      "live_h1": "Astro / Wall Light",
+      "seo_title": "Astro — Wall Light · ILANEL",
+      "meta_description": "A stunning blend of modern design and celestial inspiration. Drawing from the beauty of the cosmos, the ASTRO features a sleek, elliptical glass shade that",
+      "spec_pdf": "",
+      "range": "wall-lights",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1718088702348-747N8TWULLGE4V7U5GVH/ILANEL_SY_BrickLaneMarket_Concept03_Render-03.png",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/e938b4b1-faeb-471d-915a-389355465b1f/IMG_2998.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1703025542694-KVLLCHGQJV57K3HAIXV5/IMG_3012.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/53344a9a-f96c-4aa2-bbe9-491fade49b24/IMG_2996.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702865553936-LA80I27NRLYDKPRKE19Y/IMG_6021.jpeg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "A stunning blend of modern design and celestial inspiration. Drawing from the beauty of the cosmos, the ASTRO features a sleek, elliptical glass shade that evokes the shape of an orbiting planet. The glass, delicately frosted, diffuses light gently, creating a soft glow reminiscent of starlight.",
+        "The elliptical shade is cradled by a sophisticated looped metal fixture, symbolising the infinite paths of celestial bodies. The intricate metalwork, enhances the fixture’s elegance. Versatile in design, the ASTRO can be mounted as a wall sconce or ceiling light.",
+        "Whether illuminating a hallway or adding ambiance to a living space, the ASTRO brings the mystery and wonder of the cosmos into any room. Customisable in various metal finishes, timber and stains, and lengths upon enquiry. In collaboration with Studio Y // Tess Speldewinde Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Slide 5 Slide 5 (current slide) Back to Lighting home Related Products Featured Projects View fullsize BRICK LANE MELBOURNE Previous Previous Tree of Light Next Next Dot"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "dot",
+      "name": "Dot",
+      "type": "Surface Light",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/dot",
+      "live_h1": "Dot / Surface Light",
+      "seo_title": "Dot — Surface Light · ILANEL",
+      "meta_description": "The surface mounted light, features a hand-blown glass shade, elegantly shaped to enhance its surroundings with a refined, organic form. The various glass ",
+      "spec_pdf": "",
+      "range": "wall-lights",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1732597332647-RUOL9MOZV56UMUXGF6TF/IMG_9269.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1732596545194-WO7DIML8NH6R9UKRVMQF/IMG_9270.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1732596568189-OBB304QUXOJVBF4IOJQU/IMG_9265.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1732596605598-E2O2JA1AV0VN2PBI67YV/IMG_9263.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0a52a472-614e-4c8b-877a-20574cb2892f/IMG_9271.JPG"
+      ],
+      "story": {},
+      "paragraphs": [
+        "The surface mounted light, features a hand-blown glass shade, elegantly shaped to enhance its surroundings with a refined, organic form. The various glass options, exhibit one of our signature textures, allowing light to diffuse softly, creating a warm and inviting ambience.",
+        "Its unique, artisan-crafted nature brings a sense of individuality to each piece, as no two are identical. Complementing the glass is custom-designed brass fixings that highlight both strength and sophistication. The brass elements, add a touch of luxury while ensuring durability.",
+        "These fixings seamlessly blend functionality with aesthetic appeal, allowing for secure mounting while enhancing the overall design. This fixture is ideal for a variety of settings, providing both a practical source of illumination and a striking visual statement.",
+        "Its harmonious combination of materials makes it a versatile addition to modern or traditional interiors, elevating the space with its timeless elegance. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Back to Lighting home Featured Projects Previous Previous Astro Next Next Falling Leaves"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "falling-leaves",
+      "name": "Falling Leaves",
+      "type": "Chandelier",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/falling-leaves",
+      "live_h1": "Falling Leaves / Chandelier",
+      "seo_title": "Falling Leaves — Chandelier · ILANEL",
+      "meta_description": "Inspired by the organic beauty of nature, each handcrafted glass leaf is custom-designed to create a truly unique installation. Suspended with near-invisib",
+      "spec_pdf": "",
+      "range": "chandeliers",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1741831850754-W3YHDKN0M02RKNCGRFW6/IMG20230816143123.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/05653155-eecb-4db7-8ab4-f684aa3231ce/IMG_2247.JPG",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/97d0a753-9212-4f07-8851-39027a2b772d/8789_ho_04_p_3000x2250.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/36b640de-dff6-4cc7-af94-5d8368e4d482/IMG20230816143150.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/8b9e70bd-5234-44b3-83d9-4926b5649d2c/IMG_9278.JPG"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Inspired by the organic beauty of nature, each handcrafted glass leaf is custom-designed to create a truly unique installation. Suspended with near-invisible wire and adorned with jewellery-like brass details, these delicate droplets of glass appear to float effortlessly, casting mesmerising shadows and reflections.",
+        "Whether displayed as a single, elegant piece or in cascading clusters, Falling Leaves transforms spaces with a sense of movement and depth. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Back to Lighting home Featured Projects View fullsize East Leagues Club View fullsize Playford Hotel View fullsize HUA Restaurant Previous Previous Dot Next Next XYZ"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "xyz-wall-light",
+      "name": "XYZ",
+      "type": "Wall Light",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/xyz-wall-light",
+      "live_h1": "XYZ / Wall Light",
+      "seo_title": "XYZ — Wall Light · ILANEL",
+      "meta_description": "Our Limited Edition XYZ Wall Light features a composition of three volumes aligned to the XYZ axis. A cuboid fixture on the X-axes, a cylindrical stem on t",
+      "spec_pdf": "",
+      "range": "wall-lights",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1725409671128-J3PVZVSHRBO4U541SW77/SM+B_SCONCE.50.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1725409919612-17ZD9F4EV29I0PMNQMLW/XYZ%2BIcon.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/09aed5f4-cd59-43f6-98b7-aed98f2fec78/ILANEL_Pearl_Stick_Left.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1725409890209-K5CVULSB7GYKI7Y82E9C/ILANEL_Pearl_Stick_Right.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Our Limited Edition XYZ Wall Light features a composition of three volumes aligned to the XYZ axis. A cuboid fixture on the X-axes, a cylindrical stem on the Y-axes, and a handblown glass sphere protrudes on the Z-axes. Inspired by De Stijl (meaning, the style), a casual organisation of Dutch painters, architects and sculptors, is one of the more influential of the avant-garde modern art movements.",
+        "The movement's aim was to promulgate a new design paradigm of harmony and order, by reducing all art to essentials of form and colour. De Stijl's leading members Piet Mondrian (1872-1944) and the architect Gerrit Rietveld (1888-1964), greatly impacted the architectural design of Le Corbusier (1887-1965) and Mies van der Rohe (1883-1969).",
+        "Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Back to Lighting home Related Products Featured Projects Previous Previous Falling Leaves Next Next Flash"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "flash-pendant-dynamic-lighting",
+      "name": "Flash",
+      "type": "Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/flash-pendant-dynamic-lighting",
+      "live_h1": "Flash / Pendant",
+      "seo_title": "Flash — Pendant · ILANEL",
+      "meta_description": "The Flash is a sculptural pendant that evokes, in a series of bold strokes, the electrifying power of a lightning bolt shooting down from the sky. Inert ye",
+      "spec_pdf": "",
+      "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866659303-ETLFF3HC51VHSXCUQ6C9/Flash+Light1_LowRes.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/3593a612-6fe2-4176-abe3-6af95282919d/Flash+Light1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/a6befc91-b267-4206-b88c-8ede73bec9d8/Flash1_HighRes+2.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/74c77979-c079-48c7-948b-389a32815efc/ILANEL_Flash.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/e3305cea-97c8-41c0-ad35-94e8dd480015/IMG_6820.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "The Flash is a sculptural pendant that evokes, in a series of bold strokes, the electrifying power of a lightning bolt shooting down from the sky. Inert yet mobile, jagged yet sinuous, this statement piece moves uncannily between two and three dimensions, now a flat shape, now an angular projection.",
+        "A minimal and striking piece charged with energy. Available in various metal and glass finishes. Custom finishes are available upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Back to Lighting home Previous Previous XYZ Next Next Comet"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "comet-pendant-light",
       "name": "Comet",
       "type": "Linear Pendant",
       "live_url": "https://www.ilanel.com/lighting-design-collections/comet-pendant-light",
@@ -17,6 +260,24 @@
       "meta_description": "Illuminate your space with ILANEL's Comet Pendant, featuring radiating rods that burst with energy and style. An impactful presence perfect for modern interiors.",
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_COMET_PENDANT_2026_V2-c772.pdf",
       "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1703024256259-2RQMKPNGD6VYRM0JIEUD/ILANEL_Comet_01.png",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/7aff10db-c39c-4b7b-a4a9-bb862cce5c0c/Comet%2BPendant1_HighRes.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772280541-9KELT9WS8RQJEAAA2RL4/Ilanel_Comet_1800_Blue_FWhite_Black.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772302195-WKDA1BMLF455N12E1S7V/Ilanel_Comet_1800_Golds_NB.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772338200-52FUZJSEQLHYWQ3I88JU/Ilanel_Comet_1800_Golds.jpg"
+      ],
+      "story": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6a418d12-12f6-4375-8f79-6219f2266e46/comet_Scene4V2.jpg?format=1600w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/76a04f66-051f-4c31-b7bf-155c96b7eb8d/Cafe%2BBrass%2B-%2BBespoke%2BLinear%2BPendants1.jpg?format=1600w"
+      ],
+      "paragraphs": [
+        "Comet embodies the essence of a shooting star, a solitary streak of light traversing the cosmos, often accompanied by a luminous nucleus. Crafted with meticulous attention to detail, Comet showcases a slotted tube that delicately bathes its surroundings with dimmable illumination.",
+        "Adding an extra touch of artistry, each pendant is graced with an array of exquisite hand-blown glass beads, presenting a range of distinctive design choices. Personalisation takes centre stage with Comet, which is available with harmonising metal ends that resonate with its sleek aesthetic or the enchanting alternative of feature timber ends, offering a fusion of organic warmth and contemporary elegance.",
+        "Customisable in various metal finishes, timber and stains, and lengths upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Natural Brass Finish Slate Black Finish Bronze Patina Finish Living Metal Finish Bronze Patina Finish Living Metal Finish Slate Black Finish Living Metal Finish Bronze Patina Finish Living Metal Finish Bronze Patina Finish Living Metal Finish Slate Black Finish Slate Black Finish Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Slide 5 Slide 5 (current slide) Slide 6 Slide 6 (current slide) Slide 7 Slide 7 (current slide) Slide 8 Slide 8 (current slide) Slide 9 Slide 9 (current slide) Slide 10 Slide 10 (current slide) Slide 11 Slide 11 (current slide) Slide 12 Slide 12 (current slide) Slide 13 Slide 13 (current slide) Slide 14 Slide 14 (current slide) ColoUr Disclaimer Actual colours may vary.",
+        "We do our best to ensure that our photos and renders are as true to colour as possible. However, due to photographic l ighting sources, inconsistencies of various monitors settings,  we cannot guarantee that the colour you see accurately portrays the true colour of the product."
+      ],
+      "related_projects": [],
       "sku": "PLACEHOLDER-COMET-01",
       "price": 3195.5,
       "finishes": [
@@ -40,17 +301,6 @@
           "Amber & Bronze",
           "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702772510452-WGMA95K64573X7K5UX2T/Ilanel_Comet_Amber_FWhite_Bronze.jpg"
         ]
-      ],
-      "related_projects": [],
-      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6b23b6a6-713d-4182-8888-fc04ec4a3ebb/ILANEL_COMET2B.jpg?format=1000w",
-      "gallery": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/b146cc1f-f3e1-427e-8b85-009b4566e17a/comet_Scene1.jpg?format=2000w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/9eb2b908-dc06-4d03-980f-22b79ea4ff80/comet_Scene4.jpg?format=2000w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6b23b6a6-713d-4182-8888-fc04ec4a3ebb/ILANEL_COMET2B.jpg?format=2000w"
-      ],
-      "story": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6a418d12-12f6-4375-8f79-6219f2266e46/comet_Scene4V2.jpg?format=1600w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/76a04f66-051f-4c31-b7bf-155c96b7eb8d/Cafe%2BBrass%2B-%2BBespoke%2BLinear%2BPendants1.jpg?format=1600w"
       ],
       "commerce": {
         "source_title": "Comet - Pendant",
@@ -437,7 +687,7 @@
       }
     },
     {
-      "slug": "comet-stardust-pendant",
+      "slug": "comet-stardust-pendant-light",
       "name": "Comet Stardust",
       "type": "Linear Pendant",
       "live_url": "https://www.ilanel.com/lighting-design-collections/comet-stardust-pendant-light",
@@ -446,6 +696,21 @@
       "meta_description": "Illuminate your home with the contemporary Comet Stardust Pendant from Ilanel. Crafted for sophistication and charm, it's the perfect enhancement for stylish interiors.",
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_COMET_STARDUST_PENDANT_23V1.pdf",
       "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866269522-5N6VXNPCC5ASYW1BVPTX/Stardust+Alternate+Light2_LowRes+3.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/cde552ca-d9b0-4913-b2a6-9c480b446bbd/Stardust+Light1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes+2.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/07b31a93-9c31-4f5a-87c0-ae6785c367c9/Stardust2_LowRes.jpg"
+      ],
+      "story": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=1600w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=1600w"
+      ],
+      "paragraphs": [
+        "The Comet Stardust is a single trail of light accompanied by a stardust sparkle. Also available as ‘Comet’ and ‘Falling Comet’ Customisable in various end caps finishes and lengths. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Back to Lighting home Related Products STARDUST COMET FALLING COMET Previous Previous Comet Next Next Supernova Round"
+      ],
+      "related_projects": [],
       "sku": "PLACEHOLDER-COMETSD-01",
       "price": 3572.8,
       "finishes": [
@@ -457,16 +722,6 @@
           "Brass",
           "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=600w"
         ]
-      ],
-      "related_projects": [],
-      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=1000w",
-      "gallery": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=2000w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=2000w"
-      ],
-      "story": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/6766bc46-bc05-4702-ba13-a5cf76b2a124/Stardust1_HighRes%2B2.png?format=1600w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/43c069f8-437d-4caf-b01e-acd6dd653394/ILANEL_CometxStardust-01.jpg?format=1600w"
       ],
       "commerce": {
         "source_title": "Comet Stardust - Pendant",
@@ -506,7 +761,57 @@
       }
     },
     {
-      "slug": "kahdu-pendant",
+      "slug": "custom-round-pendant-supernova",
+      "name": "Supernova",
+      "type": "Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/custom-round-pendant-supernova",
+      "live_h1": "Supernova / Pendant",
+      "seo_title": "Supernova — Pendant · ILANEL",
+      "meta_description": "Supernova presents an assemblage of luminous and obscure shards, shining bright like a powerful stellar explosion captured in a frozen moment. This arresti",
+      "spec_pdf": "",
+      "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866705690-HT3JXOPJEE66O99HBDGA/Supernova2_LowRes.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/c2e21806-7ddc-4e14-a4a0-019d50cbc653/Supernova2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/8b4f8646-52d4-4cd5-84be-91c37ae6d10b/Supernova2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/66333aab-1a92-47bf-9d57-6d41a0f4f56a/ILANEL_Supernova-05.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/ad563ca5-dcb1-45a7-8301-d40e46ddd33b/ILANEL_Supernova-04.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Supernova presents an assemblage of luminous and obscure shards, shining bright like a powerful stellar explosion captured in a frozen moment. This arresting piece features hand-brushed and anodised metallic facets accompanied by a customisable light source configuration.",
+        "The Supernova can be suspended horizontally or angled, and its parametric design enables infinite dimensions and forms. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Back to Lighting home   Related Products SUPERNOVA LINEAR Featured Projects View fullsize MT ELIZA RESIDENCE View fullsize KIT & ACE View fullsize NEST PENTHOUSE View fullsize CAULFIELD RESIDENCE II Previous Previous Comet Stardust Next Next Supernova Linear"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "custom-linear-pendant-supernova",
+      "name": "Supernova",
+      "type": "Linear Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/custom-linear-pendant-supernova",
+      "live_h1": "Supernova / Linear Pendant",
+      "seo_title": "Supernova — Linear Pendant · ILANEL",
+      "meta_description": "Supernova presents an assemblage of luminous and obscure shards, shining bright like a powerful stellar explosion captured in a frozen moment. This arresti",
+      "spec_pdf": "",
+      "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866946843-RC5CSXAPX1WQMLVVZM7D/Supernova4_LowRes+3.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/a6f40be6-3e37-4855-807e-a9b547c850bb/Supernova+Light1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/4da82565-58b0-4739-b46c-c7c5db6884d0/Supernova1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/b64357d8-3f96-4f72-a1a1-f1823da2c998/ILANEL_SupernovaLinear-02.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/dbd90736-d116-45ad-bba4-27cb6d45ff85/ILANEL_SupernovaLinear-04.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Supernova presents an assemblage of luminous and obscure shards, shining bright like a powerful stellar explosion captured in a frozen moment. This arresting piece features hand-brushed and anodised metallic facets accompanied by a customisable light source configuration.",
+        "The Linear Supernova can be suspended vertically or horizontally, and its parametric design enables infinite dimensions and forms. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Back to Lighting home   Related Products SUPERNOVA Featured Projects View fullsize SUPERNOVA LINEAR Previous Previous Supernova Round Next Next Kahdu"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "kahdu-light-shades",
       "name": "Kahdu",
       "type": "Pendant",
       "live_url": "https://www.ilanel.com/lighting-design-collections/kahdu-light-shades",
@@ -515,8 +820,32 @@
       "meta_description": "Hand woven light shade offering a bold sculptural presence that is soft and organic creating a perfect statement for any sophisticated modern space. Handmade in Melbourne",
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_KAHDU_PENDANT_2026_V1.pdf",
       "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702957548959-FTRC1YQC2QJ6GL5V2D4L/Kahdu%2BLight2_LowRes.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/878a394e-a785-4b24-b3c7-c528657a260c/Kahdu+Light2_HighRes.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/9ee0fb00-31e5-42e6-bef4-e55fc7495ef5/Kahdu1_HighRes+2.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/acefe336-164b-4784-864a-6659b99cf7be/Kahdu1_HighRes+2.png"
+      ],
+      "story": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=1600w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1468ca57-74fd-47c0-9710-777689cf5d6c/ILANEL_Kahdu800_Black-01.jpg?format=1600w"
+      ],
+      "paragraphs": [
+        "The Kahdu collection features hand-woven lampshades with a visually striking, high-impact pattern that plays with the senses. The lines are rigorous, austere, and mathematical, but at the same time, they dance and interact with one another, giving the impression of movement and depth.",
+        "Kahdu offers a bold sculptural presence that is warm and organic and a perfect statement for any modern space. The Kahdu collection comes in various shapes and finishes. The wireframe is powder-coated to complement the various fabric colour options and is then handwoven.",
+        "Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Slide 5 Slide 5 (current slide) Slide 6 Slide 6 (current slide) ColoUr Disclaimer Actual colours may vary.",
+        "We do our best to ensure that our photos and renders are as true to colour as possible. However, due to photographic l ighting sources, inconsistencies of various monitors settings,  we cannot guarantee that the colour you see accurately portrays the true colour of the product."
+      ],
+      "related_projects": [
+        {
+          "name": "Chatswood Hill Tavern",
+          "url": "https://www.ilanel.com/projects/kahdu-pendants-chatswood-tavern",
+          "description": "ILANEL's Kahdu pendants light up Chatswood Hill Tavern, adding a touch of elegance and warmth to the bistro's modern renovations."
+        }
+      ],
       "sku": "PLACEHOLDER-KAHDU-01",
-      "price": 1870.0,
+      "price": 1870,
       "finishes": [
         [
           "Natural",
@@ -530,22 +859,6 @@
           "Brown",
           "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1e5b578d-0b8b-42d8-bb65-39d6793adae5/ILANEL_Kahdu800_Brown-01.jpg?format=600w"
         ]
-      ],
-      "related_projects": [
-        {
-          "name": "Chatswood Hill Tavern",
-          "url": "https://www.ilanel.com/projects/kahdu-pendants-chatswood-tavern",
-          "description": "ILANEL's Kahdu pendants light up Chatswood Hill Tavern, adding a touch of elegance and warmth to the bistro's modern renovations."
-        }
-      ],
-      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=1000w",
-      "gallery": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1468ca57-74fd-47c0-9710-777689cf5d6c/ILANEL_Kahdu800_Black-01.jpg?format=2000w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=2000w"
-      ],
-      "story": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0f61460a-ee35-480b-86bb-317643e79936/Kahdu2_HighRes.png?format=1600w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1468ca57-74fd-47c0-9710-777689cf5d6c/ILANEL_Kahdu800_Black-01.jpg?format=1600w"
       ],
       "commerce": {
         "source_title": "Kahdu - Pendant",
@@ -580,7 +893,7 @@
               "Color": "White",
               "Shape": "Ø800 Sphere"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ7298999",
             "stock": "Unlimited"
           },
@@ -598,7 +911,7 @@
               "Color": "White",
               "Shape": "1200mm Diamond"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ9738588",
             "stock": "Unlimited"
           },
@@ -607,7 +920,7 @@
               "Color": "Black",
               "Shape": "Ø600 Sphere"
             },
-            "price": 1870.0,
+            "price": 1870,
             "sku": "SQ6500090",
             "stock": "Unlimited"
           },
@@ -616,7 +929,7 @@
               "Color": "Black",
               "Shape": "Ø800 Sphere"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ5857472",
             "stock": "Unlimited"
           },
@@ -634,7 +947,7 @@
               "Color": "Black",
               "Shape": "1200mm Diamond"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ9063462",
             "stock": "Unlimited"
           },
@@ -652,7 +965,7 @@
               "Color": "Blue",
               "Shape": "Ø800 Sphere"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ0538175",
             "stock": "Unlimited"
           },
@@ -670,7 +983,7 @@
               "Color": "Blue",
               "Shape": "1200mm Diamond"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ4360768",
             "stock": "Unlimited"
           },
@@ -688,7 +1001,7 @@
               "Color": "Brown",
               "Shape": "Ø800 Sphere"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ9783444",
             "stock": "Unlimited"
           },
@@ -706,7 +1019,7 @@
               "Color": "Brown",
               "Shape": "1200mm Diamond"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ4351698",
             "stock": "Unlimited"
           },
@@ -724,7 +1037,7 @@
               "Color": "Orange",
               "Shape": "Ø800 Sphere"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ9423650",
             "stock": "Unlimited"
           },
@@ -742,7 +1055,7 @@
               "Color": "Orange",
               "Shape": "1200mm Diamond"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ6406214",
             "stock": "Unlimited"
           },
@@ -760,7 +1073,7 @@
               "Color": "Olive",
               "Shape": "Ø800 Sphere"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ5554290",
             "stock": "Unlimited"
           },
@@ -778,12 +1091,39 @@
               "Color": "Olive",
               "Shape": "1200mm Diamond"
             },
-            "price": 3080.0,
+            "price": 3080,
             "sku": "SQ6423423",
             "stock": "Unlimited"
           }
         ]
       }
+    },
+    {
+      "slug": "stella-table-lamp-hand-blown-glass",
+      "name": "Stella",
+      "type": "Lamp",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/stella-table-lamp-hand-blown-glass",
+      "live_h1": "Stella / Lamp",
+      "seo_title": "Stella — Lamp · ILANEL",
+      "meta_description": "The STELLA lamp design, fusing art and light. Its sculptural form is inspired by Oscar Niemeyer’s hyperboloid architecture with a radiating frame that evok",
+      "spec_pdf": "",
+      "range": "lamps",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1703024702837-W3ENBOSHNNPHC4LYIOX4/Stella%2BLamp.1699.png",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/9700beef-fde0-4288-bbd2-e96bba9b0ddf/Stella+Light5_HighRes+2.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/f7cb273b-06d4-473c-a463-ae2b7d490381/Stella5_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/310bfdbc-0291-4f35-aa17-640e0b3d58fb/Stella+Light7_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/adad9f73-ed4d-4047-9323-c095c9465cdd/Stella7_HighRes+3.png"
+      ],
+      "story": {},
+      "paragraphs": [
+        "The STELLA lamp design, fusing art and light. Its sculptural form is inspired by Oscar Niemeyer’s hyperboloid architecture with a radiating frame that evokes a starburst. Handcrafted from brushed and anodised aluminium, STELLA features a hand-blown glass shade in various colours and textures.",
+        "The interplay of its bold, geometric structure and delicate luminosity creates a piece that is both contemporary and timeless. STELLA is a centrepiece, perfect for those seeking to enhance their space with a functional yet artistic statement piece.",
+        "Contact us to customise in various metal finishes, dimensions and glass. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Stella Tower - Gold Stella Tower - Gold Stella Tower - Silver Stella Tower - Silver Stella Tower - Champagne Stella Tower - Champagne Stella Tower - Black Stella Tower - Black Stella Tower and Mini Tower - Black & Gold Stella Tower and Mini Tower - Black & Gold Stella Flower - Silver Stella Flower - Silver Stella Flower - Gold Stella Flower - Gold Stella Flower - Champagne Stella Flower - Champagne Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Slide 5 Slide 5 (current slide) Slide 6 Slide 6 (current slide) Slide 7 Slide 7 (current slide) Slide 8 Slide 8 (current slide) Slide 9 Slide 9 (current slide) Slide 10 Slide 10 (current slide) Slide 11 Slide 11 (current slide) Slide 12 Slide 12 (current slide) Slide 13 Slide 13 (current slide) Slide 14 Slide 14 (current slide) Slide 15 Slide 15 (current slide) Slide 16 Slide 16 (current slide) ColoUr DisclaimeR Actual colours may vary.",
+        "We do our best to ensure that our photos and renders are as true to colour as possible. However, due to photographic l ighting sources, inconsistencies of various monitors settings,  we cannot guarantee that the colour you see accurately portrays the true colour of the product."
+      ],
+      "related_projects": [],
+      "finishes": []
     },
     {
       "slug": "dais-wall-light",
@@ -795,6 +1135,23 @@
       "meta_description": "Add a touch of sophistication with Ilanel's Dais Wall Light, featuring a sleek and contemporary design. Perfect for modernizing any room.",
       "spec_pdf": "https://www.ilanel.com/s/ILANEL_DAIS_WALL_2026_V2.pdf",
       "range": "wall-lights",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1718087758916-A2I2EYUMMCJ9KH3M0F2P/Dais%2BLight2_LowRes.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/c045f383-5f36-46c6-b52c-2f9d62bbf9f2/Dais+Light2_HighRes+2.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/7f734ab1-d256-4f9e-aabf-9adaeeac921f/Dais1_HighRes.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg"
+      ],
+      "story": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=1600w",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=1600w"
+      ],
+      "paragraphs": [
+        "An illuminated Hand-blown Glass Vessel, trophied on a brass platform. Available in various metal and glass finishes. Custom finishes are available upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) ColoUr Disclaimer Actual colours may vary.",
+        "We do our best to ensure that our photos and renders are as true to colour as possible. However, due to photographic l ighting sources, inconsistencies of various monitors settings,  we cannot guarantee that the colour you see accurately portrays the true colour of the product.",
+        "Furthermore, every individual may see these colours differently. Screen images are intended as a guide only and should not be regarded as absolutely correct. If an EXACT COLOUR MATCH is required please get in touch with us. Back to Lighting Featured Projects View fullsize BAR JAYDA Previous Previous Stella Next Next Vitrine"
+      ],
+      "related_projects": [],
       "sku": "PLACEHOLDER-DAIS-01",
       "price": 2094.4,
       "finishes": [
@@ -806,16 +1163,6 @@
           "Bronze",
           "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=600w"
         ]
-      ],
-      "related_projects": [],
-      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=1000w",
-      "gallery": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=2000w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=2000w"
-      ],
-      "story": [
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/645339b4-9aba-4abb-9fae-b9073a5fa7cf/Dais1_HighRes1.jpg?format=1600w",
-        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/5e0dc2bd-fb2d-4c16-9f0e-13933951d544/Dais2_HighRes1.jpg?format=1600w"
       ],
       "commerce": {
         "source_title": "Dais - Wall Light",
@@ -862,21 +1209,185 @@
           }
         ]
       }
+    },
+    {
+      "slug": "vitrine-wall-light-custom-finishes",
+      "name": "Vitrine",
+      "type": "Wall Light",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/vitrine-wall-light-custom-finishes",
+      "live_h1": "Vitrine / Wall Light",
+      "seo_title": "Vitrine — Wall Light · ILANEL",
+      "meta_description": "An illuminated Forged Fluted Glass, embraced by a Coved Brass Cradle. Available in various metal and glass finishes. Custom finishes are available upon enq",
+      "spec_pdf": "",
+      "range": "wall-lights",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866063473-JI6KASWOFHEFOWPPEZT0/Vitrine1_LowRes+3.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702852413187-J7P04EU3HWYDKICSLQ6N/Vitrine1_HighRes.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702852428762-52X2JEB2NZV8YD4NA1MN/Vitrine1_HighRes.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/cdccd33b-0d2b-4e71-a03c-43c50a25256d/221205-Jayda-018.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/c87bd561-9992-44a7-87c3-3c96733cd7e8/221205-Jayda-017.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "An illuminated Forged Fluted Glass, embraced by a Coved Brass Cradle. Available in various metal and glass finishes. Custom finishes are available upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Back to Lighting home Featured Projects View fullsize BAR JAYDA Previous Previous Dais Next Next Snowball"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "snowball-walllight",
+      "name": "Snowball",
+      "type": "Wall Light",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/snowball/walllight",
+      "live_h1": "Snowball / Wall Light",
+      "seo_title": "Snowball — Wall Light · ILANEL",
+      "meta_description": "Nesting in a cradle of brass, a single hand-blown glass ball, brings warmth whether on the wall or the ceiling. Like the flower after which this light is n",
+      "spec_pdf": "",
+      "range": "wall-lights",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866391046-74HKASHZ6U4782Y1ZINN/Snowball+Light2_LowRes+3.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/0563ce9a-d295-41be-a59e-d3df00566ba4/Snowball+Light2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/2ef9605e-783b-42ed-ab55-61d819bcc001/Snowball2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/b7092b8f-964a-497e-8b76-0894bd142ff1/ILANEL_SNOWBALL_HOOK-01.jpg",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/8e9c1b95-43b4-4e42-bb24-1655fd0b6e15/SnowBall_001_Ilanel_CGI_Indermuhle.jpg"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Nesting in a cradle of brass, a single hand-blown glass ball, brings warmth whether on the wall or the ceiling. Like the flower after which this light is named, ‘Snowball’ brings a whimsical playfulness while remaining simple and elegant on its own or in mass.",
+        "Available in various metal and glass finishes. Custom finishes are available upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) ColoUr Disclaimer Actual colours may vary.",
+        "We do our best to ensure that our photos and renders are as true to colour as possible. However, due to photographic l ighting sources, inconsistencies of various monitors settings,  we cannot guarantee that the colour you see accurately portrays the true colour of the product.",
+        "Furthermore, every individual may see these colours differently. Screen images are intended as a guide only and should not be regarded as absolutely correct. If an EXACT COLOUR MATCH is required please get in touch with us. Back to Lighting Previous Previous Vitrine Next Next Black Rain Wall Light"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "black-rain-wall-light",
+      "name": "Black Rain",
+      "type": "Wall Light",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/black-rain-wall-light",
+      "live_h1": "Black Rain / Wall Light",
+      "seo_title": "Black Rain — Wall Light · ILANEL",
+      "meta_description": "Black Rain makes a simple, classic and elegant statement inspired by lightning storms. It features the signature flutes in tandem - the flutes have a drama",
+      "spec_pdf": "",
+      "range": "wall-lights",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866625996-TSYSOTTJ2RWR1DTPHD2Z/Black+Rain+Sconce1_LowRes+3.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/ef826142-c85b-40fc-98b1-96d092dda8bf/Black+Rain+Sconce1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/fdb6418d-6504-4f22-958f-e1a2cf444cfd/Black+Rain+Sconce1_HighRes+2.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/2e075de5-0573-426a-ab04-9f7923b2cabf/Black+Rain+Sconce2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/812482da-0882-42a4-8e4f-47a87f242189/Black+Rain+Sconce2_HighRes+3.png"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Black Rain makes a simple, classic and elegant statement inspired by lightning storms. It features the signature flutes in tandem - the flutes have a dramatic edge on the top and bottom, each with a sensual black satin finish, filled with light that is reflected and enhanced in the piece’s polished interior.",
+        "The internal illumination bursts forth through a sequence of slots to cast a magnificent pattern on their surroundings. Available in various metal and glass finishes. Custom finishes are available upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Back to Lighting home   Related Products RAIN HEAVY RAIN BLACK RAIN PENDANT Previous Previous Snowball Next Next Black Rain Pendant"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "black-rain-custom-pendant-light",
+      "name": "Black Rain",
+      "type": "Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/black-rain-custom-pendant-light",
+      "live_h1": "Black Rain / Pendant",
+      "seo_title": "Black Rain — Pendant · ILANEL",
+      "meta_description": "Inspired by lightning storms Black Rain makes a simple, classic, yet dynamically elegant statement. Perfect on its own, or multiplied in a cluster of elong",
+      "spec_pdf": "",
+      "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866594379-R7RO2SIIO7Y53VDVIQBZ/Black+Rain+Pendant3_LowRes+3.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/a5943d38-ce2b-493c-af28-b790b0f9dcec/Black+Rain+Pendant1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/41005ae7-5043-40b9-a122-80f77121d019/Black+Rain+Pendant1_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/cb283c51-dd26-4e11-9158-28cdbd539e38/Black+Rain+Pendant2_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/e887bab1-9d4f-4371-8604-2cfea64c865d/Black+Rain+Pendant2_HighRes+3.png"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Inspired by lightning storms Black Rain makes a simple, classic, yet dynamically elegant statement. Perfect on its own, or multiplied in a cluster of elongated light drops. Black Rain is finished with a sensual matte black exterior that is filled internally with light that is reflected and enhanced in its raw interior.",
+        "The internal illumination then bursts forth through a sequence of slots and perforations to cast a magnificent pattern on its surroundings. Black Rain is also available in brushed-anodised silver, champagne, and gold. Custom finishes on enquiry.",
+        "Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Slide 5 Slide 5 (current slide) Slide 6 Slide 6 (current slide) Back to Lighting home Related Products RAIN HEAVY RAIN BLACK RAIN WALL LIGHT Featured Projects View fullsize MALT DISTRICT Previous Previous Black Rain Wall Light Next Next Orb"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "hand-blown-glass-orb",
+      "name": "Orb",
+      "type": "Pendant",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/hand-blown-glass-orb",
+      "live_h1": "Orb / Pendant",
+      "seo_title": "Orb — Pendant · ILANEL",
+      "meta_description": "A single glass orb suspends off a slim brass profile. This simple, yet sophisticated design highlights the intricate detail of the hand-blown glass in its ",
+      "spec_pdf": "",
+      "range": "pendants",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702866141584-WK3ZV3MER60MZLUACAQ8/ILANEL_Orb200-02.jpg",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/24f5e343-dc53-4e75-a349-17af72e67053/Orb+Light3_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/cac9c17e-8850-464e-b46d-d42efefe562a/Orb3_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/295fc80b-42ef-4a85-85f6-d2a677298a2b/Orb+Light4_HighRes+3.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/950ed68e-2e84-4f9d-9940-2504dcb5db51/Orb4_HighRes+2.png"
+      ],
+      "story": {},
+      "paragraphs": [
+        "A single glass orb suspends off a slim brass profile. This simple, yet sophisticated design highlights the intricate detail of the hand-blown glass in its various finishes and sizes. This design focuses on simplicity and quality in the use of materials.",
+        "Available in various metal and glass finishes. Custom finishes are available upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Slide 5 Slide 5 (current slide) Slide 6 Slide 6 (current slide) ColoUr Disclaimer Actual colours may vary.",
+        "We do our best to ensure that our photos and renders are as true to colour as possible. However, due to photographic l ighting sources, inconsistencies of various monitors settings,  we cannot guarantee that the colour you see accurately portrays the true colour of the product.",
+        "Furthermore, every individual may see these colours differently. Screen images are intended as a guide only and should not be regarded as absolutely correct. If an EXACT COLOUR MATCH is required please get in touch with us. Back to Lighting Previous Previous Black Rain Pendant Next Next Rain"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "rain-chandelier-multi-sensory",
+      "name": "Rain",
+      "type": "Chandelier",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/rain-chandelier-multi-sensory",
+      "live_h1": "Rain / Chandelier",
+      "seo_title": "Rain — Chandelier · ILANEL",
+      "meta_description": "The concept behind Rain is illuminating: a multi-sensory experience of sight and sound that invites touch and interaction. Rain captures the shimmery spark",
+      "spec_pdf": "",
+      "range": "chandeliers",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1703023931353-LST5VSE95LIB4GEXS2U6/Rain+Chandelier.1465-Edit-Edit.png",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/3812acee-6e12-4ff0-a300-4d196b1e3b88/Rain+Chandelier.1465-Edit-Edit.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1c1ff420-e204-494b-b0f0-b765512589a9/Rain1_HighRes.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/4e53d6b4-aa07-4209-8b75-c1259332ffbb/Rain+Chandelier.1425-Edit-Edit.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/e8d3b3fe-75e8-41ca-a421-5fa21f50e8a4/Rain+Chandelier.1426-Edit-Edit.png"
+      ],
+      "story": {},
+      "paragraphs": [
+        "The concept behind Rain is illuminating: a multi-sensory experience of sight and sound that invites touch and interaction. Rain captures the shimmery sparkle of raindrops frozen in descent and voices a whimsy chime of flutes. Individual drops are visually quite subtle but gain tremendous strength when multiplied and clustered in their modular design.",
+        "Rain is a modular chandelier. However, it can be suspended as a single pendant light. Available in customisable configurations and finishes upon enquiry. Made in Melbourne   Enquire Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Back to Lighting home   Related Products HEAVY RAIN BLACK RAIN WALL LIGHT BLACK RAIN PENDANT Featured Projects FOUR SEASONS HOTEL CASABLANCA ESTEE LAUDER NYC THE NEST PENTHOUSE FOUR SEASONS HOTEL DOHA RENAISSANCE HOTEL NYC THE RITZ CARLTON ASANA Previous Previous Orb Next Next Heavy Rain"
+      ],
+      "related_projects": [],
+      "finishes": []
+    },
+    {
+      "slug": "heavy-rain-chandelier",
+      "name": "Heavy Rain",
+      "type": "Chandelier",
+      "live_url": "https://www.ilanel.com/lighting-design-collections/heavy-rain-chandelier",
+      "live_h1": "Heavy Rain / Chandelier",
+      "seo_title": "Heavy Rain — Chandelier · ILANEL",
+      "meta_description": "Heavy Rain is a larger, more commanding version of Rain, suitable for voids with high ceilings and stairwells. Heavy Rain captures the shimmery sparkle of ",
+      "spec_pdf": "",
+      "range": "chandeliers",
+      "image": "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/1702865910579-NUDNKRN25ZU8UIR4V85M/Heavy+Rain+Chandelier.1399-Edit-Edit.png",
+      "gallery": [
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/d4852dc6-5f19-4e63-9105-7da3a1d7b55c/Heavy+Rain+Chandelier.1399-Edit-Edit.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/c586e146-11ac-4fe6-86f1-979b745432a9/Heavy+Rain2_HighRes.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/d1309ea3-257f-4375-97a2-2c7377b26472/Heavy+Rain+Chandelier.1398-Edit-Edit.png",
+        "https://images.squarespace-cdn.com/content/v1/649c6e2b5e430e5270af584a/f5f8c4a3-95bb-4be8-abfe-f5bfe9882ee4/Heavy+Rain+Chandelier.1400-Edit.png"
+      ],
+      "story": {},
+      "paragraphs": [
+        "Heavy Rain is a larger, more commanding version of Rain, suitable for voids with high ceilings and stairwells. Heavy Rain captures the shimmery sparkle of raindrops frozen in descent. The individual drops are visually quite subtle but gain tremendous strength when multiplied and clustered in large groups.",
+        "Available in customisable configurations and finishes upon enquiry. Made in Melbourne   ENQUIRE Spec Sheets 3D Model Slide 1 Slide 1 (current slide) Slide 2 Slide 2 (current slide) Slide 3 Slide 3 (current slide) Slide 4 Slide 4 (current slide) Back to Lighting home   Related Products RAIN BLACK RAIN PENDANT BLACK RAIN WALL LIGHT Featured Projects View fullsize CAFE BRASS View fullsize SAVE THE CHILDREN View fullsize REGALIA PENTHOUSE View fullsize SENOPATI SUITES Previous Previous Rain"
+      ],
+      "related_projects": [],
+      "finishes": []
     }
-  ],
-  "studio_constants": {
-    "lead_time": "4–12 weeks for collection pieces; longer for custom/commissioned work",
-    "response_time": "within 2 business days",
-    "trade_programme": "20% off RRP + 3D files",
-    "provenance": [
-      "NGV",
-      "Australian War Memorial",
-      "The Hour Glass",
-      "Four Seasons",
-      "Ritz-Carlton"
-    ],
-    "made_in": "Melbourne, Australia"
-  },
-  "_image_note": "Product photography is ILANEL's own, referenced from their Squarespace CDN for demo purposes only.",
-  "_commerce_note": "Attributes and variants extracted from the authenticated Squarespace Commerce export (2026-08-11, via Codex). Prices are REAL. SKUs are real where present."
+  ]
 }

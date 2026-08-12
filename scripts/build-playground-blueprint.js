@@ -95,6 +95,9 @@ function buildSeedPhp() {
     name: p.name,
     type: p.type,
     description: p.meta_description,
+    // Full body copy scraped from the live product page. Rendered as the main
+    // product description; without this the pages carry only the meta blurb.
+    paragraphs: p.paragraphs || [],
     spec_pdf: p.spec_pdf,
     range: p.range,
     // Only used on the no-variants branch; variable products take their SKUs
@@ -152,6 +155,8 @@ JSON
 $ranges = array(
     'pendants'    => 'Pendants',
     'wall-lights' => 'Wall Lights',
+    'chandeliers' => 'Chandeliers',
+    'lamps'       => 'Lamps',
 );
 
 $range_ids = array();
@@ -215,6 +220,16 @@ foreach ( $data['products'] as $item ) {
     $product->set_status( 'publish' );
     $product->set_catalog_visibility( 'visible' );
     $product->set_short_description( $item['description'] );
+
+    if ( ! empty( $item['paragraphs'] ) ) {
+        $body = '';
+
+        foreach ( $item['paragraphs'] as $para ) {
+            $body .= '<p>' . wp_kses_post( $para ) . "</p>\\n\\n";
+        }
+
+        $product->set_description( $body );
+    }
 
     if ( $has_variants ) {
         /*
