@@ -316,17 +316,56 @@ while ( have_posts() ) :
 									$ilanel_swatch_by_name[ $ilanel_swatch['name'] ] = $ilanel_swatch['image'];
 								}
 
+
 								foreach ( $ilanel_attributes as $ilanel_attr ) :
 									$ilanel_axis    = $ilanel_attr->get_name();
 									$ilanel_key     = sanitize_title( $ilanel_axis );
 									$ilanel_options = $ilanel_attr->get_options();
 
-									// Does every option on this axis have swatch imagery?
-									$ilanel_is_swatch = true;
-									foreach ( $ilanel_options as $ilanel_option ) {
-										if ( empty( $ilanel_swatch_by_name[ $ilanel_option ] ) ) {
+									/*
+									 * Resolve a photograph per option, but only on a colour or
+									 * finish axis. Restricting it to that axis is what makes
+									 * fuzzy matching safe — see swatch_for_option().
+									 */
+									$ilanel_is_colour_axis = (bool) preg_match( '/colou?r|finish/i', $ilanel_axis );
+									$ilanel_option_images  = array();
+
+									if ( $ilanel_is_colour_axis ) {
+										foreach ( $ilanel_options as $ilanel_option ) {
+											$ilanel_option_images[ $ilanel_option ] = ILANEL_Product_Meta::swatch_for_option(
+												$ilanel_option,
+												$ilanel_swatch_by_name
+											);
+										}
+									}
+
+									/*
+									 * Fall back to the product's own hero for options with no
+									 * finish photograph of their own.
+									 *
+									 * All-or-nothing was tried and is wrong: Kahdu matches
+									 * Black and Brown exactly but not White/Blue/Orange/Olive,
+									 * so requiring every option to resolve turned a WORKING
+									 * swatch axis back into pills and broke a preview that had
+									 * been verified in a real WordPress. A partial match is
+									 * still better than none — the matched finishes change the
+									 * preview, the rest return to the default view.
+									 */
+									$ilanel_is_swatch = $ilanel_is_colour_axis;
+									$ilanel_matched   = 0;
+
+									if ( $ilanel_is_colour_axis ) {
+										foreach ( $ilanel_options as $ilanel_option ) {
+											if ( ! empty( $ilanel_option_images[ $ilanel_option ] ) ) {
+												$ilanel_matched++;
+											} else {
+												$ilanel_option_images[ $ilanel_option ] = $ilanel_gallery[0] ?? '';
+											}
+										}
+
+										// No finish imagery at all: plain pills, as before.
+										if ( 0 === $ilanel_matched ) {
 											$ilanel_is_swatch = false;
-											break;
 										}
 									}
 
@@ -343,10 +382,10 @@ while ( have_posts() ) :
 														<input type="radio"
 															name="attribute_<?php echo esc_attr( $ilanel_key ); ?>"
 															value="<?php echo esc_attr( $ilanel_option ); ?>"
-															data-image="<?php echo esc_url( $ilanel_swatch_by_name[ $ilanel_option ] ); ?>"
+															data-image="<?php echo esc_url( $ilanel_option_images[ $ilanel_option ] ); ?>"
 															<?php checked( 0, $ilanel_i ); ?>>
 														<span class="rg-config__swatch-media">
-															<img src="<?php echo esc_url( $ilanel_swatch_by_name[ $ilanel_option ] ); ?>"
+															<img src="<?php echo esc_url( $ilanel_option_images[ $ilanel_option ] ); ?>"
 																alt="<?php echo esc_attr( $ilanel_option ); ?>" loading="lazy">
 														</span>
 														<span class="rg-config__swatch-name"><?php echo esc_html( $ilanel_option ); ?></span>

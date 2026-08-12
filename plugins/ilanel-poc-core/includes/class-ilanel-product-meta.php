@@ -220,6 +220,69 @@ class ILANEL_Product_Meta {
 	}
 
 	/**
+	 * Find the swatch photograph for an attribute option value.
+	 *
+	 * Exact match first. Failing that, a token match — because ILANEL's
+	 * swatches are named for colour FAMILIES ("Golds", "Amber & Bronze") while
+	 * the Commerce colour axis holds finish names ("Brushed Brass - Patina
+	 * (Bronze)"). Comet has five real per-finish photographs that exact
+	 * matching never reached, so its configurator rendered plain pills and the
+	 * preview image never changed when a finish was chosen.
+	 *
+	 * Generic words are ignored: every Comet finish contains "Brushed Brass",
+	 * so matching on those would point every option at the same image.
+	 *
+	 * Callers must only use this for a colour/finish axis. That constraint is
+	 * what stops "Amber" matching Comet's GLASS axis — a looser version of
+	 * this matched 18 of 36 variations to one wrong photograph, which is worse
+	 * than showing no change at all.
+	 *
+	 * @param string   $option   Attribute option value.
+	 * @param string[] $swatches name => image URL.
+	 * @return string Image URL, or '' when nothing matches.
+	 */
+	public static function swatch_for_option( $option, $swatches ) {
+		if ( ! empty( $swatches[ $option ] ) ) {
+			return $swatches[ $option ];
+		}
+
+		$stop = array( 'brushed', 'brass', 'patina', 'living', 'metal', 'raw', 'and', 'the' );
+
+		$tokenise = static function ( $text ) use ( $stop ) {
+			$words = preg_split( '/[^a-z]+/', strtolower( $text ), -1, PREG_SPLIT_NO_EMPTY );
+
+			return array_values(
+				array_filter(
+					(array) $words,
+					static function ( $word ) use ( $stop ) {
+						return strlen( $word ) > 2 && ! in_array( $word, $stop, true );
+					}
+				)
+			);
+		};
+
+		$option_tokens = $tokenise( $option );
+
+		if ( ! $option_tokens ) {
+			return '';
+		}
+
+		foreach ( $swatches as $name => $image ) {
+			foreach ( $tokenise( $name ) as $token ) {
+				foreach ( $option_tokens as $option_token ) {
+					// Prefix comparison gives singular/plural tolerance:
+					// "Golds" matches "Gold", "Teals" matches "Teal".
+					if ( 0 === strpos( $token, $option_token ) || 0 === strpos( $option_token, $token ) ) {
+						return $image;
+					}
+				}
+			}
+		}
+
+		return '';
+	}
+
+	/**
 	 * Available lengths for the configurator.
 	 *
 	 * @param int $product_id Product post ID.
