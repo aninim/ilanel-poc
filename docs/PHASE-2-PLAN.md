@@ -88,6 +88,17 @@ scripts/build-playground-blueprint.js   inlines every file + generates the seed 
    is the WP-CLI equivalent. Task 1 updated **only the first** —
    `seed-products.php` still creates `WC_Product_Simple` with the old demo
    prices. Fix it before anyone runs it against a real install.
+7. **Template-scoped gates in `functions.php` fail silently.** `product.js`
+   (which carries the *hero carousel*, not just the configurator) and the
+   `has-hero` body class were both gated on `is_product()`. Any new template
+   that opens on a hero must be added to both, or the carousel is inert and
+   the header does not overlay — with no error anywhere. Task 2 widened both
+   to `|| is_front_page()`.
+8. **`initHero()` needs its full markup contract.** It queries `.js-hero` and
+   then calls `.addEventListener` on `.js-hero-next`/`.js-hero-prev`
+   unconditionally — a `.rg-hero` without those buttons throws. The product
+   template only prints them when there is more than one slide; copy that
+   guard.
 
 ### Two live bugs to fix on the way past
 
@@ -254,11 +265,41 @@ updates price and image from real variation data, and the page emits
 
 ---
 
-## Task 2 — Homepage
+## Task 2 — Homepage ✅ DONE (commit `139abf9`)
 
 **Goal:** the page where conversion is won. Currently there is **no
 `front-page.php`** — `index.php` is the only fallback, so this is a clean
 addition with no collisions.
+
+> **Shipped.** `front-page.php` follows RG's real homepage order — hero →
+> latest releases → about → provenance → closing CTA — read from their live
+> markup. Landing page is now `/`; the range archive is one click in.
+>
+> Two deliberate departures: RG's homepage has **no h1 at all** (every section
+> opens at h2), so ours states the proposition in one h1; and RG's "Explore
+> Collections by their Tone" is their taxonomy, so that slot carries ILANEL's
+> provenance list (NGV, War Memorial, Four Seasons) instead.
+>
+> **Two silent gates had to be widened** — both would have failed quietly:
+> `product.js` carries the hero carousel but was enqueued only on
+> `is_product()`, so the homepage carousel would have been inert; and the
+> `has-hero` body class (header overlaid on photography) was product-only. The
+> `<model-viewer>` branch inside the enqueue is now separately guarded on
+> `is_product()` because it calls `get_the_ID()`.
+>
+> **Three layout bugs caught by screenshotting, not review:** at 92vh the hero
+> swallowed ~72% of the page and pushed the grid below the fold (now 78vh);
+> hero copy had to become *centred* because ILANEL's photography centres the
+> fixture and `.rg-shell` (168rem) is wider than a 1440px viewport, so
+> narrowing left-aligned text just pushed it onto the glass; and the archive's
+> 3-up grid stranded the 4th product alone on a second row (homepage uses 4-up).
+>
+> Verified at 1440px and 390px — no horizontal overflow on mobile
+> (`scrollWidth == clientWidth`, zero offending elements).
+>
+> ⚠️ **Known cosmetic gap:** the Comet Stardust tile letterboxes in the grid —
+> its source image is a wide product shot that cannot fill a 4:5 frame. That is
+> studio photography, not a CSS bug.
 
 - Create `themes/ilanel-poc/front-page.php`.
 - **Read RG's homepage first**, the same way the product page was built:
