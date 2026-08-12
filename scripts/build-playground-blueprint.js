@@ -167,6 +167,7 @@ $ranges = array(
     'wall-lights' => 'Wall Lights',
     'chandeliers' => 'Chandeliers',
     'lamps'       => 'Lamps',
+    'editions'    => 'Editions',
 );
 
 $range_ids = array();

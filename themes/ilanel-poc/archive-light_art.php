@@ -43,7 +43,24 @@ $ilanel_total = (int) $GLOBALS['wp_query']->found_posts;
 
 			<ul class="rg-index rg-index--art">
 				<?php while ( have_posts() ) : ?>
-					<?php the_post(); ?>
+					<?php
+					the_post();
+
+					/*
+					 * ILANEL title these "Work / Venue / Occasion" — e.g.
+					 * "Form & Phenomenon / Goldstone Gallery / Melbourne Design
+					 * Week 2026", up to 69 characters. Printed whole, the long
+					 * ones wrap to three lines and break the baseline that makes
+					 * the grid read as composed rather than a list. Only the
+					 * work name goes in the tile; the venue becomes a smaller
+					 * caption line, same split the single template uses for
+					 * the H1/eyebrow.
+					 */
+					$ilanel_full  = get_the_title();
+					$ilanel_parts = array_map( 'trim', explode( '/', $ilanel_full ) );
+					$ilanel_name  = $ilanel_parts[0];
+					$ilanel_venue = count( $ilanel_parts ) > 1 ? implode( ' · ', array_slice( $ilanel_parts, 1 ) ) : '';
+					?>
 					<li class="rg-index__item">
 						<a href="<?php the_permalink(); ?>">
 							<div class="rg-index__media">
@@ -55,7 +72,14 @@ $ilanel_total = (int) $GLOBALS['wp_query']->found_posts;
 							</div>
 
 							<div class="rg-index__meta">
-								<h2 class="rg-index__name"><?php the_title(); ?></h2>
+								<div>
+									<h2 class="rg-index__name"><?php echo esc_html( $ilanel_name ); ?></h2>
+
+									<?php if ( $ilanel_venue ) : ?>
+										<p class="rg-index__type"><?php echo esc_html( $ilanel_venue ); ?></p>
+									<?php endif; ?>
+								</div>
+
 								<span class="rg-index__more"><?php esc_html_e( 'View work /', 'ilanel-poc' ); ?></span>
 							</div>
 						</a>

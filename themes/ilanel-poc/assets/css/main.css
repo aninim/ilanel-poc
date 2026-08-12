@@ -2028,9 +2028,12 @@ ul.products li.product .button {
   transform: scale(1.04);
 }
 
+/* start, not baseline: Light Art tiles carry a two-line name+venue block
+   next to the single-line CTA, and baseline aligned them to the venue line
+   instead of the title. */
 .rg-index__meta {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 2rem;
   margin-top: 1.8rem;
@@ -2079,6 +2082,29 @@ ul.products li.product .button {
 
 .rg-index--art .rg-index__name {
   font-size: 2rem;
+}
+
+/* Editions: three-up, portrait, shown as works rather than compared as
+   products — no price line, an "Enquire" affordance instead. */
+.rg-index--editions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5rem 2.4rem;
+}
+
+.rg-index--editions .rg-index__media {
+  aspect-ratio: 4 / 5;
+}
+
+.rg-index--editions .rg-index__name {
+  font-size: 2rem;
+}
+
+.rg-index__type {
+  margin: 0.4rem 0 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-muted);
 }
 
 /* --- Single project / light art ------------------------------------------- */

@@ -108,7 +108,9 @@ const merged = catalogue.map((c) => {
     meta_description: s ? s.meta_description : (c.paragraphs[0] || '').slice(0, 155),
     // Prefer the authenticated record, fall back to the scraped spec sheet.
     spec_pdf: (s && s.spec_pdf) || c.spec_pdf || '',
-    range: s ? s.range : rangeFor(c.type),
+    // Editions carry their own range from the collection they were scraped
+    // from; everything else derives one from its type label.
+    range: c.source_range || ( s ? s.range : rangeFor( c.type ) ),
     image: sized(c.image || (s ? s.image : ''), 1500),
     gallery: (c.gallery && c.gallery.length ? c.gallery : s ? s.gallery : []).map((u) => sized(u, 1500)),
     // Seeded products have curated story images; scraped ones use later

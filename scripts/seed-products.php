@@ -89,6 +89,7 @@ $ilanel_range_names = array(
 	'wall-lights' => 'Wall Lights',
 	'chandeliers' => 'Chandeliers',
 	'lamps'       => 'Lamps',
+	'editions'    => 'Editions',
 );
 
 $ilanel_range_ids = array();

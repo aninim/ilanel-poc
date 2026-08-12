@@ -32,7 +32,21 @@ const path = require('path');
 const https = require('https');
 
 const SITE = 'https://www.ilanel.com';
-const COLLECTION = 'lighting-design-collections';
+/*
+ * ILANEL's saleable work lives in TWO collections, not one:
+ *
+ *   /lighting-design-collections  the main catalogue (23 after skips)
+ *   /editions                     limited editions (11) — Ripple, Droplet,
+ *                                 Atlas, Matariki, Brass Supernova
+ *
+ * Scraping only the first missed a third of the range. Both are pulled and
+ * merged into one catalogue, with editions tagged so they can carry their own
+ * range and messaging.
+ */
+const COLLECTIONS = [
+  { path: 'lighting-design-collections', range: null },
+  { path: 'editions', range: 'editions' },
+];
 const UA = 'Mozilla/5.0 (compatible; ilanel-migration-audit/1.0; read-only)';
 const DELAY_MS = 900;
 
@@ -199,15 +213,24 @@ async function main() {
 
   console.log('Reading collection index…');
 
-  const indexRaw = await get(`${SITE}/${COLLECTION}?format=json`);
-  const index = JSON.parse(indexRaw);
+  let items = [];
 
-  let items = (index.items || []).map((i) => ({
-    title: decode(i.title || ''),
-    urlId: i.urlId || '',
-    fullUrl: i.fullUrl || `/${COLLECTION}/${i.urlId}`,
-    assetUrl: i.assetUrl || '',
-  }));
+  for (const collection of COLLECTIONS) {
+    const raw = await get(SITE + '/' + collection.path + '?format=json');
+    const index = JSON.parse(raw);
+
+    const found = (index.items || []).map((i) => ({
+      title: decode(i.title || ''),
+      urlId: i.urlId || '',
+      fullUrl: i.fullUrl || '/' + collection.path + '/' + i.urlId,
+      assetUrl: i.assetUrl || '',
+      range: collection.range,
+    }));
+
+    console.log('  ' + collection.path + ': ' + found.length);
+    items = items.concat(found);
+    await sleep(DELAY_MS);
+  }
 
   console.log(`  ${items.length} entries listed`);
 
@@ -240,6 +263,9 @@ async function main() {
          * URL-preservation lock is still satisfiable at cutover.
          */
         slug: it.urlId.replace(/\//g, '-'),
+        // Set for editions, null for the main catalogue (where the range is
+        // derived from the type label instead).
+        source_range: it.range,
         name: data.name,
         type: data.type,
         live_url: SITE + it.fullUrl,
