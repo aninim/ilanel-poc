@@ -165,13 +165,79 @@ function ilanel_poc_strip_woocommerce_defaults() {
 	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 	remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 
-	// No cart. RG sell made-to-order pieces through enquiry, and so does
-	// ILANEL ("ENQUIRE" on the live product page). An Add to Cart button
-	// would misrepresent how the studio actually sells.
-	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
-	remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+	/*
+	 * Two paths, decided per product by whether it has a real price.
+	 *
+	 * Pieces with Commerce data (variants, prices, SKUs) can be bought:
+	 * WooCommerce's own add-to-cart runs and the AU checkout applies. Pieces
+	 * without one are genuinely price-on-application — made-to-order lighting
+	 * quoted per project — and keep the enquiry route, which is how ILANEL
+	 * sell them today.
+	 *
+	 * The removal is therefore conditional rather than blanket; see
+	 * ilanel_poc_is_purchasable().
+	 */
 	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
 }
+
+/**
+ * Can this product be bought, or is it enquiry-only?
+ *
+ * The catalogue currently splits: four products carry real prices from the
+ * authenticated Commerce export; the other nineteen await an API key. Rather
+ * than guess, the price itself is the signal — a product with no price cannot
+ * meaningfully be added to a cart.
+ *
+ * @param WC_Product|null $product Product to test. Defaults to global.
+ * @return bool
+ */
+function ilanel_poc_is_purchasable( $product = null ) {
+	if ( ! $product instanceof WC_Product ) {
+		global $product;
+	}
+
+	if ( ! $product instanceof WC_Product ) {
+		return false;
+	}
+
+	if ( $product->is_type( 'variable' ) ) {
+		return '' !== $product->get_variation_price( 'min' );
+	}
+
+	return '' !== $product->get_price();
+}
+
+/**
+ * Strip add-to-cart only for products that have no price.
+ *
+ * Runs late on wp so the queried product is known.
+ */
+function ilanel_poc_conditional_cart() {
+	if ( ! function_exists( 'is_product' ) || ! is_product() ) {
+		return;
+	}
+
+	if ( ! ilanel_poc_is_purchasable() ) {
+		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+	}
+}
+add_action( 'wp', 'ilanel_poc_conditional_cart' );
+
+/**
+ * Archive tiles: cart button for priced pieces, enquiry link otherwise.
+ *
+ * @param string     $html    Default button markup.
+ * @param WC_Product $product Product.
+ * @return string
+ */
+function ilanel_poc_loop_add_to_cart( $html, $product ) {
+	if ( ilanel_poc_is_purchasable( $product ) ) {
+		return $html;
+	}
+
+	return '';
+}
+add_filter( 'woocommerce_loop_add_to_cart_link', 'ilanel_poc_loop_add_to_cart', 10, 2 );
 
 /**
  * Short description, then an Enquire call to action.
@@ -193,9 +259,18 @@ function ilanel_poc_render_enquiry() {
 		echo '</div>';
 	}
 
+	/*
+	 * Purchasable pieces get WooCommerce's own add-to-cart instead — showing
+	 * both a cart button and an "Enquire" CTA would be two competing calls to
+	 * action on the same page.
+	 */
+	if ( ilanel_poc_is_purchasable( $product ) ) {
+		return;
+	}
+
 	echo '<p class="ilanel-enquire">';
 	echo '<a class="single_add_to_cart_button" href="' . esc_url( home_url( '/contact/' ) ) . '">';
-	echo esc_html__( 'Enquire', 'ilanel-poc' );
+	echo esc_html__( 'Enquire for price', 'ilanel-poc' );
 	echo '</a></p>';
 }
 add_action( 'woocommerce_single_product_summary', 'ilanel_poc_render_enquiry', 25 );

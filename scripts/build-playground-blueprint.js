@@ -552,6 +552,143 @@ if ( ! empty( $data['light_art'] ) && post_type_exists( 'light_art' ) ) {
 }
 
 /*
+ * Australian commerce configuration.
+ *
+ * Everything needed to take a real AU order end to end: GST, a domestic
+ * shipping zone, and an offline gateway so checkout can actually complete in
+ * the demo without moving money.
+ *
+ * AU specifics that are easy to get wrong:
+ *  - GST is 10% and prices are quoted INCLUSIVE. Australian consumer law
+ *    requires the displayed price to be what you pay, so woocommerce_prices_
+ *    include_tax is 'yes' and the tax rate is not compounded.
+ *  - Shipping is taxable in AU, so the rate applies to it too.
+ */
+update_option( 'woocommerce_currency', 'AUD' );
+update_option( 'woocommerce_default_country', 'AU:VIC' );
+update_option( 'woocommerce_calc_taxes', 'yes' );
+update_option( 'woocommerce_prices_include_tax', 'yes' );
+update_option( 'woocommerce_tax_based_on', 'shipping' );
+update_option( 'woocommerce_tax_display_shop', 'incl' );
+update_option( 'woocommerce_tax_display_cart', 'incl' );
+update_option( 'woocommerce_price_display_suffix', 'incl. GST' );
+
+// Sell to Australia only for now.
+update_option( 'woocommerce_allowed_countries', 'specific' );
+update_option( 'woocommerce_specific_allowed_countries', array( 'AU' ) );
+update_option( 'woocommerce_ship_to_countries', 'specific' );
+update_option( 'woocommerce_specific_ship_to_countries', array( 'AU' ) );
+
+// 10% GST, applied to shipping as well.
+$GLOBALS['wpdb']->query( "DELETE FROM {$GLOBALS['wpdb']->prefix}woocommerce_tax_rates WHERE tax_rate_name = 'GST'" );
+
+WC_Tax::_insert_tax_rate(
+    array(
+        'tax_rate_country'  => 'AU',
+        'tax_rate_state'    => '',
+        'tax_rate'          => '10.0000',
+        'tax_rate_name'     => 'GST',
+        'tax_rate_priority' => 1,
+        'tax_rate_compound' => 0,
+        'tax_rate_shipping' => 1,
+        'tax_rate_order'    => 0,
+        'tax_rate_class'    => '',
+    )
+);
+
+/*
+ * Shipping: a single Australian zone with flat-rate freight.
+ *
+ * $180 reflects that these are large, fragile, hand-made glass and brass
+ * fixtures shipped crated — not a parcel rate. It is a demo figure; the real
+ * schedule comes from the studio's freight arrangements.
+ */
+$zones = WC_Shipping_Zones::get_zones();
+$has_au_zone = false;
+
+foreach ( $zones as $zone_data ) {
+    if ( 'Australia' === $zone_data['zone_name'] ) {
+        $has_au_zone = true;
+    }
+}
+
+if ( ! $has_au_zone ) {
+    $zone = new WC_Shipping_Zone();
+    $zone->set_zone_name( 'Australia' );
+    $zone->add_location( 'AU', 'country' );
+    $zone->save();
+
+    $instance_id = $zone->add_shipping_method( 'flat_rate' );
+
+    if ( $instance_id ) {
+        update_option(
+            'woocommerce_flat_rate_' . $instance_id . '_settings',
+            array(
+                'title'      => 'Crated freight (Australia)',
+                'tax_status' => 'taxable',
+                'cost'       => '180.00',
+            )
+        );
+    }
+
+    // Free local pickup from the Melbourne studio.
+    $pickup_id = $zone->add_shipping_method( 'local_pickup' );
+
+    if ( $pickup_id ) {
+        update_option(
+            'woocommerce_local_pickup_' . $pickup_id . '_settings',
+            array(
+                'title'      => 'Collect from the Melbourne studio',
+                'tax_status' => 'taxable',
+                'cost'       => '0',
+            )
+        );
+    }
+}
+
+/*
+ * An offline gateway so checkout completes in the demo.
+ *
+ * Deliberately NOT a real payment gateway: this proves the order pipeline
+ * (cart -> checkout -> tax -> shipping -> order record) without handling card
+ * data or moving money. Swap for Stripe/eWAY at production.
+ */
+update_option(
+    'woocommerce_cod_settings',
+    array(
+        'enabled'            => 'yes',
+        'title'              => 'Invoice on confirmation (demo)',
+        'description'        => 'Demo gateway. The studio confirms lead time and issues an invoice; no card is taken here.',
+        'enable_for_methods' => array(),
+        'enable_for_virtual' => 'yes',
+    )
+);
+
+update_option( 'woocommerce_enable_guest_checkout', 'yes' );
+update_option( 'woocommerce_cart_redirect_after_add', 'no' );
+
+/*
+ * Cart/checkout pages.
+ *
+ * WooCommerce creates these on activation, but if that step is ever skipped
+ * or ordered differently the checkout 404s and the whole purchase chain looks
+ * broken for a reason that has nothing to do with this theme. Create them
+ * explicitly if missing — WC_Install::create_pages() is idempotent.
+ */
+if ( ! wc_get_page_id( 'cart' ) || ! wc_get_page_id( 'checkout' ) ) {
+    if ( ! class_exists( 'WC_Install' ) ) {
+        require_once WP_PLUGIN_DIR . '/woocommerce/includes/class-wc-install.php';
+    }
+
+    WC_Install::create_pages();
+}
+
+echo "  cart page: " . ( wc_get_page_id( 'cart' ) > 0 ? 'ok' : 'MISSING' ) . "\\n";
+echo "  checkout page: " . ( wc_get_page_id( 'checkout' ) > 0 ? 'ok' : 'MISSING' ) . "\\n";
+
+echo "Configured AU commerce: GST 10% inclusive, AU-only, flat freight + pickup\\n";
+
+/*
  * Front page.
  *
  * front-page.php takes precedence over the page content in the template
