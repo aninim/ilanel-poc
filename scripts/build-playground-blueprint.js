@@ -97,6 +97,9 @@ function buildSeedPhp() {
     description: p.meta_description,
     spec_pdf: p.spec_pdf,
     range: p.range,
+    // Only used on the no-variants branch; variable products take their SKUs
+    // from the variants themselves.
+    sku: p.sku || '',
     image: p.image,
     gallery: p.gallery || [],
     story: p.story || [],
@@ -234,7 +237,15 @@ foreach ( $data['products'] as $item ) {
     } else {
         $product->set_manage_stock( false );
         $product->set_stock_status( 'onbackorder' );
-        $product->set_sku( 'DEMO-' . strtoupper( str_replace( '-', '', $item['slug'] ) ) );
+
+        // Prefer the real SKU; DEMO-* is only a last resort for a product
+        // with neither variants nor a SKU of its own. The CLI seeder does
+        // the same — the two must not disagree.
+        if ( ! empty( $item['sku'] ) && 0 !== strpos( $item['sku'], 'PLACEHOLDER' ) ) {
+            $product->set_sku( $item['sku'] );
+        } else {
+            $product->set_sku( 'DEMO-' . strtoupper( str_replace( '-', '', $item['slug'] ) ) );
+        }
     }
 
     $product_id = $product->save();

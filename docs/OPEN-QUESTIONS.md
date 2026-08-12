@@ -18,17 +18,20 @@ live in `data/products.json` → `commerce.variants[].price`:
 | Dais | 4 (Glass) | $2,094.40 – $2,818.20 |
 | Comet Stardust | 3 (Size) | $3,572.80 – $4,188.80 |
 
-The old invented figures (`2450.00` etc.) are gone from the blueprint seeder.
+The old invented figures (`2450.00` etc.) are gone from both seeders.
 
-⚠️ **Still stale in one place:** `scripts/seed-products.php` (the WP-CLI
-seeder) was not updated in Task 1 and retains the demo price table. Anything
-it produces is not real.
+`scripts/seed-products.php` (the WP-CLI seeder) was stale until 2026-08-12 —
+it still built `WC_Product_Simple` with the demo prices while the blueprint
+seeder built variable products. It now mirrors the blueprint generator:
+variable products, real attributes and variants, `WC_Product_Variable::sync()`,
+and it seeds projects and the product↔project relation too.
 
 ## 2. SKUs — ✅ RESOLVED (2026-08-11)
 
 Real SKUs ship with the variant data (e.g. `SQ0540475`). The `DEMO-*` override
-was removed from the blueprint seeder. Same caveat as above for
-`seed-products.php`.
+was removed from the blueprint seeder, and as of 2026-08-12 the WP-CLI seeder
+matches — `DEMO-*` is now only used for products with no variant data, of
+which there are currently none.
 
 ## 3. Finishes — not captured
 
