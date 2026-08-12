@@ -131,7 +131,17 @@ function buildSeedPhp() {
     console.warn('  ! data/projects.json missing — seeding no projects');
   }
 
-  const payload = JSON.stringify({ products, projects }, null, 2);
+  // Light Art: exhibitions and commissions, distinct from both the catalogue
+  // and from client installations.
+  let lightArt = [];
+
+  try {
+    lightArt = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'light-art.json'), 'utf8'));
+  } catch (e) {
+    console.warn('  ! data/light-art.json missing — seeding no light art');
+  }
+
+  const payload = JSON.stringify({ products, projects, light_art: lightArt }, null, 2);
 
   return `<?php
 require_once '/wordpress/wp-load.php';
@@ -489,6 +499,56 @@ if ( ! empty( $data['projects'] ) && post_type_exists( 'project' ) ) {
     }
 
     echo "Seeded " . count( $data['projects'] ) . " projects\\n";
+}
+
+/*
+ * Light Art — exhibitions and commissions.
+ *
+ * Same shape as projects but a separate post type: this is gallery and
+ * design-week work, not a saleable catalogue and not a client install.
+ */
+if ( ! empty( $data['light_art'] ) && post_type_exists( 'light_art' ) ) {
+
+    foreach ( $data['light_art'] as $art ) {
+        $existing_art = get_page_by_path( $art['slug'], OBJECT, 'light_art' );
+
+        $art_content = '';
+        foreach ( $art['paragraphs'] as $para ) {
+            $art_content .= '<p>' . wp_kses_post( $para ) . "</p>\\n\\n";
+        }
+
+        if ( $existing_art ) {
+            $art_id = $existing_art->ID;
+        } else {
+            $art_id = wp_insert_post(
+                array(
+                    'post_title'   => sanitize_text_field( $art['title'] ),
+                    'post_name'    => sanitize_title( $art['slug'] ),
+                    'post_type'    => 'light_art',
+                    'post_status'  => 'publish',
+                    'post_content' => $art_content,
+                )
+            );
+        }
+
+        if ( ! $art_id || is_wp_error( $art_id ) ) {
+            continue;
+        }
+
+        if ( ! empty( $art['image'] ) && ! get_post_thumbnail_id( $art_id ) ) {
+            $art_att = media_sideload_image( $art['image'], $art_id, $art['title'], 'id' );
+
+            if ( ! is_wp_error( $art_att ) ) {
+                set_post_thumbnail( $art_id, $art_att );
+            }
+        }
+
+        if ( ! empty( $art['gallery'] ) ) {
+            update_post_meta( $art_id, '_ilanel_project_gallery', array_map( 'esc_url_raw', $art['gallery'] ) );
+        }
+    }
+
+    echo "Seeded " . count( $data['light_art'] ) . " light art works\\n";
 }
 
 /*

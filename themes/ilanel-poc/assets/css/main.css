@@ -1080,6 +1080,13 @@ body.has-hero .rg-header::before {
   color: var(--rg-muted);
 }
 
+/* Made-to-order pieces without Commerce data yet. Muted and italic so it
+   reads as a state rather than as a price. */
+.rg-product-card__poa {
+  font-style: italic;
+  color: var(--rg-muted);
+}
+
 .rg-product-card__price .woocommerce-Price-amount {
   font-weight: 300;
 }
@@ -1780,6 +1787,41 @@ body.has-hero.is-past-hero .rg-navbtn span {
 .rg-menu__aside {
   padding-top: 1.2rem;
   border-top: 1px solid var(--rg-rule);
+}
+
+/* Ranges are a secondary tier under Products: smaller, indented, with a
+   count so the catalogue's shape is legible at a glance. */
+.rg-menu__group {
+  margin-top: 0.4rem;
+}
+
+.rg-menu__sublist {
+  margin: 0;
+  padding: 0 0 0 2.2rem;
+  list-style: none;
+}
+
+.rg-menu__sublist li + li {
+  margin-top: 0.5rem;
+}
+
+.rg-menu__sublist a {
+  font-family: var(--rg-sans);
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: #333;
+}
+
+.rg-menu__sublist a:hover {
+  color: var(--rg-ink);
+  border-bottom-color: var(--rg-ink);
+}
+
+.rg-menu__count {
+  margin-left: 0.7rem;
+  font-size: 1.1rem;
+  color: var(--rg-muted);
 }
 
 .rg-menu__label {

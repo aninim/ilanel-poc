@@ -66,17 +66,24 @@ $ilanel_term = get_queried_object();
 								<p class="rg-product-card__type"><?php echo esc_html( $ilanel_type ); ?></p>
 							<?php endif; ?>
 
-							<?php if ( $product->get_price() ) : ?>
-								<p class="rg-product-card__price">
-									<?php
-									printf(
-										/* translators: %s: formatted price */
-										esc_html__( 'From %s', 'ilanel-poc' ),
-										wp_kses_post( wc_price( $product->get_price() ) )
-									);
-									?>
-								</p>
-							<?php endif; ?>
+							<?php
+							/*
+							 * get_price_html() handles variable ranges, currency and tax
+							 * display; wc_price(get_price()) silently showed only the
+							 * minimum. Products still awaiting Commerce data have no price,
+							 * so they read as price-on-application rather than as a blank.
+							 */
+							$ilanel_price_html = $product->get_price_html();
+							?>
+							<p class="rg-product-card__price">
+								<?php
+								if ( $ilanel_price_html ) {
+									echo wp_kses_post( $ilanel_price_html );
+								} else {
+									echo '<span class="rg-product-card__poa">' . esc_html__( 'Enquire for price', 'ilanel-poc' ) . '</span>';
+								}
+								?>
+							</p>
 						</a>
 					</li>
 					<?php

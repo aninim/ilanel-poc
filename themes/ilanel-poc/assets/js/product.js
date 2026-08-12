@@ -9,9 +9,28 @@
 
   /* --- Hero carousel: cross-fade, matching RG's .slider--fade --------- */
 
+  /* Promote deferred hero slides once the first one is on screen.
+   *
+   * Only slide 1 ships with an inline background; the rest carry data-bg so
+   * they do not compete with it for bandwidth. Runs on window load — by then
+   * the visible image is painted and the remaining slides can fetch freely.
+   * Without JS the carousel never advances anyway, so nothing is lost.
+   */
+  function loadDeferredSlides() {
+    var deferred = document.querySelectorAll('.rg-hero__slide[data-bg]');
+
+    deferred.forEach(function (slide) {
+      slide.style.backgroundImage = "url('" + slide.dataset.bg + "')";
+      slide.removeAttribute('data-bg');
+    });
+  }
+
   function initHero() {
     var hero = document.querySelector('.js-hero');
     if (!hero) return;
+
+    if (document.readyState === 'complete') loadDeferredSlides();
+    else window.addEventListener('load', loadDeferredSlides);
 
     var slides = hero.querySelectorAll('.rg-hero__slide');
     if (slides.length < 2) return;

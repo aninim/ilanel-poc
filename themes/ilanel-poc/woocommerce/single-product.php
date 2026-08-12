@@ -61,11 +61,39 @@ while ( have_posts() ) :
 	the_post();
 	?>
 
+	<?php
+	/*
+	 * Preload the first hero image.
+	 *
+	 * The slides are CSS background-images, which the browser discovers only
+	 * after the stylesheet resolves and cannot prioritise on its own — so the
+	 * largest, most visible image on the page started late. This makes it an
+	 * explicit high-priority fetch. fetchpriority is ignored by browsers that
+	 * do not support it, so there is no downside.
+	 */
+	?>
+	<?php if ( ! empty( $ilanel_gallery[0] ) ) : ?>
+		<link rel="preload" as="image" fetchpriority="high"
+			href="<?php echo esc_url( $ilanel_gallery[0] ); ?>">
+	<?php endif; ?>
+
 	<?php // 1. Hero carousel — sits beneath the overlaid header. ?>
 	<section class="rg-hero js-hero" aria-label="<?php esc_attr_e( 'Product gallery', 'ilanel-poc' ); ?>">
 		<?php foreach ( $ilanel_gallery as $ilanel_i => $ilanel_src ) : ?>
+			<?php
+			/*
+			 * Only the first slide gets its background inline. The rest are
+			 * held in data-bg and promoted by product.js once the page has
+			 * loaded, so three multi-hundred-KB images no longer compete with
+			 * the one actually on screen.
+			 */
+			?>
 			<div class="rg-hero__slide<?php echo 0 === $ilanel_i ? ' is-active' : ''; ?>"
-				style="background-image:url('<?php echo esc_url( $ilanel_src ); ?>')"
+				<?php if ( 0 === $ilanel_i ) : ?>
+					style="background-image:url('<?php echo esc_url( $ilanel_src ); ?>')"
+				<?php else : ?>
+					data-bg="<?php echo esc_url( $ilanel_src ); ?>"
+				<?php endif; ?>
 				role="img"
 				aria-label="<?php echo esc_attr( $product->get_name() ); ?>"></div>
 		<?php endforeach; ?>

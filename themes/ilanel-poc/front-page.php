@@ -166,12 +166,23 @@ foreach ( $ilanel_hero_products as $ilanel_hero_product ) {
 								 * get_price_html() rather than wc_price(get_price()) — these are
 								 * variable products and get_price() silently returns only the
 								 * minimum, losing the range.
+								 *
+								 * Products awaiting their Commerce data have no price at all,
+								 * which rendered as a blank gap under the title. Made-to-order
+								 * lighting is legitimately price-on-application, so say that
+								 * rather than showing nothing.
 								 */
 								$ilanel_price_html = $ilanel_item->get_price_html();
 								?>
-								<?php if ( $ilanel_price_html ) : ?>
-									<p class="rg-product-card__price"><?php echo wp_kses_post( $ilanel_price_html ); ?></p>
-								<?php endif; ?>
+								<p class="rg-product-card__price">
+									<?php
+									if ( $ilanel_price_html ) {
+										echo wp_kses_post( $ilanel_price_html );
+									} else {
+										echo '<span class="rg-product-card__poa">' . esc_html__( 'Enquire for price', 'ilanel-poc' ) . '</span>';
+									}
+									?>
+								</p>
 							</a>
 						</li>
 					<?php endforeach; ?>

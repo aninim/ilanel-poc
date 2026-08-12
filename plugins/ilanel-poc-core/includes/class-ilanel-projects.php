@@ -30,10 +30,56 @@ class ILANEL_Projects {
 	const META_PRODUCTS = '_ilanel_related_projects';
 
 	/**
+	 * Light Art — exhibitions and commissions, not saleable products.
+	 *
+	 * ILANEL show at Melbourne Design Week, Goldstone Gallery, JAHM and have
+	 * done City of Melbourne commissions. It is a distinct body of work from
+	 * the catalogue and from client installations, so it gets its own type
+	 * rather than being flattened into either.
+	 */
+	const LIGHT_ART_POST_TYPE = 'light_art';
+
+	/**
 	 * Hook registration.
 	 */
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'register_post_type' ) );
+		add_action( 'init', array( __CLASS__, 'register_light_art' ) );
+	}
+
+	/**
+	 * Register the Light Art post type.
+	 *
+	 * Slug matches the live URLs (ilanel.com/light-art/<slug>) — URL
+	 * preservation is a hard lock.
+	 */
+	public static function register_light_art() {
+		$labels = array(
+			'name'          => __( 'Light Art', 'ilanel-poc' ),
+			'singular_name' => __( 'Light Art', 'ilanel-poc' ),
+			'menu_name'     => __( 'Light Art', 'ilanel-poc' ),
+			'all_items'     => __( 'All Light Art', 'ilanel-poc' ),
+			'add_new_item'  => __( 'Add New Light Art', 'ilanel-poc' ),
+			'edit_item'     => __( 'Edit Light Art', 'ilanel-poc' ),
+			'not_found'     => __( 'No light art found.', 'ilanel-poc' ),
+		);
+
+		register_post_type(
+			self::LIGHT_ART_POST_TYPE,
+			array(
+				'labels'        => $labels,
+				'public'        => true,
+				'has_archive'   => 'light-art',
+				'show_in_rest'  => true,
+				'menu_icon'     => 'dashicons-lightbulb',
+				'menu_position' => 22,
+				'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+				'rewrite'       => array(
+					'slug'       => 'light-art',
+					'with_front' => false,
+				),
+			)
+		);
 	}
 
 	/**

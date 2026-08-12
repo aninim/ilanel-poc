@@ -170,6 +170,14 @@ function extract(html, fallbackTitle) {
     ),
   ];
 
+  /*
+   * Spec sheet, if the page links one. These are real ILANEL PDFs
+   * (/s/ILANEL_PIPI_600300_SpecSheet_2026.pdf) and drive the Downloads
+   * section, which is otherwise empty on every scraped product.
+   */
+  const pdfMatch = html.match(/href="([^"]*\.pdf[^"]*)"/i);
+  const specPdf = pdfMatch ? (pdfMatch[1].startsWith('http') ? pdfMatch[1] : SITE + pdfMatch[1]) : '';
+
   const paragraphs = body
     .split(/(?<=[.!?])\s+(?=[A-Z])/)
     .reduce((acc, s) => {
@@ -182,7 +190,7 @@ function extract(html, fallbackTitle) {
     .map((p) => p.trim())
     .filter(Boolean);
 
-  return { name, type, body, paragraphs, images, chars: body.length };
+  return { name, type, body, paragraphs, images, specPdf, chars: body.length };
 }
 
 async function main() {
@@ -237,6 +245,14 @@ async function main() {
         live_url: SITE + it.fullUrl,
         image: it.assetUrl || data.images[0] || '',
         gallery: data.images.slice(0, 4),
+        /*
+         * Story rows are the editorial image+copy blocks the product template
+         * renders below the configurator. Comet has two from the Commerce
+         * pull; scraped products take theirs from later page imagery, which
+         * is the in-situ photography rather than the cut-outs used up top.
+         */
+        story: data.images.slice(4, 6),
+        spec_pdf: data.specPdf,
         paragraphs: data.paragraphs.slice(0, 4),
       });
 

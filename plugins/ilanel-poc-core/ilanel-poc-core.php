@@ -64,6 +64,7 @@ function ilanel_poc_activate() {
 	// Without this the /projects/<slug> rewrite does not exist until the next
 	// permalink save, and every project page 404s.
 	ILANEL_Projects::register_post_type();
+	ILANEL_Projects::register_light_art();
 	flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'ilanel_poc_activate' );

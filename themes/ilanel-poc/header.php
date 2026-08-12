@@ -74,33 +74,64 @@ defined( 'ABSPATH' ) || exit;
  * its own content, so a registered menu would be empty until someone
  * populated it by hand in admin.
  */
-$ilanel_menu_range = get_term_link( 'pendants', 'ilanel_range' );
+/*
+ * Ranges are queried, not hardcoded.
+ *
+ * The previous version listed Pendants and Wall Lights by name, so when the
+ * full catalogue added Chandeliers and Lamps they were unreachable from the
+ * menu — the products existed and their archives resolved, but nothing linked
+ * to them. Querying the taxonomy means a new range appears automatically.
+ */
+$ilanel_menu_ranges = get_terms(
+	array(
+		'taxonomy'   => 'ilanel_range',
+		'hide_empty' => true,
+		'orderby'    => 'count',
+		'order'      => 'DESC',
+	)
+);
 
-if ( is_wp_error( $ilanel_menu_range ) ) {
-	$ilanel_menu_range = home_url( '/' );
+if ( is_wp_error( $ilanel_menu_ranges ) ) {
+	$ilanel_menu_ranges = array();
 }
 
-$ilanel_menu_wall = get_term_link( 'wall-lights', 'ilanel_range' );
-
-if ( is_wp_error( $ilanel_menu_wall ) ) {
-	$ilanel_menu_wall = '';
-}
-
-$ilanel_menu_projects = post_type_exists( 'project' ) ? get_post_type_archive_link( 'project' ) : '';
+$ilanel_menu_projects  = post_type_exists( 'project' ) ? get_post_type_archive_link( 'project' ) : '';
+$ilanel_menu_light_art = post_type_exists( 'light_art' ) ? get_post_type_archive_link( 'light_art' ) : '';
+$ilanel_shop_id        = function_exists( 'wc_get_page_id' ) ? wc_get_page_id( 'shop' ) : 0;
+$ilanel_menu_shop     = $ilanel_shop_id > 0 ? get_permalink( $ilanel_shop_id ) : '';
 ?>
 <div class="rg-menu" id="rg-menu" hidden>
 	<div class="rg-menu__inner rg-shell">
 		<nav class="rg-menu__nav" aria-label="<?php esc_attr_e( 'Main', 'ilanel-poc' ); ?>">
 			<ul class="rg-menu__list">
 				<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ilanel-poc' ); ?></a></li>
-				<li><a href="<?php echo esc_url( $ilanel_menu_range ); ?>"><?php esc_html_e( 'Pendants', 'ilanel-poc' ); ?></a></li>
 
-				<?php if ( $ilanel_menu_wall ) : ?>
-					<li><a href="<?php echo esc_url( $ilanel_menu_wall ); ?>"><?php esc_html_e( 'Wall Lights', 'ilanel-poc' ); ?></a></li>
+				<?php if ( $ilanel_menu_shop ) : ?>
+					<li><a href="<?php echo esc_url( $ilanel_menu_shop ); ?>"><?php esc_html_e( 'Products', 'ilanel-poc' ); ?></a></li>
+				<?php endif; ?>
+
+				<?php // Ranges sit beneath Products as a secondary tier. ?>
+				<?php if ( $ilanel_menu_ranges ) : ?>
+					<li class="rg-menu__group">
+						<ul class="rg-menu__sublist">
+							<?php foreach ( $ilanel_menu_ranges as $ilanel_range_term ) : ?>
+								<li>
+									<a href="<?php echo esc_url( get_term_link( $ilanel_range_term ) ); ?>">
+										<?php echo esc_html( $ilanel_range_term->name ); ?>
+										<span class="rg-menu__count"><?php echo absint( $ilanel_range_term->count ); ?></span>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</li>
 				<?php endif; ?>
 
 				<?php if ( $ilanel_menu_projects ) : ?>
 					<li><a href="<?php echo esc_url( $ilanel_menu_projects ); ?>"><?php esc_html_e( 'Projects', 'ilanel-poc' ); ?></a></li>
+				<?php endif; ?>
+
+				<?php if ( $ilanel_menu_light_art ) : ?>
+					<li><a href="<?php echo esc_url( $ilanel_menu_light_art ); ?>"><?php esc_html_e( 'Light Art', 'ilanel-poc' ); ?></a></li>
 				<?php endif; ?>
 			</ul>
 		</nav>

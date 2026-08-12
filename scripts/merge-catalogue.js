@@ -39,12 +39,51 @@ const SEED_TO_LIVE = {
   'dais-wall-light': 'dais-wall-light',
 };
 
+/*
+ * Idempotent by design: this has to survive being run against its own output.
+ *
+ * products.json starts as the authenticated seed (old slugs) but becomes the
+ * merged catalogue (live slugs) after the first run. Keying only on
+ * SEED_TO_LIVE meant a second run matched nothing and silently dropped
+ * Comet's 36 variations, Kahdu's 24 and Stardust's 3 — 3 of 4 products lost
+ * their real prices with no error. So index by BOTH the mapped slug and the
+ * product's own slug, and never let a record without commerce data displace
+ * one that has it.
+ */
 const seedByLiveSlug = {};
 
 seed.products.forEach((p) => {
-  const live = SEED_TO_LIVE[p.slug];
-  if (live) seedByLiveSlug[live] = p;
+  const keys = [SEED_TO_LIVE[p.slug], p.slug].filter(Boolean);
+
+  keys.forEach((k) => {
+    const existing = seedByLiveSlug[k];
+    const incomingHasCommerce = !!(p.commerce && (p.commerce.variants || []).length);
+    const existingHasCommerce = !!(existing && existing.commerce && (existing.commerce.variants || []).length);
+
+    if (!existing || (incomingHasCommerce && !existingHasCommerce)) {
+      seedByLiveSlug[k] = p;
+    }
+  });
 });
+
+/**
+ * Constrain a Squarespace CDN image to a sensible width.
+ *
+ * The raw originals are uncompressed PNGs — Comet's hero is 1.78MB and takes
+ * ~2.8s, and the hero carousel loads three of them, which is why product
+ * pages felt slow. Squarespace's CDN resizes on demand via ?format=<w>w:
+ *
+ *   original      1,781,728 bytes   2.79s
+ *   ?format=1500w 1,186,794 bytes   2.69s
+ *   ?format=1000w   488,870 bytes   1.20s   <- 3.6x smaller
+ *
+ * 1500w for heroes (they run full-bleed to 1440px+), 1000w for grid tiles
+ * and story rows, which never render wider than ~700px.
+ */
+function sized(url, width) {
+  if (!url || !/images\.squarespace-cdn\.com/.test(url)) return url;
+  return url.replace(/\?.*$/, '') + '?format=' + width + 'w';
+}
 
 /** Assign a range from the product's type label. */
 function rangeFor(type) {
@@ -67,11 +106,16 @@ const merged = catalogue.map((c) => {
     live_h1: `${c.name} / ${c.type}`,
     seo_title: s ? s.seo_title : `${c.name} — ${c.type} · ILANEL`,
     meta_description: s ? s.meta_description : (c.paragraphs[0] || '').slice(0, 155),
-    spec_pdf: s ? s.spec_pdf : '',
+    // Prefer the authenticated record, fall back to the scraped spec sheet.
+    spec_pdf: (s && s.spec_pdf) || c.spec_pdf || '',
     range: s ? s.range : rangeFor(c.type),
-    image: c.image || (s ? s.image : ''),
-    gallery: c.gallery && c.gallery.length ? c.gallery : s ? s.gallery : [],
-    story: s ? s.story : {},
+    image: sized(c.image || (s ? s.image : ''), 1500),
+    gallery: (c.gallery && c.gallery.length ? c.gallery : s ? s.gallery : []).map((u) => sized(u, 1500)),
+    // Seeded products have curated story images; scraped ones use later
+    // page photography. Either way the template gets its editorial rows.
+    story: (s && Object.keys(s.story || {}).length ? Object.values(s.story) : c.story || []).map((u) =>
+      sized(u, 1000)
+    ),
     paragraphs: c.paragraphs,
     related_projects: s ? s.related_projects : [],
   };
@@ -80,7 +124,11 @@ const merged = catalogue.map((c) => {
   if (s) {
     out.sku = s.sku;
     out.price = s.price;
-    out.finishes = s.finishes;
+    // Swatches render as small thumbnails and as variation images; 600w is
+    // ample and avoids sideloading multi-megabyte originals at seed time.
+    out.finishes = (s.finishes || []).map((f) =>
+      Array.isArray(f) ? [f[0], sized(f[1], 600)] : f
+    );
     out.commerce = s.commerce;
   } else {
     out.finishes = [];
@@ -102,6 +150,26 @@ const result = {
   studio_constants: seed.studio_constants,
   products: merged,
 };
+
+/*
+ * Refuse to write a merge that loses commercial data.
+ *
+ * Variants only ever come from an authenticated API pull that cannot be
+ * re-fetched without a key, so dropping them is unrecoverable from here — and
+ * it happened silently once already. Fail loudly instead.
+ */
+const seedVariantCount = seed.products.filter(
+  (p) => p.commerce && (p.commerce.variants || []).length
+).length;
+
+if (withCommerce.length < seedVariantCount) {
+  console.error(
+    `\nREFUSING TO WRITE: seed had ${seedVariantCount} products with variants, ` +
+      `merge produced ${withCommerce.length}. Variant data cannot be re-fetched ` +
+      `without a Commerce API key — check SEED_TO_LIVE slug mapping.`
+  );
+  process.exit(1);
+}
 
 const out = path.join(ROOT, 'data', 'products-merged.json');
 fs.writeFileSync(out, JSON.stringify(result, null, 2));
