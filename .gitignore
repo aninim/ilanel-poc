@@ -11,3 +11,7 @@ node_modules/
 .DS_Store
 Thumbs.db
 ~$*
+
+# Scraped Squarespace content — regenerate with scripts/scrape-squarespace.js
+# (kept out of the public repo; it is ILANEL's copy, not POC code)
+data/scraped-*.wxr.xml
