@@ -65,7 +65,13 @@ function ilanel_poc_enqueue_assets() {
 		true
 	);
 
-	if ( function_exists( 'is_product' ) && is_product() ) {
+	/*
+	 * product.js carries the hero carousel as well as the configurator, and
+	 * the homepage runs the same carousel — so it is needed on both. Its
+	 * initialisers each no-op when their markup is absent, so loading it on
+	 * the front page costs nothing beyond the request.
+	 */
+	if ( ( function_exists( 'is_product' ) && is_product() ) || is_front_page() ) {
 		wp_enqueue_script(
 			'ilanel-poc-product',
 			get_stylesheet_directory_uri() . '/assets/js/product.js',
@@ -77,9 +83,11 @@ function ilanel_poc_enqueue_assets() {
 		/*
 		 * <model-viewer> is only fetched when the product actually has a
 		 * .glb — it is a ~300KB module and there is no reason to pay for
-		 * it on products without a model.
+		 * it on products without a model. Guarded on is_product() as well:
+		 * on the front page get_the_ID() is the page, not a product.
 		 */
-		if ( class_exists( 'ILANEL_Product_Meta' )
+		if ( function_exists( 'is_product' ) && is_product()
+			&& class_exists( 'ILANEL_Product_Meta' )
 			&& ILANEL_Product_Meta::get( get_the_ID(), ILANEL_Product_Meta::FIELD_MODEL_GLB ) ) {
 			wp_enqueue_script(
 				'model-viewer',
@@ -95,13 +103,16 @@ function ilanel_poc_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'ilanel_poc_enqueue_assets', 20 );
 
 /**
- * Mark product pages so the header can overlay the hero.
+ * Mark pages that open on a hero so the header can overlay it.
+ *
+ * Both the product template and the homepage lead with .rg-hero, so both
+ * need the white-on-photography header treatment.
  *
  * @param string[] $classes Body classes.
  * @return string[]
  */
 function ilanel_poc_body_class( $classes ) {
-	if ( function_exists( 'is_product' ) && is_product() ) {
+	if ( ( function_exists( 'is_product' ) && is_product() ) || is_front_page() ) {
 		$classes[] = 'has-hero';
 	}
 

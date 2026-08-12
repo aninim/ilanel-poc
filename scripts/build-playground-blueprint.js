@@ -320,6 +320,35 @@ foreach ( $data['products'] as $item ) {
     }
 }
 
+/*
+ * Front page.
+ *
+ * front-page.php takes precedence over the page content in the template
+ * hierarchy, so this page exists purely to give WordPress something to set
+ * as "show on front" — the markup all comes from the template. Guarded by
+ * slug so re-running does not create duplicates.
+ */
+$home = get_page_by_path( 'home' );
+
+if ( ! $home ) {
+    $home_id = wp_insert_post(
+        array(
+            'post_title'   => 'Home',
+            'post_name'    => 'home',
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+            'post_content' => '',
+        )
+    );
+} else {
+    $home_id = $home->ID;
+}
+
+if ( $home_id && ! is_wp_error( $home_id ) ) {
+    update_option( 'show_on_front', 'page' );
+    update_option( 'page_on_front', $home_id );
+}
+
 flush_rewrite_rules();
 
 echo "Seeded " . count( $data['products'] ) . " products\\n";
@@ -330,7 +359,9 @@ echo "Seeded " . count( $data['products'] ) . " products\\n";
 
 const blueprint = {
   $schema: 'https://playground.wordpress.net/blueprint-schema.json',
-  landingPage: '/our-range/pendants/',
+  // The homepage is now the front door of the demo; the range archive is one
+  // click away from it.
+  landingPage: '/',
   preferredVersions: {
     php: '8.2',
     wp: 'latest',

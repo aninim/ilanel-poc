@@ -1471,6 +1471,215 @@ body.has-hero.is-past-hero .rg-navbtn span {
   color: var(--rg-ink);
 }
 
+/* --- Homepage ------------------------------------------------------------- */
+
+/* The homepage hero is the first thing anyone sees, so it runs taller than
+   the product hero — but deliberately NOT the full viewport.
+   At 92vh the products (the thing that actually converts) started entirely
+   below the fold, and on a tall window the hero swallowed three quarters of
+   the page. 78vh leaves the top of the product grid visible as an invitation
+   to scroll, and the max-height stops tall desktop windows stretching it. */
+.rg-hero--home {
+  height: 78vh;
+  max-height: 88rem;
+  min-height: 52rem;
+}
+
+/* The overlay is a grid so the copy can sit on the lower third — RG place
+   their hero text low-left, not centred. */
+.rg-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  align-content: end;
+  padding-bottom: 7.5rem;
+  color: #fff;
+  /* Photography is unpredictable; a scrim guarantees the copy stays legible
+     without darkening the whole image. Weighted to the bottom third where the
+     copy sits — a lighter wash left the standfirst looking washed out rather
+     than deliberate. */
+  /* Weighted to the bottom, where the copy sits, and eased out well before
+     the top so the fixture keeps its contrast rather than being flattened. */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.26) 34%, rgba(0, 0, 0, 0) 66%);
+  pointer-events: none;
+}
+
+/* Re-enable clicks only for the links inside the (non-interactive) overlay,
+   so the scrim never eats a carousel arrow. */
+.rg-hero__overlay a {
+  pointer-events: auto;
+}
+
+/* Hero copy is centred, and that is a decision rather than a default.
+   ILANEL's photography puts the fixture dead-centre with no usable negative
+   space beside it at desktop widths. Left-aligned copy ran straight across
+   the glass; narrowing it only pushed the lines toward the middle, because
+   .rg-shell (max-width 168rem) is wider than a 1440px viewport and so has no
+   slack for auto margins to take up. Centring sits the copy with the subject
+   instead of fighting it. */
+.rg-hero__copy {
+  max-width: 66rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.rg-hero__title {
+  margin: 0 0 1.8rem;
+  font-family: var(--rg-serif);
+  font-size: 5.6rem;
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+.rg-hero__standfirst {
+  max-width: 48rem;
+  margin: 0 auto;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.4;
+  /* Near-white: at 0.88 over photography this read as washed out rather
+     than as a deliberate secondary voice. */
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.rg-cta--hero {
+  margin-top: 2.8rem;
+}
+
+.rg-link--light {
+  color: #fff;
+}
+
+.rg-link--light:hover {
+  border-bottom-color: #fff;
+}
+
+/* Dots sit above the deepest part of the scrim rather than in it. */
+.rg-hero--home .rg-hero__dots {
+  bottom: 3.5rem;
+  z-index: 4;
+}
+
+.rg-main--home {
+  padding-top: 1rem;
+}
+
+.rg-section--releases {
+  padding-top: 7rem;
+}
+
+/* Four across on the homepage, against three on the range archive.
+   The archive's 3-up left the fourth product stranded alone on a second row
+   with two empty cells beside it — a hole in the middle of the page. The
+   catalogue is currently four pieces, so 4-up fills exactly one row. */
+.rg-section--releases .rg-products {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 3.5rem 2.4rem;
+  margin-bottom: 0;
+}
+
+/* At a quarter of the shell the archive's 895x1023 portrait crop turns into
+   a narrow slot; a squarer tile keeps the fixture readable. */
+.rg-section--releases .rg-product-card__media {
+  aspect-ratio: 4 / 5;
+}
+
+/* Section headings across the homepage: the serif voice, one step down from
+   the hero so the hierarchy stays obvious. */
+.rg-section__heading {
+  max-width: 30ch;
+  margin: 0 0 4.1rem;
+  font-family: var(--rg-serif);
+  font-size: 3.6rem;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+}
+
+.rg-section--about {
+  padding-top: 5rem;
+}
+
+/* On the homepage the About statement is the lede, so it runs larger than
+   the utility .rg-section__title used on product pages. */
+.rg-section__title--about {
+  max-width: 100%;
+  margin-bottom: 2.6rem;
+  font-size: 2.6rem;
+  line-height: 1.28;
+}
+
+.rg-facts {
+  margin: 3rem 0 0;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--rg-rule);
+}
+
+.rg-facts .rg-meta {
+  margin-bottom: 1.2rem;
+}
+
+.rg-facts dd {
+  margin: 0;
+}
+
+/* Provenance: names only, on a rule-separated row — the institutional
+   credibility RG get from their "Tone" section. */
+.rg-section--provenance {
+  padding-top: 5rem;
+  padding-bottom: 6rem;
+}
+
+.rg-provenance {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2.5rem;
+  margin: 0;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rg-rule);
+  list-style: none;
+}
+
+.rg-provenance__item {
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: #333;
+}
+
+/* Closing CTA on the flat tile grey, so the page ends on a defined block
+   rather than trailing off into white. */
+.rg-section--close {
+  padding: 0 0 7rem;
+}
+
+.rg-close {
+  padding: 6.5rem 6rem;
+  background: var(--rg-tile-alt);
+  text-align: center;
+}
+
+.rg-close__title {
+  margin: 0 0 1.6rem;
+  font-family: var(--rg-serif);
+  font-size: 3.2rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.rg-close__copy {
+  max-width: 52rem;
+  margin: 0 auto;
+  font-size: 1.7rem;
+  font-weight: 300;
+  line-height: 1.4;
+  color: #333;
+}
+
 /* --- Responsive ----------------------------------------------------------- */
 
 @media (max-width: 1100px) {
@@ -1500,6 +1709,29 @@ body.has-hero.is-past-hero .rg-navbtn span {
 
   .rg-product__name {
     font-size: 4.4rem;
+  }
+
+  .rg-hero--home {
+    height: 72vh;
+  }
+
+  .rg-hero__title {
+    font-size: 4.4rem;
+  }
+
+  .rg-section__heading {
+    font-size: 3rem;
+  }
+
+  /* Five across becomes unreadable well before the layout breaks. */
+  .rg-provenance {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  /* Needs the same specificity as the 4-up rule above to win. */
+  .rg-section--releases .rg-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1547,6 +1779,55 @@ body.has-hero.is-past-hero .rg-navbtn span {
   .rg-header__logo {
     font-size: 2.2rem;
   }
+
+  /* The homepage hero keeps more height than the product hero — it carries
+     the h1 and standfirst, which need room. */
+  .rg-hero--home {
+    height: 68vh;
+    min-height: 42rem;
+  }
+
+  .rg-hero__overlay {
+    padding-bottom: 7rem;
+  }
+
+  .rg-hero__title {
+    font-size: 3.4rem;
+    max-width: 100%;
+  }
+
+  .rg-hero__standfirst {
+    font-size: 1.6rem;
+    max-width: 100%;
+  }
+
+  /* The arrows sit mid-height and collide with the headline on a narrow
+     canvas. The dots and auto-advance still drive the carousel, and swipe is
+     the expected gesture here anyway. */
+  .rg-hero--home .rg-hero__nav {
+    display: none;
+  }
+
+  .rg-section__heading {
+    font-size: 2.6rem;
+    margin-bottom: 3rem;
+  }
+
+  .rg-section__title--about {
+    font-size: 2.1rem;
+  }
+
+  .rg-provenance {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rg-close {
+    padding: 4.5rem 2.5rem;
+  }
+
+  .rg-close__title {
+    font-size: 2.6rem;
+  }
 }
 
 @media (max-width: 374px) {
@@ -1555,6 +1836,10 @@ body.has-hero.is-past-hero .rg-navbtn span {
   }
 
   .rg-products {
+    grid-template-columns: 1fr;
+  }
+
+  .rg-section--releases .rg-products {
     grid-template-columns: 1fr;
   }
 }
