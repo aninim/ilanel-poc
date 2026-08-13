@@ -295,6 +295,27 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 		);
 	}
 
+	// Sideload the product photograph from ILANEL's CDN so a real install
+	// shows the real piece rather than nothing. Skipped if already attached,
+	// so re-running does not duplicate media.
+	if ( ! empty( $ilanel_item['image'] ) && ! get_post_thumbnail_id( $ilanel_product_id ) ) {
+		$ilanel_product_att_id = media_sideload_image( $ilanel_item['image'], $ilanel_product_id, $ilanel_item['name'], 'id' );
+
+		if ( ! is_wp_error( $ilanel_product_att_id ) ) {
+			set_post_thumbnail( $ilanel_product_id, $ilanel_product_att_id );
+		}
+	}
+
+	// Presentation data for the hero carousel and storytelling rows. Stored
+	// as arrays; see ILANEL_Product_Meta::get_gallery() / get_story_images().
+	if ( ! empty( $ilanel_item['gallery'] ) ) {
+		update_post_meta( $ilanel_product_id, ILANEL_Product_Meta::FIELD_GALLERY, array_map( 'esc_url_raw', $ilanel_item['gallery'] ) );
+	}
+
+	if ( ! empty( $ilanel_item['story'] ) ) {
+		update_post_meta( $ilanel_product_id, ILANEL_Product_Meta::FIELD_STORY, array_map( 'esc_url_raw', $ilanel_item['story'] ) );
+	}
+
 	// Custom meta.
 	update_post_meta( $ilanel_product_id, ILANEL_Product_Meta::FIELD_SPEC_PDF, esc_url_raw( $ilanel_item['spec_pdf'] ) );
 	update_post_meta( $ilanel_product_id, ILANEL_Product_Meta::FIELD_TYPE_LABEL, sanitize_text_field( $ilanel_item['type'] ) );
