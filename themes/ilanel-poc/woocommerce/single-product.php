@@ -517,7 +517,7 @@ while ( have_posts() ) :
 								<?php if ( $ilanel_spec ) : ?>
 									<li><a href="<?php echo esc_url( $ilanel_spec ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Data sheet', 'ilanel-poc' ); ?></a></li>
 								<?php endif; ?>
-								<li><a href="#"><?php esc_html_e( 'Materials &amp; finishes', 'ilanel-poc' ); ?></a></li>
+								<li><a href="#ilanel-specification"><?php esc_html_e( 'Materials &amp; finishes', 'ilanel-poc' ); ?></a></li>
 								<li><a href="#"><?php esc_html_e( '3D models', 'ilanel-poc' ); ?></a></li>
 								<li><a href="#"><?php esc_html_e( 'Care &amp; maintenance', 'ilanel-poc' ); ?></a></li>
 							</ul>
@@ -525,6 +525,52 @@ while ( have_posts() ) :
 					</div>
 				</div>
 			</section>
+
+			<?php
+			/*
+			 * 6a. Specification — the single-source demonstration named in
+			 * README.md: finishes, lead time and origin come from product
+			 * meta, so changing a finish here updates every surface that
+			 * reads it. functions.php's ilanel_poc_render_spec_block() was
+			 * built for this but never hooked (its own comment claimed this
+			 * template already rendered the same fields inline — checked
+			 * 2026-08-13 and it does not; only lead time was actually wired
+			 * in, finishes and made-in were nowhere on the page).
+			 */
+			$ilanel_finishes = ILANEL_Product_Meta::get_finishes( $ilanel_id );
+			$ilanel_made_in  = ILANEL_Product_Meta::get( $ilanel_id, ILANEL_Product_Meta::FIELD_MADE_IN, 'Melbourne, Australia' );
+
+			if ( $ilanel_finishes || $ilanel_made_in || $ilanel_lead ) :
+				?>
+				<section class="rg-section rg-section--details" id="ilanel-specification">
+					<div class="rg-shell">
+						<span class="rg-section__label"><?php esc_html_e( 'Specification', 'ilanel-poc' ); ?> /</span>
+
+						<dl class="ilanel-specs__list">
+							<?php if ( $ilanel_finishes ) : ?>
+								<dt><?php esc_html_e( 'Finishes', 'ilanel-poc' ); ?></dt>
+								<dd>
+									<ul class="ilanel-finishes">
+										<?php foreach ( $ilanel_finishes as $ilanel_finish ) : ?>
+											<li><?php echo esc_html( $ilanel_finish ); ?></li>
+										<?php endforeach; ?>
+									</ul>
+								</dd>
+							<?php endif; ?>
+
+							<?php if ( $ilanel_lead ) : ?>
+								<dt><?php esc_html_e( 'Lead time', 'ilanel-poc' ); ?></dt>
+								<dd><?php echo esc_html( $ilanel_lead ); ?></dd>
+							<?php endif; ?>
+
+							<?php if ( $ilanel_made_in ) : ?>
+								<dt><?php esc_html_e( 'Made in', 'ilanel-poc' ); ?></dt>
+								<dd><?php echo esc_html( $ilanel_made_in ); ?></dd>
+							<?php endif; ?>
+						</dl>
+					</div>
+				</section>
+			<?php endif; ?>
 
 			<?php
 			// 7. Featured in — the projects this piece appears in.

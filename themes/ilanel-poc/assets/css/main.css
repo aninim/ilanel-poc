@@ -942,6 +942,43 @@ body.has-hero .rg-header::before {
   border-bottom-color: var(--rg-ink);
 }
 
+/* --- Product specification (finishes, lead time, made in) ----------------- */
+
+.ilanel-specs__list {
+  margin: 0;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--rg-rule);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 4rem;
+  row-gap: 1.4rem;
+  max-width: 60rem;
+}
+
+.ilanel-specs__list dt {
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rg-accent);
+}
+
+.ilanel-specs__list dd {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+.ilanel-finishes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ilanel-finishes li {
+  margin-bottom: 0.4rem;
+}
+
 /* --- Range archive -------------------------------------------------------- */
 
 .rg-main--archive {
