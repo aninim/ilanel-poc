@@ -88,6 +88,27 @@ class ILANEL_Breadcrumbs {
 					'url'  => get_term_link( $term ),
 				);
 			}
+
+			return $trail;
+		}
+
+		if ( is_singular( 'project' ) || is_singular( 'light_art' ) ) {
+			$post_type    = get_post_type();
+			$archive_link = get_post_type_archive_link( $post_type );
+
+			if ( $archive_link ) {
+				$trail[] = array(
+					'name' => 'project' === $post_type
+						? __( 'Projects', 'ilanel-poc' )
+						: __( 'Light Art', 'ilanel-poc' ),
+					'url'  => $archive_link,
+				);
+			}
+
+			$trail[] = array(
+				'name' => get_the_title(),
+				'url'  => get_permalink(),
+			);
 		}
 
 		return $trail;
@@ -131,7 +152,12 @@ class ILANEL_Breadcrumbs {
 	 * Emit BreadcrumbList JSON-LD.
 	 */
 	public static function output_schema() {
-		if ( ! is_product() && ! is_tax( ILANEL_Taxonomies::RANGE_TAXONOMY ) ) {
+		$applies = is_product()
+			|| is_tax( ILANEL_Taxonomies::RANGE_TAXONOMY )
+			|| is_singular( 'project' )
+			|| is_singular( 'light_art' );
+
+		if ( ! $applies ) {
 			return;
 		}
 

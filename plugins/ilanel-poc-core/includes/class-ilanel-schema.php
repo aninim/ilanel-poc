@@ -111,12 +111,17 @@ class ILANEL_Schema {
 	}
 
 	/**
-	 * Build the Offer node.
+	 * Build the Offer (or AggregateOffer) node.
 	 *
 	 * ILANEL pieces are made to order, so availability is normally
 	 * BackOrder rather than InStock — an honest signal that matches the
 	 * stated 4–12 week lead time. Returns null when no price is set, since
 	 * an Offer without a price is invalid and triggers GSC errors.
+	 *
+	 * A variable product's get_price() silently returns the minimum, which
+	 * is valid but misleading on its own — Comet ranges $3,195.50–$7,437.72,
+	 * not a flat price. Per docs/PHASE-2-PLAN.md Task 1d, variable products
+	 * get AggregateOffer instead.
 	 *
 	 * @param WC_Product $product Product object.
 	 * @return array|null
@@ -131,6 +136,29 @@ class ILANEL_Schema {
 		$availability = $product->is_in_stock()
 			? 'https://schema.org/BackOrder'
 			: 'https://schema.org/OutOfStock';
+
+		if ( $product->is_type( 'variable' ) ) {
+			$low  = $product->get_variation_price( 'min' );
+			$high = $product->get_variation_price( 'max' );
+
+			if ( '' === $low || null === $low ) {
+				return null;
+			}
+
+			return array(
+				'@type'         => 'AggregateOffer',
+				'url'           => get_permalink( $product->get_id() ),
+				'lowPrice'      => wc_format_decimal( $low, wc_get_price_decimals() ),
+				'highPrice'     => wc_format_decimal( $high, wc_get_price_decimals() ),
+				'offerCount'    => count( $product->get_children() ),
+				'priceCurrency' => get_woocommerce_currency(),
+				'availability'  => $availability,
+				'seller'        => array(
+					'@type' => 'Organization',
+					'name'  => get_bloginfo( 'name' ),
+				),
+			);
+		}
 
 		return array(
 			'@type'           => 'Offer',
