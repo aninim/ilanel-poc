@@ -46,40 +46,46 @@ are in the spec PDFs, which the crawl recorded as URLs but did not parse:
 **Needed:** the finish list per product. Extracting from the PDFs is
 straightforward once someone confirms they're current.
 
-### 3a. Per-finish photography keyed to the Commerce attributes — needed
+### 3a. Per-finish photography keyed to the Commerce attributes — ✅ MOSTLY RESOLVED (2026-08-13)
 
 Found while fixing the configurator preview (2026-08-12). The swatch images in
-`finishes` and the Commerce `Color` axis are **different vocabularies**, so a
-variation usually cannot be matched to a photograph of its own finish:
+`finishes` and the Commerce `Color` axis are **different vocabularies** — an
+*exact*-string match usually cannot pair a variation with a photograph of its
+own finish:
 
-| Product | Swatch names | Commerce colour axis | Matches |
+| Product | Swatch names | Commerce colour axis | Exact matches |
 |---|---|---|---|
-| Kahdu | Natural, Black, Brown | Black, Brown, … | ✅ 8/24 |
-| Comet | Golds, Teals, Whites, Grey & Gold, Amber & Bronze | "Brushed Brass - Patina (Bronze)" etc. | ❌ 0/36 |
-| Dais | Brass, Bronze | Glass axis only, no colour axis | ❌ 0/4 |
-| Comet Stardust | Black, Brass | Size axis only | ❌ n/a |
+| Kahdu | Natural, Black, Brown | Black, Brown, … | 8/24 |
+| Comet | Golds, Teals, Whites, Grey & Gold, Amber & Bronze | "Brushed Brass - Patina (Bronze)" etc. | 0/36 |
+| Dais | Brass, Bronze | Glass axis only, no colour axis | 0/4 |
+| Comet Stardust | Black, Brass | Size axis only | n/a |
 
-So on every product except Kahdu the configurator preview cannot change when
-you pick a finish — the price moves and the image does not.
+A substring match was tried and **deliberately rejected** (2026-08-12):
+"Amber" matched Comet's *Glass* axis and gave 18 variations the same wrong
+photograph. A confident wrong picture is worse than no change.
 
-A substring match was tried and **deliberately rejected**: "Amber" matched
-Comet's *Glass* axis and gave 18 variations the same wrong photograph. A
-confident wrong picture is worse than no change.
+**2026-08-13 — actually fixed, not just diagnosed.** The plugin already had
+`ILANEL_Product_Meta::swatch_for_option()`: a token match restricted to
+colour/finish axes specifically (the axis restriction is what makes the
+looser matching safe — it's what the rejected 2026-08-12 substring attempt
+was missing). It tokenises both sides, strips shared boilerplate words
+("brushed", "brass", "patina"…), and matches on what's left — "Amber &
+**Bronze**" against "Brushed Brass - Patina (**Bronze**)" shares "bronze"
+as a real, meaningful token, not a coincidence. The function was already
+wired into the live template's swatch picker, but **neither seed script
+ever called it** for the variation preview image — both used plain exact
+match. Fixed in `scripts/seed-products.php`
+(`ILANEL_Product_Meta::swatch_for_option()` now resolves each variation's
+image instead of `isset($map[$exact_value])`).
 
-**2026-08-13, seen live on the real Cloudways install:** Comet's mismatch
-looks deeper than a naming difference. Its 5 scraped `finishes` (Golds,
-Teals, Whites, Grey & Gold, Amber & Bronze) read as **glass colour**
-options, while Commerce's `Color` axis (3 values, all "Brushed Brass -
-...") is the **metal finish** of the hardware — two different physical
-attributes on the same product, not one attribute under two names. There
-is no correct mapping to build from what's already scraped; a mapping
-table would be guessing, the same failure mode the rejected substring
-match already demonstrated.
-
-**Needed:** real photography shot specifically per metal finish (the
-Commerce `Color` axis), from ILANEL — one photograph per value, named or
-tagged to match. Until then non-Kahdu variations correctly fall back to
-the parent image rather than showing a wrong one.
+Verified live: Comet went from 0/36 to **12/36** variations with a real
+per-finish photo. The remaining 24 have no shared token with any of
+Comet's 3 real Color values and correctly fall back to the parent hero
+image — that residual gap **is** a genuine photography gap (some finishes
+plausibly have no dedicated photograph at all yet), not a matching bug.
+`build-playground-blueprint.js` (the Playground-only generator) still uses
+exact match — worth porting the same fix there for consistency, though it
+doesn't affect the real install.
 
 ## 4. Photography — ✅ RESOLVED (superseded)
 

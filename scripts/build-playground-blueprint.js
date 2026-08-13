@@ -339,31 +339,30 @@ foreach ( $data['products'] as $item ) {
 
             /*
              * Attach the finish photograph for this variation, where one
-             * genuinely corresponds.
+             * genuinely corresponds — via ILANEL_Product_Meta::swatch_for_option(),
+             * the same token match the product template's swatch picker uses.
+             * Restricted to a colour/finish axis, which is what makes the
+             * looser matching safe: a naive substring match was tried and
+             * rejected earlier (matched "Amber" from Comet's *Glass* axis
+             * against the "Amber & Bronze" swatch, giving 18 variations the
+             * same wrong photograph). The axis restriction plus tokenising
+             * out shared boilerplate words ("brushed", "brass", "patina")
+             * avoids that: "Amber & Bronze" and "Brushed Brass - Patina
+             * (Bronze)" share "bronze" as a real token, not a coincidence.
              *
-             * Deliberately limited to an exact match on a colour/finish axis.
-             * A looser substring match was tried and rejected: it matched
-             * "Amber" from Comet's *Glass* axis against the "Amber & Bronze"
-             * swatch and gave 18 variations the same wrong photograph. A
-             * confident wrong picture is worse than no change at all.
-             *
-             * In practice this covers Kahdu (swatch names and Color values
-             * share a vocabulary) and nothing else: Comet's swatches are
-             * colour families ("Golds", "Teals") that do not correspond to
-             * its finish names, and Comet Stardust varies only by Size. Those
-             * variations keep the parent image, which is correct.
-             *
-             * To extend coverage the studio needs to supply a photograph per
-             * finish keyed to the Commerce attribute values — noted in
-             * docs/OPEN-QUESTIONS.md.
+             * Exact match alone only covers Kahdu (swatch names already equal
+             * Color values). This reaches Comet too — see docs/OPEN-QUESTIONS.md
+             * §3a for the verified coverage (12/36).
              */
             foreach ( $variant['options'] as $opt_name => $opt_value ) {
                 if ( ! preg_match( '/colou?r|finish/i', $opt_name ) ) {
                     continue;
                 }
 
-                if ( isset( $swatch_attachments[ $opt_value ] ) ) {
-                    $variation->set_image_id( $swatch_attachments[ $opt_value ] );
+                $matched_att_id = ILANEL_Product_Meta::swatch_for_option( $opt_value, $swatch_attachments );
+
+                if ( $matched_att_id ) {
+                    $variation->set_image_id( $matched_att_id );
                     break;
                 }
             }

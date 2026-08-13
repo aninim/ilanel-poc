@@ -340,32 +340,23 @@ while ( have_posts() ) :
 									}
 
 									/*
-									 * Fall back to the product's own hero for options with no
-									 * finish photograph of their own.
-									 *
-									 * All-or-nothing was tried and is wrong: Kahdu matches
-									 * Black and Brown exactly but not White/Blue/Orange/Olive,
-									 * so requiring every option to resolve turned a WORKING
-									 * swatch axis back into pills and broke a preview that had
-									 * been verified in a real WordPress. A partial match is
-									 * still better than none — the matched finishes change the
-									 * preview, the rest return to the default view.
+									 * Always plain text buttons, never photo swatches — selecting
+									 * one still swaps the large preview on the left, because that
+									 * swap comes from the matched WooCommerce variation's own
+									 * image (product.js reads variation.image via the
+									 * data-variations JSON), not from anything rendered here.
+									 * $ilanel_option_images / $ilanel_is_swatch stay computed
+									 * only so the fallback-to-hero logic below has a value, not
+									 * because any markup below still branches on them into a
+									 * swatch-photo layout.
 									 */
-									$ilanel_is_swatch = $ilanel_is_colour_axis;
-									$ilanel_matched   = 0;
+									$ilanel_is_swatch = false;
 
 									if ( $ilanel_is_colour_axis ) {
 										foreach ( $ilanel_options as $ilanel_option ) {
-											if ( ! empty( $ilanel_option_images[ $ilanel_option ] ) ) {
-												$ilanel_matched++;
-											} else {
+											if ( empty( $ilanel_option_images[ $ilanel_option ] ) ) {
 												$ilanel_option_images[ $ilanel_option ] = $ilanel_gallery[0] ?? '';
 											}
-										}
-
-										// No finish imagery at all: plain pills, as before.
-										if ( 0 === $ilanel_matched ) {
-											$ilanel_is_swatch = false;
 										}
 									}
 
