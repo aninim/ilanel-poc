@@ -393,6 +393,72 @@ if ( file_exists( $ilanel_projects_file ) && post_type_exists( 'project' ) ) {
 	WP_CLI::log( 'No data/projects.json — run scripts/scrape-squarespace.js to generate it. Skipping projects.' );
 }
 
+/*
+ * Light Art — exhibitions and commissions.
+ *
+ * Same shape as projects but a separate post type: this is gallery and
+ * design-week work, not a saleable catalogue and not a client install.
+ * Mirrors the light_art branch in build-playground-blueprint.js — the two
+ * seeders must agree about what a light art work is.
+ */
+$ilanel_light_art_file = dirname( __DIR__ ) . '/data/light-art.json';
+
+if ( file_exists( $ilanel_light_art_file ) && post_type_exists( 'light_art' ) ) {
+	$ilanel_light_art = json_decode( file_get_contents( $ilanel_light_art_file ), true );
+
+	$ilanel_light_art_count = 0;
+
+	foreach ( (array) $ilanel_light_art as $ilanel_art ) {
+		$ilanel_art_existing = get_page_by_path( $ilanel_art['slug'], OBJECT, 'light_art' );
+
+		$ilanel_art_content = '';
+
+		foreach ( $ilanel_art['paragraphs'] as $ilanel_para ) {
+			$ilanel_art_content .= '<p>' . wp_kses_post( $ilanel_para ) . "</p>\n\n";
+		}
+
+		if ( $ilanel_art_existing ) {
+			$ilanel_art_id = $ilanel_art_existing->ID;
+		} else {
+			$ilanel_art_id = wp_insert_post(
+				array(
+					'post_title'   => sanitize_text_field( $ilanel_art['title'] ),
+					'post_name'    => sanitize_title( $ilanel_art['slug'] ),
+					'post_type'    => 'light_art',
+					'post_status'  => 'publish',
+					'post_content' => $ilanel_art_content,
+				)
+			);
+		}
+
+		if ( ! $ilanel_art_id || is_wp_error( $ilanel_art_id ) ) {
+			WP_CLI::warning( 'Could not create light art work: ' . $ilanel_art['title'] );
+			continue;
+		}
+
+		if ( ! empty( $ilanel_art['image'] ) && ! get_post_thumbnail_id( $ilanel_art_id ) ) {
+			$ilanel_art_att_id = media_sideload_image( $ilanel_art['image'], $ilanel_art_id, $ilanel_art['title'], 'id' );
+
+			if ( ! is_wp_error( $ilanel_art_att_id ) ) {
+				set_post_thumbnail( $ilanel_art_id, $ilanel_art_att_id );
+			}
+		}
+
+		if ( ! empty( $ilanel_art['gallery'] ) ) {
+			update_post_meta( $ilanel_art_id, '_ilanel_project_gallery', array_map( 'esc_url_raw', $ilanel_art['gallery'] ) );
+		}
+
+		$ilanel_light_art_count++;
+		WP_CLI::log( '  · light art: ' . $ilanel_art['title'] );
+	}
+
+	WP_CLI::success( sprintf( 'Seeded %d light art works.', $ilanel_light_art_count ) );
+} elseif ( ! post_type_exists( 'light_art' ) ) {
+	WP_CLI::warning( 'light_art post type not registered — is ILANEL POC Core active? Skipping Light Art.' );
+} else {
+	WP_CLI::log( 'No data/light-art.json — run scripts/scrape-squarespace.js to generate it. Skipping Light Art.' );
+}
+
 WP_CLI::log( '' );
 WP_CLI::log( 'Prices, SKUs and variations come from the authenticated Squarespace' );
 WP_CLI::log( 'Commerce export and are real. Photography is ILANEL\'s own, served' );
