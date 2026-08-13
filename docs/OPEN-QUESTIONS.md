@@ -66,9 +66,20 @@ A substring match was tried and **deliberately rejected**: "Amber" matched
 Comet's *Glass* axis and gave 18 variations the same wrong photograph. A
 confident wrong picture is worse than no change.
 
-**Needed:** one photograph per finish, named to match the Commerce attribute
-values (or a mapping table from swatch name → attribute value). Until then
-non-Kahdu variations correctly fall back to the parent image.
+**2026-08-13, seen live on the real Cloudways install:** Comet's mismatch
+looks deeper than a naming difference. Its 5 scraped `finishes` (Golds,
+Teals, Whites, Grey & Gold, Amber & Bronze) read as **glass colour**
+options, while Commerce's `Color` axis (3 values, all "Brushed Brass -
+...") is the **metal finish** of the hardware — two different physical
+attributes on the same product, not one attribute under two names. There
+is no correct mapping to build from what's already scraped; a mapping
+table would be guessing, the same failure mode the rejected substring
+match already demonstrated.
+
+**Needed:** real photography shot specifically per metal finish (the
+Commerce `Color` axis), from ILANEL — one photograph per value, named or
+tagged to match. Until then non-Kahdu variations correctly fall back to
+the parent image rather than showing a wrong one.
 
 ## 4. Photography — ✅ RESOLVED (superseded)
 
