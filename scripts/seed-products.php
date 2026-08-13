@@ -259,19 +259,29 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 			}
 
 			/*
-			 * Attach the finish photograph where one genuinely corresponds —
-			 * exact match on a colour/finish axis only. A looser substring
-			 * match was tried and rejected: it matched "Amber" from Comet's
-			 * Glass axis and gave 18 variations the same wrong photograph.
-			 * See the equivalent block in build-playground-blueprint.js.
+			 * Attach the finish photograph where one genuinely corresponds,
+			 * restricted to a colour/finish axis only — that constraint is
+			 * what makes fuzzy matching safe (ILANEL_Product_Meta::
+			 * swatch_for_option() docblock explains why: it stops "Amber"
+			 * matching Comet's Glass axis, which a naive substring match did,
+			 * giving 18 variations the same wrong photograph).
+			 *
+			 * Exact match alone leaves Comet at 0/36 — its swatch names
+			 * ("Amber & Bronze") and Commerce colour values ("Brushed Brass -
+			 * Patina (Bronze)") share real tokens ("bronze") but are never
+			 * equal strings. swatch_for_option() finds that shared token;
+			 * plain isset() cannot. Kahdu, whose swatch names already equal
+			 * its Commerce values, matches either way.
 			 */
 			foreach ( $ilanel_variant['options'] as $ilanel_opt_name => $ilanel_opt_value ) {
 				if ( ! preg_match( '/colou?r|finish/i', $ilanel_opt_name ) ) {
 					continue;
 				}
 
-				if ( isset( $ilanel_swatch_attachments[ $ilanel_opt_value ] ) ) {
-					$ilanel_variation->set_image_id( $ilanel_swatch_attachments[ $ilanel_opt_value ] );
+				$ilanel_matched_att_id = ILANEL_Product_Meta::swatch_for_option( $ilanel_opt_value, $ilanel_swatch_attachments );
+
+				if ( $ilanel_matched_att_id ) {
+					$ilanel_variation->set_image_id( $ilanel_matched_att_id );
 					break;
 				}
 			}
@@ -322,11 +332,43 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 	update_post_meta( $ilanel_product_id, ILANEL_Product_Meta::FIELD_LEAD_TIME, '4–12 weeks' );
 	update_post_meta( $ilanel_product_id, ILANEL_Product_Meta::FIELD_MADE_IN, 'Melbourne, Australia' );
 
-	if ( ! empty( $ilanel_item['finishes'] ) ) {
+	/*
+	 * Finishes come from the scraper as [name, image] pairs, not plain
+	 * strings — imploding the raw array (the previous version of this code)
+	 * silently produced "Array" text and a PHP warning per finish. Reshape
+	 * into _ilanel_swatches (name => image, read by
+	 * ILANEL_Product_Meta::swatch_for_option() for the configurator preview)
+	 * and derive the plain-text finish list from the same data so the two
+	 * cannot disagree. Mirrors build-playground-blueprint.js.
+	 */
+	$ilanel_swatches = array();
+
+	foreach ( (array) $ilanel_item['finishes'] as $ilanel_finish ) {
+		if ( ! is_array( $ilanel_finish ) || empty( $ilanel_finish[0] ) || empty( $ilanel_finish[1] ) ) {
+			continue;
+		}
+
+		$ilanel_swatches[] = array(
+			'name'  => sanitize_text_field( $ilanel_finish[0] ),
+			'image' => esc_url_raw( $ilanel_finish[1] ),
+		);
+	}
+
+	if ( $ilanel_swatches ) {
+		update_post_meta( $ilanel_product_id, ILANEL_Product_Meta::FIELD_SWATCHES, $ilanel_swatches );
+
 		update_post_meta(
 			$ilanel_product_id,
 			ILANEL_Product_Meta::FIELD_FINISHES,
-			sanitize_textarea_field( implode( "\n", $ilanel_item['finishes'] ) )
+			implode( "\n", array_map( 'sanitize_text_field', wp_list_pluck( $ilanel_swatches, 'name' ) ) )
+		);
+	} elseif ( ! empty( $ilanel_item['finishes'] ) ) {
+		// Finishes present but not in [name, image] shape — fall back to the
+		// old plain-text behaviour rather than losing the data entirely.
+		update_post_meta(
+			$ilanel_product_id,
+			ILANEL_Product_Meta::FIELD_FINISHES,
+			sanitize_textarea_field( implode( "\n", array_filter( $ilanel_item['finishes'], 'is_string' ) ) )
 		);
 	}
 
