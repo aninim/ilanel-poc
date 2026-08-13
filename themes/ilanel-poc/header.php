@@ -135,7 +135,7 @@ $ilanel_menu_shop     = $ilanel_shop_id > 0 ? get_permalink( $ilanel_shop_id ) :
 					<li><a href="<?php echo esc_url( $ilanel_menu_light_art ); ?>"><?php esc_html_e( 'Light Art', 'ilanel-poc' ); ?></a></li>
 				<?php endif; ?>
 
-				<li><a href="<?php echo esc_url( $ilanel_menu_journal ); ?>"><?php esc_html_e( 'Journal', 'ilanel-poc' ); ?></a></li>
+				<li><a href="<?php echo esc_url( $ilanel_menu_journal ); ?>"><?php esc_html_e( 'News', 'ilanel-poc' ); ?></a></li>
 			</ul>
 		</nav>
 

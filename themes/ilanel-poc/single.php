@@ -38,7 +38,7 @@ while ( have_posts() ) :
 				<nav class="ilanel-breadcrumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'ilanel-poc' ); ?>">
 					<ol>
 						<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'ilanel-poc' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/news/' ) ); ?>"><?php esc_html_e( 'Journal', 'ilanel-poc' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/news/' ) ); ?>"><?php esc_html_e( 'News', 'ilanel-poc' ); ?></a></li>
 						<li><span aria-current="page"><?php the_title(); ?></span></li>
 					</ol>
 				</nav>
@@ -147,7 +147,7 @@ while ( have_posts() ) :
 		<?php if ( $ilanel_discover ) : ?>
 			<section class="rg-discover rg-discover--projects">
 				<div class="rg-shell">
-					<h2 class="rg-discover__title"><?php esc_html_e( 'More from the Journal', 'ilanel-poc' ); ?></h2>
+					<h2 class="rg-discover__title"><?php esc_html_e( 'More from ILANEL News', 'ilanel-poc' ); ?></h2>
 
 					<ul class="rg-discover__grid">
 						<?php foreach ( $ilanel_discover as $ilanel_related ) : ?>

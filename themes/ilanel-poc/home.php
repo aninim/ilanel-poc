@@ -25,7 +25,7 @@ get_header();
 	<div class="rg-shell">
 
 		<header class="rg-journal__header">
-			<h1 class="rg-journal__title"><?php esc_html_e( 'Journal', 'ilanel-poc' ); ?></h1>
+			<h1 class="rg-journal__title"><?php esc_html_e( 'News', 'ilanel-poc' ); ?></h1>
 		</header>
 
 		<?php if ( have_posts() ) : ?>

@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $ilanel_footer_nav = array(
-	'About'     => array( 'Journal', 'Studio', 'Projects', 'Light Art', 'Contact' ),
+	'About'     => array( 'News', 'Studio', 'Projects', 'Light Art', 'Contact' ),
 	'Support'   => array( 'Trade programme', 'FAQ', 'Shipping & returns', 'Warranty', 'Care & maintenance' ),
 	'Resources' => array( 'Catalogue', 'Lookbook', 'Materials & finishes', '3D models', 'Product instructions' ),
 	'Social'    => array( 'Subscribe', 'Instagram', 'Pinterest', 'LinkedIn' ),
@@ -49,7 +49,7 @@ $ilanel_footer_nav = array(
 								foreach ( $ilanel_items as $ilanel_item ) :
 									$ilanel_href = '#';
 
-									if ( 'Journal' === $ilanel_item ) {
+									if ( 'News' === $ilanel_item ) {
 										$ilanel_href = home_url( '/news/' );
 									}
 									?>
