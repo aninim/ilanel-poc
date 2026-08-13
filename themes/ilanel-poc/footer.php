@@ -45,8 +45,15 @@ $ilanel_footer_nav = array(
 						<div class="rg-footer__nav">
 							<h2 class="rg-footer__navtitle"><?php echo esc_html( $ilanel_heading ); ?></h2>
 							<ul>
-								<?php foreach ( $ilanel_items as $ilanel_item ) : ?>
-									<li><a href="#"><?php echo esc_html( $ilanel_item ); ?></a></li>
+								<?php
+								foreach ( $ilanel_items as $ilanel_item ) :
+									$ilanel_href = '#';
+
+									if ( 'Journal' === $ilanel_item ) {
+										$ilanel_href = home_url( '/news/' );
+									}
+									?>
+									<li><a href="<?php echo esc_url( $ilanel_href ); ?>"><?php echo esc_html( $ilanel_item ); ?></a></li>
 								<?php endforeach; ?>
 							</ul>
 						</div>

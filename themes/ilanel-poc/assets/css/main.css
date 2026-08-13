@@ -2067,8 +2067,44 @@ ul.products li.product .button {
   line-height: 1.05;
 }
 
-/* Ordinary tiles: 3-up, image + synopsis + link — no title. RG's cards
-   carry body copy, not a name/location/year field; measured at 1.868:1. */
+.rg-journal__featured-copy time,
+.rg-journal__tile-date,
+.rg-journal__single-date {
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rg-muted);
+}
+
+.rg-journal__featured-copy time {
+  margin-bottom: 1.2rem;
+}
+
+.rg-journal__single-date {
+  margin-top: 0.8rem;
+}
+
+/*
+ * Journal tiles carry a title — unlike the project grid above, whose
+ * comment explains RG's cards have none (body copy only). An editorial
+ * listing genuinely needs a headline; this is a deliberate departure from
+ * that pattern, not an oversight.
+ */
+.rg-journal__tile-date {
+  margin-bottom: 0.6rem;
+}
+
+.rg-journal__tile-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--rg-sans);
+  font-size: 1.9rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+/* Ordinary tiles: 3-up, image + synopsis + link. RG's project cards carry
+   body copy only (no title); measured at 1.868:1. */
 .rg-journal__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

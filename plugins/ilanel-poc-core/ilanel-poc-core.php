@@ -23,6 +23,7 @@ require_once ILANEL_POC_PATH . 'includes/class-ilanel-product-meta.php';
 require_once ILANEL_POC_PATH . 'includes/class-ilanel-schema.php';
 require_once ILANEL_POC_PATH . 'includes/class-ilanel-breadcrumbs.php';
 require_once ILANEL_POC_PATH . 'includes/class-ilanel-projects.php';
+require_once ILANEL_POC_PATH . 'includes/class-ilanel-journal.php';
 
 /**
  * Boot the plugin once all plugins are loaded.
@@ -42,6 +43,7 @@ function ilanel_poc_init() {
 	ILANEL_Schema::init();
 	ILANEL_Breadcrumbs::init();
 	ILANEL_Projects::init();
+	ILANEL_Journal::init();
 }
 add_action( 'plugins_loaded', 'ilanel_poc_init' );
 
@@ -60,11 +62,13 @@ function ilanel_poc_missing_woocommerce_notice() {
 function ilanel_poc_activate() {
 	require_once ILANEL_POC_PATH . 'includes/class-ilanel-taxonomies.php';
 	require_once ILANEL_POC_PATH . 'includes/class-ilanel-projects.php';
+	require_once ILANEL_POC_PATH . 'includes/class-ilanel-journal.php';
 	ILANEL_Taxonomies::register_range_taxonomy();
 	// Without this the /projects/<slug> rewrite does not exist until the next
 	// permalink save, and every project page 404s.
 	ILANEL_Projects::register_post_type();
 	ILANEL_Projects::register_light_art();
+	ILANEL_Journal::add_rewrite_rules();
 	flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'ilanel_poc_activate' );

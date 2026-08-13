@@ -97,6 +97,7 @@ if ( is_wp_error( $ilanel_menu_ranges ) ) {
 
 $ilanel_menu_projects  = post_type_exists( 'project' ) ? get_post_type_archive_link( 'project' ) : '';
 $ilanel_menu_light_art = post_type_exists( 'light_art' ) ? get_post_type_archive_link( 'light_art' ) : '';
+$ilanel_menu_journal   = home_url( '/news/' );
 $ilanel_shop_id        = function_exists( 'wc_get_page_id' ) ? wc_get_page_id( 'shop' ) : 0;
 $ilanel_menu_shop     = $ilanel_shop_id > 0 ? get_permalink( $ilanel_shop_id ) : '';
 ?>
@@ -133,6 +134,8 @@ $ilanel_menu_shop     = $ilanel_shop_id > 0 ? get_permalink( $ilanel_shop_id ) :
 				<?php if ( $ilanel_menu_light_art ) : ?>
 					<li><a href="<?php echo esc_url( $ilanel_menu_light_art ); ?>"><?php esc_html_e( 'Light Art', 'ilanel-poc' ); ?></a></li>
 				<?php endif; ?>
+
+				<li><a href="<?php echo esc_url( $ilanel_menu_journal ); ?>"><?php esc_html_e( 'Journal', 'ilanel-poc' ); ?></a></li>
 			</ul>
 		</nav>
 
