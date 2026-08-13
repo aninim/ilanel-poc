@@ -36,22 +36,32 @@ class ILANEL_Journal {
 	}
 
 	/**
-	 * Route /news/<slug>/ to the native post query.
+	 * Route /news/, its pagination, and /news/<slug>/ to the native post
+	 * query.
 	 *
 	 * WordPress has no built-in way to move the `post` type's base the way
 	 * register_post_type()'s `rewrite` argument does for custom types, so
-	 * this adds the rule directly.
+	 * this adds the rules directly. The pagination rule must be registered
+	 * — and matched — before the single-post rule, or "/news/page/2/" is
+	 * parsed as a post named "page" with "2" silently dropped, 404ing
+	 * get_next_posts_link()'s own output.
 	 */
 	public static function add_rewrite_rules() {
 		add_rewrite_rule(
-			'^' . self::REWRITE_BASE . '/([^/]+)/?$',
-			'index.php?post_type=post&name=$matches[1]',
+			'^' . self::REWRITE_BASE . '/page/([0-9]+)/?$',
+			'index.php?post_type=post&paged=$matches[1]',
 			'top'
 		);
 
 		add_rewrite_rule(
 			'^' . self::REWRITE_BASE . '/?$',
 			'index.php?post_type=post',
+			'top'
+		);
+
+		add_rewrite_rule(
+			'^' . self::REWRITE_BASE . '/([^/]+)/?$',
+			'index.php?post_type=post&name=$matches[1]',
 			'top'
 		);
 	}
