@@ -139,14 +139,34 @@ instead of a single `Offer`, and the seeder needs rewriting for
 data. Codex's browser pass (A1, A2, A6 in `CODEX-BRIEF-2026-08-10.md`) should
 settle it.
 
-## 7. Journal / projects cross-linking — not built
+## 7. Journal / projects cross-linking — ✅ RESOLVED
 
-The platform recommendation rests partly on products↔projects cross-linking
-being native in WordPress. The POC's scope is product + range pages, so it
-isn't demonstrated. `data/products.json` carries the Kahdu → Chatswood Hill
-Tavern relationship, ready to wire when scope extends.
+Both are built and live. Products↔projects cross-linking: Kahdu ↔ Chatswood
+Hill Tavern round-trips correctly (`ILANEL_Projects`, verified in a real
+WordPress, not just seed data). Journal/News: 42 posts migrated from the
+scrape, live at `/news/` — see the 2026-08-13 entries below and
+`docs/HANDOVER-2026-08-13.md`.
 
-## 8. Hosting — unresolved
+## 8. Hosting — ✅ RESOLVED (2026-08-13)
 
-`dads42.com` is Firebase Hosting (static) and cannot run WordPress. See the
-README. **This is what stands between the POC and being clickable.**
+Live at `https://ilanel.dads42.com` on Cloudways (DigitalOcean, Sydney,
+WordPress + WooCommerce). `dads42.com` is Oren's own domain, deliberately
+not ILANEL's — this is a review/demo instance, not the production
+deployment, chosen so nothing here risks ilanel.com's real SEO while
+product prices are still 30/34 placeholder. Moving to a real ILANEL
+subdomain later is a domain swap on the same server, not a migration.
+
+## 9. Static pages — not built, real gap on live ilanel.com too
+
+Cross-checked ilanel.com's admin "Not Linked" list (pages that exist but
+aren't in any nav menu) against what's live: `/services`, `/warranty`,
+`/trade`, `/faq`, `/terms-and-conditions`, `/3d-models`, `/linktree`,
+`/customer-satisfaction-survey` all return real content on ilanel.com
+right now, just orphaned from navigation there too — so this isn't a case
+of the POC forgetting pages ilanel.com surfaces prominently.
+
+This POC's footer already lists several of these (Trade programme, FAQ,
+Warranty, Care & maintenance, Services) as nav items, but every one is a
+dead `href="#"` — no pages exist here at all. Out of the original
+product/range demonstration scope; worth a real content pass if the POC
+extends toward a fuller site rather than the current focused demo.
