@@ -1,7 +1,9 @@
 # ILANEL POC — Phase 2 Action Plan
 
-**Status: ✅ all 4 tasks complete (2026-08-12).** Kept as the record of what
-was planned and what actually shipped — each task section below is marked
+**Status: ✅ all 4 tasks complete (2026-08-12). Superseded 2026-08-14 —
+see `docs/LAUNCH-PLAN.md`.** The POC phase this plan covers is done; the
+project is no longer scoped as a demo. Kept as the record of what was
+planned and what actually shipped — each task section below is marked
 done with a summary of the real result, which in several places went further
 than originally scoped (51 projects and 13 Light Art works seeded, not 2–3;
 a Light Art CPT that wasn't in the original plan at all; AU commerce

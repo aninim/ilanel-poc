@@ -1,8 +1,10 @@
-# Open questions — POC
+# Open questions
 
-Things the POC needs but cannot answer for itself. Nothing here is a blocker
-for reviewing the *structure*; all of it is a blocker for treating the POC as
-real.
+Things this build needs that can't be answered from the code or the scraped
+data alone — most need a studio decision, a credential only ILANEL/Oren
+holds, or new photography. **Superseded in priority/sequencing by
+`docs/LAUNCH-PLAN.md`** — that's the plan; this file is the detail behind
+each open item it references.
 
 ---
 
