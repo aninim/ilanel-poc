@@ -20,7 +20,7 @@ RG also validates the stack at ILANEL's scale and price point (67 products,
 |---|---|---|
 | WordPress + WooCommerce | Same | Content + commerce in one system |
 | Custom theme, overrides most Woo templates | Same | Deliberate markup, no default furniture |
-| `/product/{name}/` — name only, no keywords | Same | Clean slugs; see INSTALL.md |
+| `/product/{name}/` — name only, no keywords | `/lighting-design-collections/{name}/`, Editions at `/editions/{name}/` | Matches ilanel.com's real live URLs, not RG's — see INSTALL.md §Product base, 2026-08-13 |
 | `/our-range/{cat}/{sub}/` | `ilanel_range` taxonomy, `our-range` base | Hierarchical ranges |
 | Product schema with full Offer | Same field set | The capability Squarespace can't provide |
 | Titles rigidly `{Product} \| Ross Gardam` | Theme uses `title-tag` | Live ILANEL has 31 pages with duplicated site name |

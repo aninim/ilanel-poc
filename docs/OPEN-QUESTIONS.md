@@ -102,12 +102,25 @@ named to match the Commerce attribute values.
 
 ## 5. Range structure — assumed
 
-The POC assumes two ranges: **Pendants** (Comet, Comet Stardust, Kahdu) and
-**Wall Lights** (Dais). That's inferred from product type labels on live, not
-from a studio taxonomy.
+The POC seeds five ranges (Pendants, Wall Lights, Chandeliers, Lamps,
+Editions), inferred from product type labels and the live site's own
+`/editions/` split — not from a studio taxonomy.
 
 Ross Gardam runs **14 ranges and 24 collections** across 67 products. ILANEL's
 real range structure is a studio decision and will change the archive pages.
+
+**2026-08-13 — Editions confirmed as a genuinely separate section, not
+just a range filter.** Reading ilanel.com's live nav and product links
+directly: 23 products live at `/lighting-design-collections/{slug}`, and
+the 11 Editions pieces live at a wholly separate top-level
+`/editions/{slug}` — not nested under the main catalogue path at all. The
+POC's product URLs matched neither before this was found (everything sat
+on WooCommerce's default `/product/` base). Fixed: `product_base` is now
+`lighting-design-collections`, and `class-ilanel-product-urls.php`
+overrides Editions products onto `/editions/{slug}/` via the `editions`
+range term. See INSTALL.md §Product base for the install-time config this
+depends on (not automated by the seeder — a manual `wp option update`
+step, same as the front-page setup below).
 
 ## 6. Product vs variant — unresolved
 
