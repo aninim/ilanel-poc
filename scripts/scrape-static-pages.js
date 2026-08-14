@@ -138,10 +138,18 @@ function extractProse(scope) {
     seen.add(chunk);
 
     // Strip inline attributes Squarespace adds (style, data-*, class) but
-    // keep the tag and href for links.
+    // keep the tag and href for links. "/s/..." is Squarespace's own path
+    // convention for uploaded files (PDFs, etc.) — those aren't sideloaded
+    // by this scraper, so a relative "/s/..." link 404s on this site. Other
+    // relative links are ordinary page links ("/trade", "/warranty") that
+    // resolve fine here once the matching page exists, so only "/s/" paths
+    // get absolutized against the real ilanel.com, which still serves them.
     chunk = chunk
       .replace(/<(p|h[1-4]|ul|ol|li)\b[^>]*>/gi, '<$1>')
-      .replace(/<a\b[^>]*href="([^"]*)"[^>]*>/gi, '<a href="$1">')
+      .replace(/<a\b[^>]*href="([^"]*)"[^>]*>/gi, (m, href) => {
+        const abs = href.startsWith('/s/') ? SITE + href : href;
+        return `<a href="${abs}">`;
+      })
       .replace(/<span[^>]*>/gi, '')
       .replace(/<\/span>/gi, '')
       .replace(/\sstyle="[^"]*"/gi, '')
