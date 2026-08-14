@@ -213,11 +213,23 @@ before building anything new).
 
 **Gate to start:** Phases 1–3 substantially complete.
 
-- **SMTP / transactional email.** Order confirmations, contact form
-  submissions, password resets need real outbound email — Cloudways'
-  default PHP `mail()` is unreliable for this at production volume. Wire a
-  real provider (SendGrid, Postmark, or Cloudways' own add-on) before
-  launch, not after the first lost order-confirmation email.
+- **SMTP / transactional email — plugin installed, needs a real API key
+  (2026-08-14).** Order confirmations, contact form submissions, password
+  resets need real outbound email — Cloudways' default PHP `mail()` is
+  unreliable for this at production volume. WP Mail SMTP (WPForms) is
+  installed and active on `ilanel.dads42.com`, still defaulted to `mail`
+  because no provider account exists yet. Recommended: **Brevo**
+  (free tier, 300 emails/day — enough for launch-stage order volume, no
+  business-verification gate unlike SendGrid). To finish:
+  1. Create a free Brevo account, generate an SMTP/API key.
+  2. In `wp-admin` → WP Mail SMTP → Settings, select Brevo as the mailer,
+     paste the key.
+  3. Send a real test email from the plugin's own test-send tool, confirm
+     it arrives (check spam folder first attempt).
+  4. Place a real test WooCommerce order once Phase 2 (checkout) is live,
+     confirm the order-confirmation email actually sends — the plugin
+     being configured isn't the same as WooCommerce's own email templates
+     being correctly wired to it, verify both.
 - **Backups.** Cloudways has this built in; confirm it's actually
   configured and a restore has been test-run once before go-live, not
   just assumed to work.
