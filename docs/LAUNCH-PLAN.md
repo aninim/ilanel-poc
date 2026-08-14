@@ -27,6 +27,12 @@ checkout, replacing Squarespace entirely.
   build window, and for how long — §7.
 - Go-live date / freeze window.
 
+**Everything that needs the studio's input, a decision, or physical work
+(not engineering) is pulled into one checklist at `docs/STUDIO-TASKS.md`**
+— hand that file to ILANEL directly rather than this one; it's the
+same open items referenced throughout this plan, without the
+engineering detail around them.
+
 ---
 
 ## The shape of the work
