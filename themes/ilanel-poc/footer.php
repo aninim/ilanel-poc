@@ -33,6 +33,16 @@ $ilanel_footer_page_slugs = array(
 	'Warranty'           => 'warranty',
 	'Care & maintenance' => 'faq', // Live on ilanel.com as a FAQ entry, not a separate page.
 );
+
+// Archives with their own post type (not a plain `page`), so home_url()
+// alone is enough — no lookup needed the way the map above resolves a
+// page's slug. Found missing 2026-08-14: 'News' had this treatment
+// already (see below), but 'Projects' and 'Light Art' were left on '#'
+// even though both archives have existed and worked since last session.
+$ilanel_footer_archive_slugs = array(
+	'Projects'  => 'projects',
+	'Light Art' => 'light-art',
+);
 ?>
 
 <footer class="rg-footer">
@@ -64,6 +74,8 @@ $ilanel_footer_page_slugs = array(
 
 									if ( 'News' === $ilanel_item ) {
 										$ilanel_href = home_url( '/news/' );
+									} elseif ( isset( $ilanel_footer_archive_slugs[ $ilanel_item ] ) ) {
+										$ilanel_href = home_url( '/' . $ilanel_footer_archive_slugs[ $ilanel_item ] . '/' );
 									} elseif ( isset( $ilanel_footer_page_slugs[ $ilanel_item ] ) ) {
 										$ilanel_href = home_url( '/' . $ilanel_footer_page_slugs[ $ilanel_item ] . '/' );
 									}
