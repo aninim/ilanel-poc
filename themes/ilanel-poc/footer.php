@@ -20,6 +20,19 @@ $ilanel_footer_nav = array(
 	'Resources' => array( 'Catalogue', 'Lookbook', 'Materials & finishes', '3D models', 'Product instructions' ),
 	'Social'    => array( 'Subscribe', 'Instagram', 'Pinterest', 'LinkedIn' ),
 );
+
+// Maps footer nav labels (above) and the legal row to real page slugs
+// built by scripts/seed-static-pages.php (Phase 3a of docs/LAUNCH-PLAN.md).
+// Items not in this map keep the '#' placeholder — either not built yet
+// (Catalogue, Lookbook, 3D models…) or intentionally external (social).
+$ilanel_footer_page_slugs = array(
+	'Studio'             => 'about',
+	'Contact'            => 'contact',
+	'Trade programme'    => 'trade',
+	'FAQ'                => 'faq',
+	'Warranty'           => 'warranty',
+	'Care & maintenance' => 'faq', // Live on ilanel.com as a FAQ entry, not a separate page.
+);
 ?>
 
 <footer class="rg-footer">
@@ -51,6 +64,8 @@ $ilanel_footer_nav = array(
 
 									if ( 'News' === $ilanel_item ) {
 										$ilanel_href = home_url( '/news/' );
+									} elseif ( isset( $ilanel_footer_page_slugs[ $ilanel_item ] ) ) {
+										$ilanel_href = home_url( '/' . $ilanel_footer_page_slugs[ $ilanel_item ] . '/' );
 									}
 									?>
 									<li><a href="<?php echo esc_url( $ilanel_href ); ?>"><?php echo esc_html( $ilanel_item ); ?></a></li>
@@ -69,8 +84,8 @@ $ilanel_footer_nav = array(
 
 				<ul class="rg-footer__legal">
 					<li>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></li>
-					<li><a href="#"><?php esc_html_e( 'Privacy Policy', 'ilanel-poc' ); ?></a></li>
-					<li><a href="#"><?php esc_html_e( 'Terms &amp; Conditions', 'ilanel-poc' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'ilanel-poc' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/terms-and-conditions/' ) ); ?>"><?php esc_html_e( 'Terms &amp; Conditions', 'ilanel-poc' ); ?></a></li>
 				</ul>
 			</div>
 

@@ -519,7 +519,7 @@ while ( have_posts() ) :
 								<?php endif; ?>
 								<li><a href="#ilanel-specification"><?php esc_html_e( 'Materials &amp; finishes', 'ilanel-poc' ); ?></a></li>
 								<li><a href="#"><?php esc_html_e( '3D models', 'ilanel-poc' ); ?></a></li>
-								<li><a href="#"><?php esc_html_e( 'Care &amp; maintenance', 'ilanel-poc' ); ?></a></li>
+								<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'Care &amp; maintenance', 'ilanel-poc' ); ?></a></li>
 							</ul>
 						</div>
 					</div>
