@@ -164,18 +164,18 @@ Everything found in the 2026-08-13 sitemap audit that's real, live content
 on ilanel.com with no equivalent here yet. Not blocked on anything — can
 run in parallel with Phases 1–2.
 
-### 3a. Static pages
+### 3a. Static pages — ✅ DONE (2026-08-14)
 
-`/about`, `/contact`, `/faq`, `/services`, `/trade`, `/warranty`,
-`/privacy-policy`, `/terms-and-conditions` — real pages on ilanel.com,
-already linked (dead `href="#"`) from this site's footer. Scrape the real
-copy from each (same read-only method used for products/projects/news),
-build as WordPress `page`s, wire the footer links to them instead of `#`.
+`/about`, `/faq`, `/trade`, `/warranty`, `/privacy-policy`,
+`/terms-and-conditions`, `/contact` — built and live on
+`ilanel.dads42.com`. See `docs/OPEN-QUESTIONS.md` §9 for the detail.
+`/services` wasn't in the final build list (not confirmed as a real,
+distinct page vs. content covered elsewhere — check before adding).
 
-`/3d-models`, `/linktree`, `/customer-satisfaction-survey` — lower
-priority, confirm with ILANEL whether these are worth carrying over or were
-already abandoned on the live site (their own admin lists them as
-"Not Linked" — some may be intentionally retired, not just
+`/3d-models`, `/linktree`, `/customer-satisfaction-survey` — still not
+built, still lower priority, confirm with ILANEL whether these are worth
+carrying over or were already abandoned on the live site (their own admin
+lists them as "Not Linked" — some may be intentionally retired, not just
 disorganized nav).
 
 ### 3b. Finish photography gap

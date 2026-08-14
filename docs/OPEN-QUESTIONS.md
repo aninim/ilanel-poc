@@ -158,7 +158,21 @@ deployment, chosen so nothing here risks ilanel.com's real SEO while
 product prices are still 30/34 placeholder. Moving to a real ILANEL
 subdomain later is a domain swap on the same server, not a migration.
 
-## 9. Static pages — not built, real gap on live ilanel.com too
+## 9. Static pages — ✅ RESOLVED (2026-08-14)
+
+Built and live at `/about/`, `/faq/`, `/trade/`, `/warranty/`, `/privacy-policy/`,
+`/terms-and-conditions/`, `/contact/` on `ilanel.dads42.com`. Real copy scraped
+read-only from ilanel.com (`scripts/scrape-static-pages.js` → `data/static-pages.json`),
+seeded as native WordPress pages (`scripts/seed-static-pages.php`), rendered via
+a new `page.php` template matching the site's own type system. FAQ's Squarespace
+accordion block (question/answer pairs, not plain paragraphs — a different
+extraction path than every other scraped content type here) renders as native
+`<details>/<summary>`, no JS dependency. Footer and product-page `href="#"`
+links now point to these. `/3d-models`, `/linktree`,
+`/customer-satisfaction-survey` still not built — orphaned on ilanel.com's own
+nav too, lower priority per the original note below.
+
+### 9a. Static pages — original gap note (superseded, kept for context)
 
 Cross-checked ilanel.com's admin "Not Linked" list (pages that exist but
 aren't in any nav menu) against what's live: `/services`, `/warranty`,
