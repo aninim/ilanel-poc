@@ -187,8 +187,13 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 			$ilanel_product->set_sku( $ilanel_item['sku'] );
 		}
 
-		// Only set a price when the seed data carries a real one. An Offer
-		// node without a price is invalid schema, so leave it absent.
+		// Only set a price when the seed data carries one. An Offer node
+		// without a price is invalid schema, so leave it absent rather than
+		// emit one. Products without real Commerce data still get a flat
+		// placeholder (see data/products.json's price_is_placeholder — Oren,
+		// 2026-08-14: launch needs every product purchasable now, ILANEL's
+		// real prices are quote-based and vary per order anyway, so exact
+		// accuracy here doesn't matter — studio replaces these post-launch).
 		if ( ! empty( $ilanel_item['price'] ) && 'PLACEHOLDER' !== $ilanel_item['price'] ) {
 			$ilanel_product->set_regular_price( (string) $ilanel_item['price'] );
 		}
@@ -199,6 +204,15 @@ foreach ( $ilanel_data['products'] as $ilanel_item ) {
 	if ( ! $ilanel_product_id ) {
 		WP_CLI::warning( 'Failed to save product: ' . $ilanel_item['name'] );
 		continue;
+	}
+
+	// Internal-only marker (no template reads this) so the studio can find
+	// every provisional price in one query before it ever needs to:
+	// wp post list --post_type=product --meta_key=_ilanel_price_is_placeholder
+	if ( ! empty( $ilanel_item['price_is_placeholder'] ) ) {
+		update_post_meta( $ilanel_product_id, '_ilanel_price_is_placeholder', '1' );
+	} else {
+		delete_post_meta( $ilanel_product_id, '_ilanel_price_is_placeholder' );
 	}
 
 	if ( $ilanel_has_variants ) {
