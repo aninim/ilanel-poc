@@ -47,10 +47,28 @@ strictly sequential.
 
 ## Phase 1 — Real product data (blocks real prices, SKUs, stock)
 
-**Gate to start:** an authenticated Squarespace Commerce API key with
-Products-Read scope. Confirmed three separate ways this session that no
-unauthenticated endpoint exposes it — this is not a scraping problem,
-it's a credential ILANEL's Squarespace account owner has to generate.
+**Status (2026-08-14): worked around, not resolved.** The Commerce API
+key needs a Squarespace plan upgrade that won't take effect until the
+current billing cycle ends — genuinely not gettable right now. Checked
+whether the live storefront shows prices publicly as a fallback: it
+doesn't, on any product, including the 4 already fully priced — ILANEL's
+own FAQ confirms pricing is deliberately quote-only, so there was never a
+number to manually transcribe either.
+
+Decision (Oren): ship with a flat $3,450 AUD placeholder price and a
+`TBC-<SLUG>` SKU on the 30 unpriced products so every product is
+purchasable at launch — real prices vary per order anyway, so exact
+accuracy on a placeholder doesn't matter. Deployed and re-seeded live;
+`_ilanel_price_is_placeholder` post meta flags exactly which 30, for the
+studio's post-launch cleanup pass:
+`wp post list --post_type=product --meta_key=_ilanel_price_is_placeholder`
+
+**Gate to start (if the real API access is pursued later):** an
+authenticated Squarespace Commerce API key with Products-Read scope.
+Confirmed three separate ways this session that no unauthenticated
+endpoint exposes it — this is not a scraping problem, it's a credential
+ILANEL's Squarespace account owner has to generate, and now also gated on
+a plan tier.
 
 **Gate to finish:** all 34 products (not 4) carry real `commerce.attributes`
 / `commerce.variants` in `data/products.json`, matching the shape Comet,
@@ -230,9 +248,13 @@ before building anything new).
      confirm the order-confirmation email actually sends — the plugin
      being configured isn't the same as WooCommerce's own email templates
      being correctly wired to it, verify both.
-- **Backups.** Cloudways has this built in; confirm it's actually
-  configured and a restore has been test-run once before go-live, not
-  just assumed to work.
+- **Backups — confirmed configured (2026-08-14).** Daily at 16:13 UTC,
+  1-day frequency, 1-week retention, 32MB off-site size (consistent with
+  what's actually on this install). Local Backups toggle is currently
+  off — fine for disaster recovery via Cloudways' own copies, just means
+  no self-downloadable snapshot without turning it on. Still open: an
+  actual restore has never been tested — do one "Clone to Staging" run
+  before go-live, don't just trust the toggle is doing what it says.
 - **SSL** — already working on `ilanel.dads42.com` (Let's Encrypt via
   Cloudways); re-verify after the domain changes to `ilanel.com` — a new
   cert has to provision for the new hostname, this doesn't carry over

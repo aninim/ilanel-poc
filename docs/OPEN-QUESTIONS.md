@@ -8,10 +8,10 @@ each open item it references.
 
 ---
 
-## 1. Prices — ✅ RESOLVED (2026-08-11)
+## 1. Prices — ⚠️ PARTIALLY RESOLVED, then worked around (2026-08-11 / 2026-08-14)
 
-Real prices now come from the authenticated Squarespace Commerce export and
-live in `data/products.json` → `commerce.variants[].price`:
+Real prices for 4 products come from the authenticated Squarespace Commerce
+export and live in `data/products.json` → `commerce.variants[].price`:
 
 | Product | Variants | Real range |
 |---|---|---|
@@ -28,12 +28,28 @@ seeder built variable products. It now mirrors the blueprint generator:
 variable products, real attributes and variants, `WC_Product_Variable::sync()`,
 and it seeds projects and the product↔project relation too.
 
-## 2. SKUs — ✅ RESOLVED (2026-08-11)
+**2026-08-14 — the other 30 products.** The Commerce API needed to get their
+real prices is blocked behind a Squarespace plan upgrade that won't take
+effect until the current billing cycle ends. Checked the live storefront as
+a fallback: ILANEL doesn't publish a price anywhere, on any product,
+including the 4 above — their own FAQ confirms pricing is deliberately
+quote-only, so there was no number to manually copy either. Oren's call:
+launch needs every product purchasable now, real prices are quote-based and
+vary per order regardless, so a placeholder's accuracy doesn't matter. All
+30 now carry a flat $3,450 AUD price, flagged internally via
+`_ilanel_price_is_placeholder` post meta (never customer-visible) for the
+studio's post-launch cleanup — see `docs/LAUNCH-PLAN.md` Phase 1.
 
-Real SKUs ship with the variant data (e.g. `SQ0540475`). The `DEMO-*` override
-was removed from the blueprint seeder, and as of 2026-08-12 the WP-CLI seeder
-matches — `DEMO-*` is now only used for products with no variant data, of
-which there are currently none.
+## 2. SKUs — ⚠️ PARTIALLY RESOLVED, then worked around (2026-08-11 / 2026-08-14)
+
+Real SKUs ship with the variant data for the 4 products above (e.g.
+`SQ0540475`). The `DEMO-*` override was removed from the blueprint seeder,
+and as of 2026-08-12 the WP-CLI seeder matches.
+
+**2026-08-14** — the other 30 products now carry a `TBC-<SLUG>` SKU
+(deliberately not `DEMO-*`, which the seeder still special-cases to *skip*
+setting a SKU at all — `TBC-` is a real, visible placeholder the studio can
+grep for, same idea as the price flag above).
 
 ## 3. Finishes — not captured
 
