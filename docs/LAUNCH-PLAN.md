@@ -231,6 +231,15 @@ before building anything new).
 
 **Gate to start:** Phases 1–3 substantially complete.
 
+- **Currency/country — found wrong, fixed (2026-08-14).** While starting
+  Phase 2, found `woocommerce_currency` was `USD` and
+  `woocommerce_default_country` was `US:CA` on the live install — despite
+  `docs/INSTALL.md` documenting AUD as a required manual step. Product
+  schema was emitting `"priceCurrency": "USD"` live, and displayed prices
+  had no currency label at all. Corrected to `AUD` / `AU:VIC`, verified in
+  the live Offer schema. **Worth a spot-check after any future reinstall
+  or WooCommerce update** — this regressed silently once already with no
+  visible symptom beyond the schema itself.
 - **SMTP / transactional email — plugin installed, needs a real API key
   (2026-08-14).** Order confirmations, contact form submissions, password
   resets need real outbound email — Cloudways' default PHP `mail()` is
