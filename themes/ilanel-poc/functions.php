@@ -354,9 +354,24 @@ add_filter( 'woocommerce_page_title', 'ilanel_poc_remove_shop_page_title' );
 
 /**
  * Wrap Woo content in the theme's container.
+ *
+ * 2026-08-15: added .rg-shell around the shop archive specifically — Oren
+ * flagged the filter row and product grid on /shop/ sitting flush against
+ * the browser edge with no gutter at all. taxonomy-ilanel_range.php (the
+ * range archives — Pendants, Chandeliers…) is a real theme template file
+ * that already wraps its own content in .rg-shell by hand; /shop/ renders
+ * through WooCommerce's own archive-product.php instead, which this theme
+ * never overrides, so it never got the same wrapper. Scoped to is_shop()
+ * only — the hero above already sits outside <main> and needs full-bleed
+ * width, and this must not double up with taxonomy-ilanel_range.php's own
+ * wrapper on range archives.
  */
 function ilanel_poc_wrapper_start() {
 	echo '<main id="main" class="ilanel-main">';
+
+	if ( function_exists( 'is_shop' ) && is_shop() ) {
+		echo '<div class="rg-shell">';
+	}
 }
 add_action( 'woocommerce_before_main_content', 'ilanel_poc_wrapper_start', 10 );
 
@@ -364,6 +379,10 @@ add_action( 'woocommerce_before_main_content', 'ilanel_poc_wrapper_start', 10 );
  * Close the theme's container.
  */
 function ilanel_poc_wrapper_end() {
+	if ( function_exists( 'is_shop' ) && is_shop() ) {
+		echo '</div>';
+	}
+
 	echo '</main>';
 }
 add_action( 'woocommerce_after_main_content', 'ilanel_poc_wrapper_end', 10 );
