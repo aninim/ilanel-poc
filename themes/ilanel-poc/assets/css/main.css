@@ -1680,9 +1680,26 @@ body.has-hero.is-past-hero .rg-navbtn span {
   border-color: var(--rg-ink);
 }
 
+/*
+ * The live my-account markup is a real <button> element
+ * (woocommerce/includes/wc-template-functions.php's newer output), not
+ * <input type="submit">, which is why an earlier .woocommerce input.button
+ * addition here never matched anything — chasing the wrong tag entirely,
+ * confirmed by checking the actual served HTML rather than assuming.
+ * appearance:none is the actual fix beneath that dead end: WooCommerce's
+ * general.css doesn't touch bare <button class="button"> at all, so
+ * without this the browser's native button chrome (grey, OS-themed)
+ * silently resists background-color even with matching class selectors
+ * and correct specificity — a real, easy-to-miss <button> quirk, not a
+ * CSS-cascade problem.
+ */
 .woocommerce-form-login__submit,
 .woocommerce-form-register__submit,
-.woocommerce-Button {
+.woocommerce-Button,
+.woocommerce button.button,
+.woocommerce input.button {
+  -webkit-appearance: none;
+  appearance: none;
   display: inline-block;
   padding: 1.4rem 3rem;
   background: var(--rg-ink);
@@ -1699,8 +1716,10 @@ body.has-hero.is-past-hero .rg-navbtn span {
 
 .woocommerce-form-login__submit:hover,
 .woocommerce-form-register__submit:hover,
-.woocommerce-Button:hover {
+.woocommerce-Button:hover,
+.woocommerce input.button:hover {
   background: var(--rg-accent);
+  color: #fff;
 }
 
 .woocommerce-form-login__rememberme {

@@ -11,7 +11,19 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ILANEL_POC_THEME_VERSION', '0.1.0' );
+/*
+ * 2026-08-15: was a static '0.1.0', never once bumped across this theme's
+ * history — meaning every asset URL (?ver=0.1.0) stayed byte-identical
+ * across every deploy, so no browser or CDN cache ever had a reason to
+ * fetch a fresh copy after a CSS/JS change. Real, confirmed impact: a
+ * button-color fix landed correctly in the deployed file and still didn't
+ * render live until this was fixed — wp cache flush / breeze purge only
+ * clear server-side caches, never a client's own cached copy of an
+ * unchanged URL. filemtime() on main.css makes the version — and every
+ * asset URL keyed to this constant — change automatically on every real
+ * deploy, with no separate step to remember.
+ */
+define( 'ILANEL_POC_THEME_VERSION', (string) filemtime( get_stylesheet_directory() . '/assets/css/main.css' ) );
 
 /**
  * Theme setup.
