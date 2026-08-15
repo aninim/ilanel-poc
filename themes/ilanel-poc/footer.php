@@ -6,8 +6,10 @@
  *   address block · four nav columns (About / Support / Resources / Social)
  *   · Acknowledgement of Country · legal row
  *
- * ILANEL's real studio details are used where known; the rest are
- * plausible placeholders for the demo.
+ * Address, phone and email come from the real scraped Contact page
+ * (data/static-pages.json) — confirmed live 2026-08-15 after the phone
+ * number was found still showing a placeholder (+61 3 9000 0000) despite
+ * this comment's prior claim that real details were already in use.
  *
  * @package ILANEL_POC
  */
@@ -58,8 +60,8 @@ $ilanel_footer_archive_slugs = array(
 					<address class="rg-footer__address">
 						<span>Melbourne</span>
 						<span>Victoria, Australia</span>
-						<span class="rg-footer__spacer">Phone — +61 3 9000 0000</span>
-						<a href="mailto:studio@ilanel.com">STUDIO@ILANEL.COM</a>
+						<span class="rg-footer__spacer">Phone — +61 3 9534 1164</span>
+						<a href="mailto:info@ilanel.com">INFO@ILANEL.COM</a>
 					</address>
 				</div>
 

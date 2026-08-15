@@ -1524,6 +1524,198 @@ body.has-hero.is-past-hero .rg-navbtn span {
   }
 }
 
+/* --- Cart (empty state + cross-sell) ---------------------------------------
+ * 2026-08-15: the FILLED cart (wp-block-woocommerce-cart's default table/
+ * totals markup) already renders well with no theme CSS at all — checked a
+ * real filled cart before touching anything, confirmed it wasn't broken.
+ * Only the EMPTY state and its "New in store" cross-sell block
+ * (wc-block-grid, a Gutenberg "Products (New)" block) had zero theme
+ * styling: raw underlined blue links, a generic black pill button, no
+ * relation to the rest of the site's type/spacing. */
+
+.wc-block-cart__empty-cart__title {
+  font-family: var(--rg-serif);
+  font-weight: 400;
+}
+
+.wp-block-woocommerce-empty-cart-block h2 {
+  font-family: var(--rg-sans);
+  font-size: 1.8rem;
+  letter-spacing: 0.02em;
+  margin-top: 4rem;
+}
+
+.wc-block-grid.wp-block-product-new {
+  margin-top: 2.5rem;
+}
+
+/*
+ * !important here is deliberate, not lazy: WooCommerce's own
+ * all-products.css ships multiple .has-4-columns .wc-block-grid__product
+ * rules at conflicting max-widths (25%, 50%, 100% depending on a
+ * responsive cascade this stylesheet doesn't fully control) plus
+ * `display:block` on the list itself, which fights a plain `display:grid`
+ * override regardless of selector specificity. Forcing the properties
+ * that matter is more reliable here than chasing WooCommerce's internal
+ * cascade rule by rule.
+ */
+.wc-block-grid__products {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 3rem 2.4rem;
+  list-style: none;
+  padding: 0;
+}
+
+.wc-block-grid__product {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: none !important;
+  margin: 0 !important;
+}
+
+.wc-block-grid__product-image,
+.wc-block-grid__product-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wc-block-grid__product-title {
+  display: block;
+  margin: 1.2rem 0 0.4rem;
+  font-family: var(--rg-sans);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--rg-ink);
+  text-decoration: none;
+}
+
+.wc-block-grid__product-price {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  color: var(--rg-muted);
+}
+
+.wc-block-grid__product-price .woocommerce-price-suffix {
+  display: inline;
+  white-space: nowrap;
+}
+
+.wc-block-grid__product-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/*
+ * WooCommerce's own wc-blocks.css sets .wc-block-grid__product-add-to-cart
+ * .wp-block-button.wp-block-button__link to display:inline-flex with
+ * white-space:normal + word-break:break-word and no explicit width — at
+ * this grid's narrow column width that collapsed "Add to cart" to one
+ * letter per line. Their selector chain has 3 classes; matching it (not
+ * a shorter 2-class version) is what it takes to actually win on
+ * specificity rather than relying on source order.
+ */
+.wc-block-grid__product-add-to-cart.wp-block-button .wp-block-button__link {
+  display: inline-flex;
+  width: max-content;
+  max-width: 100%;
+  padding: 1rem 1.6rem;
+  background: var(--rg-ink);
+  color: #fff;
+  border-radius: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  word-break: normal;
+  box-sizing: border-box;
+  transition: background 0.2s ease;
+}
+
+.wc-block-grid__product-add-to-cart.wp-block-button .wp-block-button__link:hover {
+  background: var(--rg-accent);
+}
+
+/* --- My account (login / register) -----------------------------------------
+ * Same gap as the cart empty state: WooCommerce's legacy (non-block)
+ * my-account forms had no theme CSS at all — default grey button, default
+ * input borders, no relation to the rest of the site's inputs (which don't
+ * otherwise exist elsewhere on this content-first site, so this is the
+ * first real form UI on the site worth a deliberate pass). */
+
+.woocommerce-form-login,
+.woocommerce-form-register {
+  max-width: 44rem;
+  margin-top: 3rem;
+  padding: 3rem;
+  border: 1px solid var(--rg-rule);
+}
+
+.woocommerce-form-row {
+  margin-bottom: 2rem;
+}
+
+.woocommerce-form-row label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 1.3rem;
+  color: var(--rg-ink);
+}
+
+.woocommerce-Input {
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--rg-rule);
+  border-radius: 0;
+  font-family: var(--rg-sans);
+  font-size: 1.5rem;
+  background: var(--rg-bg);
+}
+
+.woocommerce-Input:focus {
+  outline: none;
+  border-color: var(--rg-ink);
+}
+
+.woocommerce-form-login__submit,
+.woocommerce-form-register__submit,
+.woocommerce-Button {
+  display: inline-block;
+  padding: 1.4rem 3rem;
+  background: var(--rg-ink);
+  color: #fff;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--rg-sans);
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.woocommerce-form-login__submit:hover,
+.woocommerce-form-register__submit:hover,
+.woocommerce-Button:hover {
+  background: var(--rg-accent);
+}
+
+.woocommerce-form-login__rememberme {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: 2rem;
+  font-size: 1.3rem;
+}
+
+.woocommerce-LostPassword {
+  margin-top: 1.6rem;
+  font-size: 1.3rem;
+}
+
 /* --- Footer --------------------------------------------------------------- */
 
 .rg-footer {
