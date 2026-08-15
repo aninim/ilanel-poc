@@ -1710,10 +1710,15 @@ body.has-hero.is-past-hero .rg-navbtn span {
    the glass; narrowing it only pushed the lines toward the middle, because
    .rg-shell (max-width 168rem) is wider than a 1440px viewport and so has no
    slack for auto margins to take up. Centring sits the copy with the subject
-   instead of fighting it. */
+   instead of fighting it.
+   2026-08-15: real horizontal padding added — .rg-shell's own padding
+   wasn't enough at real desktop widths (168rem max-width means the shell's
+   padding is doing all the work, and it wasn't enough on its own), the
+   headline sat visibly close to the edge (flagged by Oren on /shop/). */
 .rg-hero__copy {
   max-width: 66rem;
   margin: 0 auto;
+  padding: 0 3rem;
   text-align: center;
 }
 
@@ -2642,6 +2647,15 @@ ul.products li.product .button {
   font-weight: 500;
   letter-spacing: -0.01em;
   font-size: 5.2rem;
+}
+
+/* Shop hero (Comet) only — smaller than the base .rg-hero__title--project
+   size above. Oren, 2026-08-15: on /shop/ the headline was dominating the
+   frame and burying the product photo it sits over — the whole point of
+   a product hero is the product, so the copy needs to read as a caption,
+   not compete with the photograph for attention. */
+.rg-hero--shop .rg-hero__title--project {
+  font-size: 3.6rem;
 }
 
 .rg-hero__venue {
