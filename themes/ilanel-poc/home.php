@@ -35,22 +35,31 @@ get_header();
 			$ilanel_featured_excerpt = wp_trim_words( wp_strip_all_tags( get_the_content() ), 24, '…' );
 			?>
 
-			<section class="rg-journal__featured">
+			<?php
+			/*
+			 * Editorial overlay, not RG's Journal stacked pattern — Oren,
+			 * 2026-08-15: liked Marz Designs' journal page specifically, where
+			 * the headline/excerpt/CTA sit directly on the photo as a real
+			 * magazine-style treatment, not a small label above a separate
+			 * copy block below the image. RG's Products/Home pages (the object-
+			 * forward, dark-on-pale hero style above) are the other named
+			 * reference — News is deliberately the warmer, editorial one.
+			 */
+			?>
+			<section class="rg-journal__featured rg-journal__featured--editorial">
 				<a href="<?php the_permalink(); ?>">
-					<span class="rg-journal__featured-label"><?php esc_html_e( 'Latest /', 'ilanel-poc' ); ?></span>
-
 					<div class="rg-journal__featured-media">
 						<?php
 						if ( has_post_thumbnail() ) {
 							the_post_thumbnail( 'large' );
 						}
 						?>
-					</div>
-
-					<div class="rg-journal__featured-copy">
-						<h2><?php the_title(); ?></h2>
-						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
-						<span class="rg-index__more"><?php esc_html_e( 'Read more /', 'ilanel-poc' ); ?></span>
+						<div class="rg-journal__featured-overlay">
+							<span class="rg-journal__featured-label"><?php esc_html_e( 'Latest /', 'ilanel-poc' ); ?></span>
+							<h2><?php the_title(); ?></h2>
+							<p class="rg-journal__featured-excerpt"><?php echo esc_html( $ilanel_featured_excerpt ); ?></p>
+							<span class="rg-index__more"><?php esc_html_e( 'Read more /', 'ilanel-poc' ); ?></span>
+						</div>
 					</div>
 				</a>
 			</section>

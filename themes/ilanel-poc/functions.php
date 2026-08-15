@@ -105,14 +105,17 @@ add_action( 'wp_enqueue_scripts', 'ilanel_poc_enqueue_assets', 20 );
 /**
  * Mark pages that open on a hero so the header can overlay it.
  *
- * Both the product template and the homepage lead with .rg-hero, so both
- * need the white-on-photography header treatment.
+ * The product template, homepage and shop archive all lead with .rg-hero,
+ * so all three need the header-overlay treatment (2026-08-15: added
+ * is_shop() when the shop archive gained its own Comet hero — previously
+ * the header sat in normal flow above it, inconsistent with how the
+ * homepage/product-page heroes already render full-bleed to the top).
  *
  * @param string[] $classes Body classes.
  * @return string[]
  */
 function ilanel_poc_body_class( $classes ) {
-	if ( ( function_exists( 'is_product' ) && is_product() ) || is_front_page() ) {
+	if ( ( function_exists( 'is_product' ) && is_product() ) || is_front_page() || ( function_exists( 'is_shop' ) && is_shop() ) ) {
 		$classes[] = 'has-hero';
 	}
 
@@ -312,7 +315,7 @@ function ilanel_poc_render_shop_hero() {
 	?>
 	<link rel="preload" as="image" fetchpriority="high" href="<?php echo esc_url( $hero_image ); ?>">
 
-	<section class="rg-hero rg-hero--project" aria-label="<?php esc_attr_e( 'Shop the collection', 'ilanel-poc' ); ?>">
+	<section class="rg-hero rg-hero--project rg-hero--shop" aria-label="<?php esc_attr_e( 'Shop the collection', 'ilanel-poc' ); ?>">
 		<div class="rg-hero__slide is-active"
 			style="background-image:url('<?php echo esc_url( $hero_image ); ?>')"
 			role="img"
@@ -330,6 +333,24 @@ function ilanel_poc_render_shop_hero() {
 	<?php
 }
 add_action( 'woocommerce_before_main_content', 'ilanel_poc_render_shop_hero', 5 );
+
+/**
+ * Drop WooCommerce's default "Shop" <h1> on the main archive only.
+ *
+ * The Comet hero above already states the page's purpose (headline +
+ * eyebrow) — a second plain-text "Shop" heading directly beneath it read
+ * as redundant, and clashed visually against the hero's sans-serif
+ * treatment. Range archives (Pendants, Chandeliers…) have no hero of
+ * their own, so they keep this heading — only is_shop() removes it.
+ */
+function ilanel_poc_remove_shop_page_title( $title ) {
+	if ( is_shop() ) {
+		return '';
+	}
+
+	return $title;
+}
+add_filter( 'woocommerce_page_title', 'ilanel_poc_remove_shop_page_title' );
 
 /**
  * Wrap Woo content in the theme's container.

@@ -201,26 +201,31 @@ img {
 /* --- Hero carousel -------------------------------------------------------- */
 
 /* On product pages the header sits over the hero, so the image runs to the
-   very top of the page — including behind the wordmark. */
+   very top of the page — including behind the wordmark.
+   2026-08-15: dark header type over a pale scrim, not white over dark —
+   same reasoning as .rg-hero__overlay below: ILANEL's photography is
+   white-background, so white nav text had nothing dark enough behind it
+   to read against without over-darkening the product shot itself. */
 body.has-hero .rg-header {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
-  color: #fff;
+  color: var(--rg-ink);
 }
 
 body.has-hero .rg-navbtn span {
-  background: #fff;
+  background: var(--rg-ink);
 }
 
-/* A soft scrim keeps the white header legible over pale photography. */
+/* A soft pale scrim keeps dark header type legible without darkening the
+   photography beneath it. */
 body.has-hero .rg-header::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
   pointer-events: none;
   z-index: -1;
 }
@@ -1661,8 +1666,16 @@ body.has-hero.is-past-hero .rg-navbtn span {
   min-height: 52rem;
 }
 
-/* The overlay is a grid so the copy can sit on the lower third — RG place
-   their hero text low-left, not centred. */
+/* 2026-08-15 — reworked toward Ross Gardam's actual solution, not a patch
+   on the old one. RG's hero type is dark-on-pale, not white-on-photo: their
+   product photography is white-background by nature (studio shots, not
+   moody lifestyle scenes), so they never fight it with a scrim — they let
+   dark type sit directly on the light ground the photography already
+   provides. ILANEL's photography is the same kind of shot. The old white
+   text + dark gradient scrim measured 1.36:1 contrast in practice (flagged
+   2026-08-15 audit) — a scrim dark enough to fix that would darken the
+   product past recognition, which defeats the point of a product hero.
+   Dark text solves it without touching the photography at all. */
 .rg-hero__overlay {
   position: absolute;
   inset: 0;
@@ -1670,15 +1683,19 @@ body.has-hero.is-past-hero .rg-navbtn span {
   display: grid;
   align-content: end;
   padding-bottom: 7.5rem;
-  color: #fff;
-  /* Photography is unpredictable; a scrim guarantees the copy stays legible
-     without darkening the whole image. Weighted to the bottom third where the
-     copy sits — a lighter wash left the standfirst looking washed out rather
-     than deliberate. */
-  /* Weighted to the bottom, where the copy sits, and eased out well before
-     the top so the fixture keeps its contrast rather than being flattened. */
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.26) 34%, rgba(0, 0, 0, 0) 66%);
+  color: var(--rg-ink);
   pointer-events: none;
+}
+
+/* A pale scrim, not a dark one — enough to guarantee contrast against
+   unpredictable photography without materially darkening the product
+   itself, the opposite weighting of the old dark-gradient approach. */
+.rg-hero__overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0) 68%);
+  z-index: -1;
 }
 
 /* Re-enable clicks only for the links inside the (non-interactive) overlay,
@@ -1700,25 +1717,26 @@ body.has-hero.is-past-hero .rg-navbtn span {
   text-align: center;
 }
 
+/* Sans, not serif — RG's identity is entirely sans-serif (Favorit Std);
+   the old Playfair Display serif here was a real, flagged divergence from
+   the reference, not a deliberate brand choice. */
 .rg-hero__title {
   margin: 0 0 1.8rem;
-  font-family: var(--rg-serif);
-  font-size: 5.6rem;
-  font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: 0.01em;
+  font-family: var(--rg-sans);
+  font-size: 4.8rem;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 .rg-hero__standfirst {
   max-width: 48rem;
   margin: 0 auto;
-  font-size: 2rem;
-  font-weight: 300;
+  font-size: 1.9rem;
+  font-weight: 400;
   line-height: 1.4;
-  /* Near-white: at 0.88 over photography this read as washed out rather
-     than as a deliberate secondary voice. */
-  color: rgba(255, 255, 255, 0.96);
+  color: var(--rg-muted);
 }
 
 .rg-cta--hero {
@@ -1726,11 +1744,11 @@ body.has-hero.is-past-hero .rg-navbtn span {
 }
 
 .rg-link--light {
-  color: #fff;
+  color: var(--rg-ink);
 }
 
 .rg-link--light:hover {
-  border-bottom-color: #fff;
+  border-bottom-color: var(--rg-ink);
 }
 
 /* Dots sit above the deepest part of the scrim rather than in it. */
@@ -2130,10 +2148,67 @@ ul.products li.product .button {
 }
 
 /* Featured item: a large 5:3 crop set apart above the grid — RG's own
-   ratio, not an approximation. */
+   ratio, not an approximation. Used as-is on Projects (archive-project.php);
+   News (home.php) opts into the --editorial modifier below instead. */
 .rg-journal__featured {
   margin-bottom: 7rem;
   text-align: center;
+}
+
+/* Editorial overlay — Marz Designs' journal treatment, not RG's stacked
+   one. Headline/excerpt/CTA sit directly on the photo, left-aligned like a
+   magazine spread, rather than centred copy in a separate block below the
+   image. News-only (home.php); Projects keeps the base pattern above. */
+.rg-journal__featured--editorial {
+  text-align: left;
+}
+
+.rg-journal__featured--editorial .rg-journal__featured-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 0;
+}
+
+.rg-journal__featured-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 5rem 5rem 4rem;
+  color: #fff;
+  /* Warm, weighted to the bottom where the copy sits — the point is a
+     real magazine-style overlay, not a flat dark box over the whole photo. */
+  background: linear-gradient(to top, rgba(20, 14, 8, 0.82), rgba(20, 14, 8, 0.35) 45%, rgba(20, 14, 8, 0) 75%);
+}
+
+.rg-journal__featured--editorial .rg-journal__featured-label {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.2rem;
+}
+
+.rg-journal__featured--editorial .rg-journal__featured-copy h2,
+.rg-journal__featured-overlay h2 {
+  margin: 0 0 1.4rem;
+  font-family: var(--rg-sans);
+  font-size: 3.2rem;
+  font-weight: 500;
+  line-height: 1.15;
+  max-width: 56rem;
+  text-wrap: balance;
+}
+
+.rg-journal__featured-excerpt {
+  max-width: 52rem;
+  margin: 0 0 1.8rem;
+  font-size: 1.7rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.rg-journal__featured--editorial .rg-index__more {
+  color: #fff;
 }
 
 .rg-journal__featured-label {
@@ -2563,6 +2638,9 @@ ul.products li.product .button {
 }
 
 .rg-hero__title--project {
+  font-family: var(--rg-sans);
+  font-weight: 500;
+  letter-spacing: -0.01em;
   font-size: 5.2rem;
 }
 
@@ -2571,6 +2649,23 @@ ul.products li.product .button {
   font-size: 1.6rem;
   font-weight: 300;
   color: rgba(255, 255, 255, 0.9);
+}
+
+/* Shop hero (Comet) only — white-background product photography, same
+   reasoning as .rg-hero__overlay/body.has-hero .rg-header above. Light
+   Art's own hero keeps the base white-on-dark styling above; its
+   photography is genuinely dark, this modifier does not apply there. */
+.rg-hero--shop .rg-hero__eyebrow,
+.rg-hero--shop .rg-hero__venue {
+  color: var(--rg-muted);
+}
+
+.rg-hero--shop .rg-hero__overlay {
+  color: var(--rg-ink);
+}
+
+.rg-hero--shop .rg-hero__overlay::before {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0) 68%);
 }
 
 /* --- Single project: RG's Orrong pattern -----------------------------------
