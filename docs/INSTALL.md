@@ -55,6 +55,21 @@ proceeds — see the README for candidates.
 
 ## Configuration after install
 
+**Delete the default "Hello world!" post** — WordPress ships one on every
+fresh install, and it's dated at install time. Because `home.php` (the
+`/news/` listing) features whichever post is newest, the default post
+sorts ahead of every real migrated News entry and shows as "Latest" — with
+no photo, since it isn't real content. Found live 2026-08-15 from a
+screenshot of a blank hero box on `/news/`, not caught by any earlier
+automated check:
+
+```bash
+wp post delete 1 --force
+```
+
+(Confirm ID 1 really is "Hello world!" first — `wp post get 1 --field=post_title`
+— on the off chance post IDs ever differ from the norm on a given install.)
+
 **Currency** — set to AUD, or the Offer schema will emit the wrong
 `priceCurrency`:
 
