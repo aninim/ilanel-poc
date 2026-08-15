@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "site": "https://ilanel.dads42.com",
+    "crawled": "2026-08-15T04:44:03Z",
+    "method": "same-origin fetch() from a browser, seeded from wp-sitemap.xml (9 sub-sitemaps) + link discovery",
+    "pagesInSitemapCrawl": 163,
+    "uniqueUrlsSeenIncludingPagination": 175
+  },
+  "totals": {
+    "status200": 162,
+    "nonOk": 1,
+    "noMetaDescription": 162,
+    "noOgImage": 162,
+    "noTwitterCard": 162,
+    "noCanonical_sitemapCrawl": 9,
+    "noCanonical_includingPagination": 22,
+    "noStructuredData": 59,
+    "multipleH1": 3,
+    "zeroH1": 2,
+    "deadHashLinks": 1978,
+    "pagesWithAnyForm": 37,
+    "pagesWithEnquiryOrNewsletterForm": 0,
+    "images": 1063,
+    "imagesWithEmptyAlt": 141,
+    "imagesWithoutDimensions": 853,
+    "imagesWithoutAltAttribute": 0,
+    "noindexPages": 3,
+    "titlesUnder25Chars": 93,
+    "titlesOver60Chars": 7,
+    "averageWordsPerPage": 458
+  },
+  "migrationParity": {
+    "legacyUrlsTested": 163,
+    "sourceFile": "ilanel-studio/reports/live-urls-2026-08-10.txt",
+    "exact200": 143,
+    "redirected": 2,
+    "notFound404": 18,
+    "projectedTotal404IncludingUntestedGroups": 63,
+    "redirectsWorking": ["/home -> /", "/privacy -> /privacy-policy/"],
+    "confirmed404": [
+      "/3d-models", "/404-page", "/coming-soon", "/customer-satisfaction-survey",
+      "/editions", "/ip-address", "/join-our-team-craftsman", "/join-our-team-id",
+      "/lighting-design-collections", "/lighting-design-collections/finishes",
+      "/lighting-design-collections/snowball/walllight", "/linktree", "/members-photos",
+      "/news/category/Art", "/news/tag/lighting", "/portfolio-1-1",
+      "/portfolio-1-1/project-one-2bbn6", "/services"
+    ],
+    "sampled404Groups": {
+      "/news/category/*": "21 URLs on live; sampled Art + Bespoke, both 404",
+      "/news/tag/*": "21 URLs on live; sampled lighting + Brass, both 404",
+      "/portfolio-1-1/*": "7 URLs on live; sampled 2, both 404"
+    }
+  },
+  "duplicateContent": {
+    "newsPostsAtTwoUrls": {
+      "count": 42,
+      "example": "/news/mdw-final-weekend/ and /mdw-final-weekend/ both return 200, byte-identical (40122 bytes), no redirect",
+      "canonicalPointsTo": "root variant",
+      "liveIlanelComUses": "/news/<slug>"
+    },
+    "duplicateTitles": [
+      {"title": "Supernova – ILANEL", "urls": ["/lighting-design-collections/custom-round-pendant-supernova/", "/lighting-design-collections/custom-linear-pendant-supernova/"]},
+      {"title": "Black Rain – ILANEL", "urls": ["/lighting-design-collections/black-rain-wall-light/", "/lighting-design-collections/black-rain-custom-pendant-light/"]},
+      {"title": "Cannon Vase – ILANEL", "urls": ["/editions/cannon-vase-1st-edition/", "/editions/colorful-cannon-vase-2nd-edition/"]},
+      {"title": "Falling Leaves – ILANEL", "urls": ["/falling-leaves/", "/lighting-design-collections/falling-leaves/"]},
+      {"title": "The Hour Glass Adelaide – ILANEL", "urls": ["/the-hour-glass-adelaide/", "/projects/the-hour-glass-adelaide/"]},
+      {"title": "Uncategorized – ILANEL", "urls": ["/product-category/uncategorized/", "/category/uncategorized/"]},
+      {"title": "Cart – ILANEL", "urls": ["/cart/", "/checkout/"]}
+    ]
+  },
+  "structuredData": {
+    "product": ["Product", "AggregateOffer|Offer", "BreadcrumbList", "Organization"],
+    "rangeArchive": ["CollectionPage", "BreadcrumbList"],
+    "project": ["BreadcrumbList"],
+    "lightArt": ["BreadcrumbList"],
+    "newsPost": [],
+    "homepage": [],
+    "staticPages": [],
+    "missingSitewide": ["WebSite", "Organization on homepage", "BlogPosting", "CreativeWork", "FAQPage"]
+  },
+  "deadLinks": {
+    "perPageFooter": 10,
+    "labels": ["Shipping & returns", "Catalogue", "Lookbook", "Materials & finishes", "3D models", "Product instructions", "Subscribe", "Instagram", "Pinterest", "LinkedIn"],
+    "productPageExtra": ["3D models (in body)"],
+    "sitewideTotal": 1978
+  },
+  "conversionPath": {
+    "contactPageForms": 0,
+    "tradePageForms": 0,
+    "newsletterSignup": "none — footer Subscribe is href=\"#\"",
+    "productCtas": {
+      "Buy now": "/contact/",
+      "Send enquiry": "/contact/",
+      "Specifier enquiry": "/contact/",
+      "note": "identical href, no product or configuration context passed"
+    },
+    "phoneNumbers": {
+      "footerAllPages": "+61 3 9000 0000 (placeholder)",
+      "contactPageBody": "+61 3 9534 1164 (real)"
+    },
+    "primaryNavOmits": ["/about/", "/contact/", "/trade/"]
+  },
+  "accessibility": {
+    "tool": "axe-core 4.8.2",
+    "rulesets": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"],
+    "results": {
+      "/": {"violations": 0, "incomplete": ["color-contrast x4 (hero over image)"]},
+      "/our-range/pendants/": {"violations": 0},
+      "/lighting-design-collections/comet-pendant-light/": {"violations": 1, "detail": "region (moderate): .rg-stickybar outside landmark"},
+      "/contact/": {"violations": 0},
+      "/projects/": {"violations": 0}
+    },
+    "manual": {
+      "focusVisible": "pass — default outline:auto preserved",
+      "carouselControls": "pass — real buttons with aria-labels",
+      "prefersReducedMotion": "pass — 2 media query blocks",
+      "skipLink": "absent (66 focusable elements before main)",
+      "lang": "en-US (should be en-AU)",
+      "targetsUnder24px": 50,
+      "heroDotSize": "40x2 px"
+    },
+    "heroContrastMeasured": {
+      "page": "/lighting-design-collections/comet-pendant-light/",
+      "image": "Ilanel_Comet_1800_Blue_FWhite_Black.jpg (1500x844)",
+      "textColour": "#ffffff",
+      "scrim": "none — .rg-hero__overlay computes to transparent",
+      "worstCaseContrastVsWhite": {
+        "behindH1": 1.36,
+        "behindLogo": 2.14,
+        "behindTopRightIcons": 2.28,
+        "behindHamburger": 2.43
+      },
+      "wcagAaThresholds": {"largeText": 3.0, "smallTextAndIcons": 4.5}
+    }
+  },
+  "performance": {
+    "page": "/lighting-design-collections/comet-pendant-light/",
+    "requests": 33,
+    "transferredKB": 704,
+    "ttfbMs": 600,
+    "domContentLoadedMs": 669,
+    "loadMs": 2150,
+    "largestAsset": "Pipi_GAI.png (690 KB, PNG where WebP used elsewhere)",
+    "imagesServedOver2xDisplaySize": 3
+  },
+  "referenceComparison": {
+    "rossgardam.com.au": {
+      "headingFont": "Favorit Std (sans)",
+      "bodyFont": "Favorit Std 16px",
+      "headerTypeColour": "black on pale imagery",
+      "homepageForms": 3,
+      "productPageForms": 4,
+      "primaryNav": ["About", "Products", "Objects & Editions", "Journal", "Specifier", "Representation", "Contact"],
+      "metaDescription": true,
+      "ogImage": true,
+      "productSchemaGraph": ["WebPage", "ImageObject", "BreadcrumbList", "WebSite", "Organization", "Product"],
+      "sectionPaddingTop": "156-167px",
+      "titleFormat": "Liminal Pendant Light | Ross Gardam"
+    },
+    "marzdesigns.com": {
+      "headingFont": "Montserrat",
+      "bodyFont": "Lato 15px",
+      "forms": 5,
+      "metaDescription": true,
+      "ogImage": true,
+      "schema": ["BreadcrumbList", "Organization"],
+      "devices": ["announcement bar", "text labels beside header icons", "cart count"],
+      "titleFormat": "Marz Designs | Australian Architectural & Designer Lighting"
+    },
+    "ilanel.dads42.com": {
+      "headingFont": "Playfair Display (serif)",
+      "bodyFont": "Inter 15px",
+      "headerTypeColour": "white always",
+      "homepageForms": 0,
+      "productPageForms": 1,
+      "primaryNav": ["Home", "Products", "Editions", "Pendants", "Wall Lights", "Chandeliers", "Lamps", "Projects", "Light Art", "News"],
+      "metaDescription": false,
+      "ogImage": false,
+      "titleFormat": "Comet – ILANEL"
+    }
+  },
+  "hygiene": {
+    "wordpressDefaultsLive": ["/sample-page/", "/hello-world/ (404 by end of audit but still in sitemap)"],
+    "authorArchiveIndexable": "/author/aninim/ — discloses admin username, no canonical",
+    "emptyTaxonomyArchives": ["/product-category/uncategorized/", "/category/uncategorized/"],
+    "squarespaceJunkSlugsLive": [
+      "/hw8k1d1w1uhxmd8iyil4qz6asuoy1t-xapez-flmrm-er6jl-gshyc/",
+      "/hw8k1d1w1uhxmd8iyil4qz6asuoy1t-xapez-flmrm-er6jl-fwckn-nces4-yssk2-8tehd-e4w8d-82aad-4zz58-xsesp/",
+      "/hw8k1d1w1uhxmd8iyil4qz6asuoy1t-xapez-flmrm-er6jl-fwckn-nces4-yssk2-8tehd-e4w8d-82aad-4zz58-xsesp-xjyek/",
+      "/ua0kg76lwjv1moe4n5ltr0z7kyzosv/",
+      "/wn67vqnpn7dl8ohe7lqt88w47wsbo4/"
+    ],
+    "wpJsonOpen": "/wp-json/ returns 1.27 MB unauthenticated",
+    "robotsTxt": "allows all except WooCommerce internals; staging fully indexable",
+    "noindexPages": ["/my-account/", "/cart/", "/checkout/"],
+    "crossDomainDependency": "product spec PDFs served from https://www.ilanel.com/s/*.pdf"
+  },
+  "excludedFromFindings": [
+    "placeholder prices ($3,450 on 30 products) — deliberate and documented in HANDOVER-2026-08-15.md",
+    "photography selection — imagery not final per Oren, 2026-08-15"
+  ]
+}
