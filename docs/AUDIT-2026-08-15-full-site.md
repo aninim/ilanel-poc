@@ -248,9 +248,11 @@ projects and Light Art, and `FAQPage` on `/faq/`, which already has ~19
 ### 9. WordPress defaults and junk URLs are live and indexable
 
 - **`/sample-page/`** — the WordPress default page, published, in the sitemap.
-- **`/hello-world/`** — the default post. Returned 200 early in this audit
-  and 404 by the end, i.e. deleted mid-session — **but it is still listed
-  in `wp-sitemap-posts-post-1.xml`**, so the sitemap now advertises a 404.
+- **`/hello-world/`** — the default post. Fixed *during* this audit by
+  commit `3c4de79`; it is now out of `wp-sitemap-posts-post-1.xml` (42
+  posts, was 43). The URL itself still returned **200** on a re-check
+  after that commit — either page cache or the change is not deployed to
+  Cloudways yet. Worth one `curl` to confirm.
 - **`/author/aninim/`** — author archive, indexable, no canonical, and it
   discloses the admin username.
 - **`/product-category/uncategorized/`** and **`/category/uncategorized/`**
@@ -518,5 +520,8 @@ not be reduced below 1026 px in this environment — breakpoints at 1100 /
 900 / 760 / 720 / 600 / 374 px exist in CSS but were not visually
 verified), checkout completion, and email deliverability.
 
-**Note:** the site changed during the audit — `/hello-world/` returned 200
-early and 404 late. Someone was working on it. Re-verify §9 before acting.
+**Note:** the site changed during the audit — `/hello-world/` was deleted
+mid-run (commit `3c4de79`) and the working tree carried uncommitted
+changes to `main.css`, `product.js` and `single-product.php` throughout.
+Anything in §9 and §13 may have moved since; re-verify before acting.
+Nothing in P0 depends on those files.

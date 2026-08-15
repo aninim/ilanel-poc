@@ -36,14 +36,29 @@
     "redirected": 2,
     "notFound404": 18,
     "projectedTotal404IncludingUntestedGroups": 63,
-    "redirectsWorking": ["/home -> /", "/privacy -> /privacy-policy/"],
+    "redirectsWorking": [
+      "/home -> /",
+      "/privacy -> /privacy-policy/"
+    ],
     "confirmed404": [
-      "/3d-models", "/404-page", "/coming-soon", "/customer-satisfaction-survey",
-      "/editions", "/ip-address", "/join-our-team-craftsman", "/join-our-team-id",
-      "/lighting-design-collections", "/lighting-design-collections/finishes",
-      "/lighting-design-collections/snowball/walllight", "/linktree", "/members-photos",
-      "/news/category/Art", "/news/tag/lighting", "/portfolio-1-1",
-      "/portfolio-1-1/project-one-2bbn6", "/services"
+      "/3d-models",
+      "/404-page",
+      "/coming-soon",
+      "/customer-satisfaction-survey",
+      "/editions",
+      "/ip-address",
+      "/join-our-team-craftsman",
+      "/join-our-team-id",
+      "/lighting-design-collections",
+      "/lighting-design-collections/finishes",
+      "/lighting-design-collections/snowball/walllight",
+      "/linktree",
+      "/members-photos",
+      "/news/category/Art",
+      "/news/tag/lighting",
+      "/portfolio-1-1",
+      "/portfolio-1-1/project-one-2bbn6",
+      "/services"
     ],
     "sampled404Groups": {
       "/news/category/*": "21 URLs on live; sampled Art + Bespoke, both 404",
@@ -59,29 +74,102 @@
       "liveIlanelComUses": "/news/<slug>"
     },
     "duplicateTitles": [
-      {"title": "Supernova – ILANEL", "urls": ["/lighting-design-collections/custom-round-pendant-supernova/", "/lighting-design-collections/custom-linear-pendant-supernova/"]},
-      {"title": "Black Rain – ILANEL", "urls": ["/lighting-design-collections/black-rain-wall-light/", "/lighting-design-collections/black-rain-custom-pendant-light/"]},
-      {"title": "Cannon Vase – ILANEL", "urls": ["/editions/cannon-vase-1st-edition/", "/editions/colorful-cannon-vase-2nd-edition/"]},
-      {"title": "Falling Leaves – ILANEL", "urls": ["/falling-leaves/", "/lighting-design-collections/falling-leaves/"]},
-      {"title": "The Hour Glass Adelaide – ILANEL", "urls": ["/the-hour-glass-adelaide/", "/projects/the-hour-glass-adelaide/"]},
-      {"title": "Uncategorized – ILANEL", "urls": ["/product-category/uncategorized/", "/category/uncategorized/"]},
-      {"title": "Cart – ILANEL", "urls": ["/cart/", "/checkout/"]}
+      {
+        "title": "Supernova – ILANEL",
+        "urls": [
+          "/lighting-design-collections/custom-round-pendant-supernova/",
+          "/lighting-design-collections/custom-linear-pendant-supernova/"
+        ]
+      },
+      {
+        "title": "Black Rain – ILANEL",
+        "urls": [
+          "/lighting-design-collections/black-rain-wall-light/",
+          "/lighting-design-collections/black-rain-custom-pendant-light/"
+        ]
+      },
+      {
+        "title": "Cannon Vase – ILANEL",
+        "urls": [
+          "/editions/cannon-vase-1st-edition/",
+          "/editions/colorful-cannon-vase-2nd-edition/"
+        ]
+      },
+      {
+        "title": "Falling Leaves – ILANEL",
+        "urls": [
+          "/falling-leaves/",
+          "/lighting-design-collections/falling-leaves/"
+        ]
+      },
+      {
+        "title": "The Hour Glass Adelaide – ILANEL",
+        "urls": [
+          "/the-hour-glass-adelaide/",
+          "/projects/the-hour-glass-adelaide/"
+        ]
+      },
+      {
+        "title": "Uncategorized – ILANEL",
+        "urls": [
+          "/product-category/uncategorized/",
+          "/category/uncategorized/"
+        ]
+      },
+      {
+        "title": "Cart – ILANEL",
+        "urls": [
+          "/cart/",
+          "/checkout/"
+        ]
+      }
     ]
   },
   "structuredData": {
-    "product": ["Product", "AggregateOffer|Offer", "BreadcrumbList", "Organization"],
-    "rangeArchive": ["CollectionPage", "BreadcrumbList"],
-    "project": ["BreadcrumbList"],
-    "lightArt": ["BreadcrumbList"],
+    "product": [
+      "Product",
+      "AggregateOffer|Offer",
+      "BreadcrumbList",
+      "Organization"
+    ],
+    "rangeArchive": [
+      "CollectionPage",
+      "BreadcrumbList"
+    ],
+    "project": [
+      "BreadcrumbList"
+    ],
+    "lightArt": [
+      "BreadcrumbList"
+    ],
     "newsPost": [],
     "homepage": [],
     "staticPages": [],
-    "missingSitewide": ["WebSite", "Organization on homepage", "BlogPosting", "CreativeWork", "FAQPage"]
+    "missingSitewide": [
+      "WebSite",
+      "Organization on homepage",
+      "BlogPosting",
+      "CreativeWork",
+      "FAQPage"
+    ]
   },
   "deadLinks": {
     "perPageFooter": 10,
-    "labels": ["Shipping & returns", "Catalogue", "Lookbook", "Materials & finishes", "3D models", "Product instructions", "Subscribe", "Instagram", "Pinterest", "LinkedIn"],
-    "productPageExtra": ["3D models (in body)"],
+    "labels": [
+      "Shipping & returns",
+      "Catalogue",
+      "Lookbook",
+      "Materials & finishes",
+      "3D models",
+      "Product instructions",
+      "Subscribe",
+      "Instagram",
+      "Pinterest",
+      "LinkedIn"
+    ],
+    "productPageExtra": [
+      "3D models (in body)"
+    ],
     "sitewideTotal": 1978
   },
   "conversionPath": {
@@ -98,17 +186,41 @@
       "footerAllPages": "+61 3 9000 0000 (placeholder)",
       "contactPageBody": "+61 3 9534 1164 (real)"
     },
-    "primaryNavOmits": ["/about/", "/contact/", "/trade/"]
+    "primaryNavOmits": [
+      "/about/",
+      "/contact/",
+      "/trade/"
+    ]
   },
   "accessibility": {
     "tool": "axe-core 4.8.2",
-    "rulesets": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"],
+    "rulesets": [
+      "wcag2a",
+      "wcag2aa",
+      "wcag21a",
+      "wcag21aa",
+      "best-practice"
+    ],
     "results": {
-      "/": {"violations": 0, "incomplete": ["color-contrast x4 (hero over image)"]},
-      "/our-range/pendants/": {"violations": 0},
-      "/lighting-design-collections/comet-pendant-light/": {"violations": 1, "detail": "region (moderate): .rg-stickybar outside landmark"},
-      "/contact/": {"violations": 0},
-      "/projects/": {"violations": 0}
+      "/": {
+        "violations": 0,
+        "incomplete": [
+          "color-contrast x4 (hero over image)"
+        ]
+      },
+      "/our-range/pendants/": {
+        "violations": 0
+      },
+      "/lighting-design-collections/comet-pendant-light/": {
+        "violations": 1,
+        "detail": "region (moderate): .rg-stickybar outside landmark"
+      },
+      "/contact/": {
+        "violations": 0
+      },
+      "/projects/": {
+        "violations": 0
+      }
     },
     "manual": {
       "focusVisible": "pass — default outline:auto preserved",
@@ -130,7 +242,10 @@
         "behindTopRightIcons": 2.28,
         "behindHamburger": 2.43
       },
-      "wcagAaThresholds": {"largeText": 3.0, "smallTextAndIcons": 4.5}
+      "wcagAaThresholds": {
+        "largeText": 3.0,
+        "smallTextAndIcons": 4.5
+      }
     }
   },
   "performance": {
@@ -150,10 +265,25 @@
       "headerTypeColour": "black on pale imagery",
       "homepageForms": 3,
       "productPageForms": 4,
-      "primaryNav": ["About", "Products", "Objects & Editions", "Journal", "Specifier", "Representation", "Contact"],
+      "primaryNav": [
+        "About",
+        "Products",
+        "Objects & Editions",
+        "Journal",
+        "Specifier",
+        "Representation",
+        "Contact"
+      ],
       "metaDescription": true,
       "ogImage": true,
-      "productSchemaGraph": ["WebPage", "ImageObject", "BreadcrumbList", "WebSite", "Organization", "Product"],
+      "productSchemaGraph": [
+        "WebPage",
+        "ImageObject",
+        "BreadcrumbList",
+        "WebSite",
+        "Organization",
+        "Product"
+      ],
       "sectionPaddingTop": "156-167px",
       "titleFormat": "Liminal Pendant Light | Ross Gardam"
     },
@@ -163,8 +293,15 @@
       "forms": 5,
       "metaDescription": true,
       "ogImage": true,
-      "schema": ["BreadcrumbList", "Organization"],
-      "devices": ["announcement bar", "text labels beside header icons", "cart count"],
+      "schema": [
+        "BreadcrumbList",
+        "Organization"
+      ],
+      "devices": [
+        "announcement bar",
+        "text labels beside header icons",
+        "cart count"
+      ],
       "titleFormat": "Marz Designs | Australian Architectural & Designer Lighting"
     },
     "ilanel.dads42.com": {
@@ -173,16 +310,33 @@
       "headerTypeColour": "white always",
       "homepageForms": 0,
       "productPageForms": 1,
-      "primaryNav": ["Home", "Products", "Editions", "Pendants", "Wall Lights", "Chandeliers", "Lamps", "Projects", "Light Art", "News"],
+      "primaryNav": [
+        "Home",
+        "Products",
+        "Editions",
+        "Pendants",
+        "Wall Lights",
+        "Chandeliers",
+        "Lamps",
+        "Projects",
+        "Light Art",
+        "News"
+      ],
       "metaDescription": false,
       "ogImage": false,
       "titleFormat": "Comet – ILANEL"
     }
   },
   "hygiene": {
-    "wordpressDefaultsLive": ["/sample-page/", "/hello-world/ (404 by end of audit but still in sitemap)"],
+    "wordpressDefaultsLive": [
+      "/sample-page/ — published, in sitemap, returns 200",
+      "/hello-world/ — removed from sitemap by commit 3c4de79 during this audit; URL still returned 200 on re-check (cache or undeployed)"
+    ],
     "authorArchiveIndexable": "/author/aninim/ — discloses admin username, no canonical",
-    "emptyTaxonomyArchives": ["/product-category/uncategorized/", "/category/uncategorized/"],
+    "emptyTaxonomyArchives": [
+      "/product-category/uncategorized/",
+      "/category/uncategorized/"
+    ],
     "squarespaceJunkSlugsLive": [
       "/hw8k1d1w1uhxmd8iyil4qz6asuoy1t-xapez-flmrm-er6jl-gshyc/",
       "/hw8k1d1w1uhxmd8iyil4qz6asuoy1t-xapez-flmrm-er6jl-fwckn-nces4-yssk2-8tehd-e4w8d-82aad-4zz58-xsesp/",
@@ -192,7 +346,11 @@
     ],
     "wpJsonOpen": "/wp-json/ returns 1.27 MB unauthenticated",
     "robotsTxt": "allows all except WooCommerce internals; staging fully indexable",
-    "noindexPages": ["/my-account/", "/cart/", "/checkout/"],
+    "noindexPages": [
+      "/my-account/",
+      "/cart/",
+      "/checkout/"
+    ],
     "crossDomainDependency": "product spec PDFs served from https://www.ilanel.com/s/*.pdf"
   },
   "excludedFromFindings": [
