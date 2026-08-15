@@ -277,6 +277,61 @@ add_action( 'woocommerce_single_product_summary', 'ilanel_poc_render_enquiry', 2
 add_action( 'init', 'ilanel_poc_strip_woocommerce_defaults' );
 
 /**
+ * Shop hero — Comet, ILANEL's flagship real-Commerce-data product.
+ *
+ * The main /shop/ archive had no hero at all: WooCommerce's default
+ * archive-product.php just prints a bare <h1>Shop</h1>. Range archives
+ * (Pendants, Chandeliers…) already have their own header pattern
+ * (taxonomy-ilanel_range.php's rg-range__title) and are deliberately left
+ * alone — this is is_shop() only, the top-level catalogue landing page.
+ *
+ * Reuses the same rg-hero--project markup/CSS as single-light_art.php's
+ * single-image hero (not the homepage's rotating rg-hero--home carousel —
+ * this is one fixed image, not a slideshow). Comet is the deliberate,
+ * fixed choice here (Oren, 2026-08-15) rather than "whichever product is
+ * newest" the way the homepage hero works, since it's ILANEL's most
+ * complete real product: 36 real Commerce variants, real photography,
+ * not one of the 30 still on a placeholder price.
+ */
+function ilanel_poc_render_shop_hero() {
+	if ( ! is_shop() ) {
+		return;
+	}
+
+	$comet = get_page_by_path( 'comet-pendant-light', OBJECT, 'product' );
+
+	if ( ! $comet ) {
+		return;
+	}
+
+	$hero_image = get_the_post_thumbnail_url( $comet->ID, 'full' );
+
+	if ( ! $hero_image ) {
+		return;
+	}
+	?>
+	<link rel="preload" as="image" fetchpriority="high" href="<?php echo esc_url( $hero_image ); ?>">
+
+	<section class="rg-hero rg-hero--project" aria-label="<?php esc_attr_e( 'Shop the collection', 'ilanel-poc' ); ?>">
+		<div class="rg-hero__slide is-active"
+			style="background-image:url('<?php echo esc_url( $hero_image ); ?>')"
+			role="img"
+			aria-label="<?php esc_attr_e( 'Comet pendant light', 'ilanel-poc' ); ?>"></div>
+
+		<div class="rg-hero__overlay">
+			<div class="rg-shell">
+				<div class="rg-hero__copy">
+					<span class="rg-hero__eyebrow"><?php esc_html_e( 'The collection', 'ilanel-poc' ); ?></span>
+					<h1 class="rg-hero__title rg-hero__title--project"><?php esc_html_e( 'Sculptural lighting, made to order.', 'ilanel-poc' ); ?></h1>
+				</div>
+			</div>
+		</div>
+	</section>
+	<?php
+}
+add_action( 'woocommerce_before_main_content', 'ilanel_poc_render_shop_hero', 5 );
+
+/**
  * Wrap Woo content in the theme's container.
  */
 function ilanel_poc_wrapper_start() {
