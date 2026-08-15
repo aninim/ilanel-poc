@@ -6,28 +6,56 @@ place so it can be handed off directly, instead of scattered across the
 engineering plan. Cross-references point back to the plan for full context
 on *why* each item matters; this file is the checklist, not the reasoning.
 
-Last updated: 2026-08-14.
+Last updated: 2026-08-15.
 
 ---
 
 ## Blocking — needed before real checkout can go live
 
-### 1. Squarespace Commerce API access
+### 1. Real prices and SKUs for 30 products
 
-**Status:** blocked on a Squarespace plan upgrade that only takes effect
-at the end of the current billing cycle — confirmed 2026-08-14, not
-gettable sooner by any means tried.
+**Status (2026-08-15): not coming via the Commerce API.** The Squarespace
+plan upgrade needed to generate an API key won't happen — confirmed dead,
+not just delayed. This is now a direct studio ask, same category as the
+photography item below, not an engineering task waiting on a credential.
 
-**What's needed:** once the plan upgrades, whoever holds Squarespace
-owner/admin access generates an API key at Settings → Advanced →
-Developer API Keys, with Products-Read scope. Five-minute task once the
-plan is active.
+**What's needed:** the studio provides real price and SKU for each of the
+30 products currently on a placeholder (list below) — however they have
+it (a spreadsheet, their internal pricing sheet, whatever's easiest on
+their end). Variable products (like Comet, Kahdu) need a price per real
+variant/finish combination, not just one number per product — see how
+Comet, Kahdu, Dais and Comet Stardust are already structured in
+`data/products.json` for the shape to match.
 
 **Why it matters:** 30 of 34 products currently show a flat $3,450
 placeholder price (real prices vary per order, so this was a deliberate
-launch workaround, not an error) — this is the only way to pull the real
-per-product/per-variant prices and SKUs from Squarespace's Commerce
-system. See `LAUNCH-PLAN.md` Phase 1 and `OPEN-QUESTIONS.md` §1–2.
+launch workaround, not an error). Find the exact 30 any time with:
+`wp post list --post_type=product --meta_key=_ilanel_price_is_placeholder`
+See `LAUNCH-PLAN.md` Phase 1 and `OPEN-QUESTIONS.md` §1–2.
+
+**The 30 products (name — slug):**
+
+Pipi — `pipi` · Wisteria — `wisteria-chandelier-contemporary-design` ·
+Nimbus — `nimbus` · Tree Of Light — `tree-of-light-custom-chandelier` ·
+Astro — `astro-wall-light` · Dot — `dot` · Falling Leaves —
+`falling-leaves` · XYZ — `xyz-wall-light` · Flash —
+`flash-pendant-dynamic-lighting` · Supernova (Round) —
+`custom-round-pendant-supernova` · Supernova (Linear) —
+`custom-linear-pendant-supernova` · Stella —
+`stella-table-lamp-hand-blown-glass` · Vitrine —
+`vitrine-wall-light-custom-finishes` · Snowball — `snowball-walllight` ·
+Black Rain (Wall) — `black-rain-wall-light` · Black Rain (Pendant) —
+`black-rain-custom-pendant-light` · Orb — `hand-blown-glass-orb` · Rain —
+`rain-chandelier-multi-sensory` · Heavy Rain — `heavy-rain-chandelier` ·
+Double Flash — `doubleflash` · Brass Supernova —
+`gold-supernova-parametric-lighting` · Cannons Of Hope —
+`cannons-of-hope` · Cannon Vase (1st Edition) —
+`cannon-vase-1st-edition` · Cannon Vase (2nd Edition) —
+`colorful-cannon-vase-2nd-edition` · Ripple —
+`ripple-pendant-spun-metal-shade` · Droplet —
+`droplet-hand-blown-glass-pendant` · Atlas — `atlas` · Lattice —
+`mashrabiya-lattice-light-pendant` · Matariki — `matariki` · Hue-man —
+`hue-man-hand-blown-glass-pendants`
 
 ### 2. Payment gateway
 
@@ -57,6 +85,10 @@ anything real for freight.
 
 **Why it matters:** blocks a real, honest test order. See `LAUNCH-PLAN.md`
 §2b.
+
+*(While you're gathering pricing for §1's 30 products — this is also the
+moment to send fresh product photography if any of them need it, same as
+the Comet finish photos in §8. One ask to the studio instead of two.)*
 
 ### 4. Checkout UX — instant-buy vs. quote-only
 
@@ -113,6 +145,10 @@ technically still resolves. See `LAUNCH-PLAN.md` §3a.
 ---
 
 ## Physical / asset work (not engineering)
+
+See also §1 above — real pricing for the 30 products and any fresh
+product photography they need are the same kind of ask, worth bundling
+into one request to the studio.
 
 ### 8. Finish photography — Comet's remaining 24 variations
 

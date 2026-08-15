@@ -53,28 +53,25 @@ strictly sequential.
 
 ## Phase 1 — Real product data (blocks real prices, SKUs, stock)
 
-**Status (2026-08-14): worked around, not resolved.** The Commerce API
-key needs a Squarespace plan upgrade that won't take effect until the
-current billing cycle ends — genuinely not gettable right now. Checked
-whether the live storefront shows prices publicly as a fallback: it
-doesn't, on any product, including the 4 already fully priced — ILANEL's
-own FAQ confirms pricing is deliberately quote-only, so there was never a
-number to manually transcribe either.
+**Status (2026-08-15): API route abandoned, not just delayed.** The
+Commerce API key needs a Squarespace plan upgrade — confirmed this isn't
+happening, not merely deferred to next billing cycle. This item moved
+from "engineering blocker" to a direct studio ask; see
+`docs/STUDIO-TASKS.md` §1 for the exact list of 30 products and the
+hand-off framing. Checked whether the live storefront shows prices
+publicly as a fallback back on 2026-08-14: it doesn't, on any product,
+including the 4 already fully priced — ILANEL's own FAQ confirms pricing
+is deliberately quote-only, so there was never a number to manually
+transcribe either.
 
 Decision (Oren): ship with a flat $3,450 AUD placeholder price and a
 `TBC-<SLUG>` SKU on the 30 unpriced products so every product is
 purchasable at launch — real prices vary per order anyway, so exact
 accuracy on a placeholder doesn't matter. Deployed and re-seeded live;
 `_ilanel_price_is_placeholder` post meta flags exactly which 30, for the
-studio's post-launch cleanup pass:
+studio's cleanup pass once real data comes back from them (not from any
+further engineering work):
 `wp post list --post_type=product --meta_key=_ilanel_price_is_placeholder`
-
-**Gate to start (if the real API access is pursued later):** an
-authenticated Squarespace Commerce API key with Products-Read scope.
-Confirmed three separate ways this session that no unauthenticated
-endpoint exposes it — this is not a scraping problem, it's a credential
-ILANEL's Squarespace account owner has to generate, and now also gated on
-a plan tier.
 
 **Gate to finish:** all 34 products (not 4) carry real `commerce.attributes`
 / `commerce.variants` in `data/products.json`, matching the shape Comet,
