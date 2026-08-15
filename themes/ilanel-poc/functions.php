@@ -521,3 +521,36 @@ function ilanel_poc_render_range_filters() {
 	echo '</nav>';
 }
 add_action( 'woocommerce_before_shop_loop', 'ilanel_poc_render_range_filters', 15 );
+
+/**
+ * Real bugs found 2026-08-15 from a screenshot of /shop/page/2/ — the theme
+ * has no sidebar.php and never removed WooCommerce's default sidebar hook,
+ * so woocommerce_get_sidebar() fell all the way through to WordPress core's
+ * raw, completely unstyled fallback widgets (a plain search box, a full
+ * page list including "Sample Page" — another leftover default artifact —
+ * and a month-by-month post archive back to 2021). None of this was ever
+ * meant to render; nothing in this theme's design has a sidebar concept.
+ * Same page also showed WooCommerce's default numbered pagination
+ * (unstyled prev/1/2 links) — Oren preferred "Load more" once shown the
+ * alternative, matching the pattern archive-project.php/home.php already
+ * use elsewhere on the site (get_next_posts_link()).
+ */
+remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
+remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+
+/**
+ * "Load more" in place of the removed default pagination, same visual
+ * pattern as .rg-journal__more (home.php, archive-project.php).
+ */
+function ilanel_poc_render_shop_load_more() {
+	if ( ! is_shop() && ! is_tax( ILANEL_Taxonomies::RANGE_TAXONOMY ) ) {
+		return;
+	}
+
+	$next = get_next_posts_link( esc_html__( 'Load more', 'ilanel-poc' ) );
+
+	if ( $next ) {
+		echo '<div class="rg-journal__more">' . wp_kses_post( $next ) . '</div>';
+	}
+}
+add_action( 'woocommerce_after_shop_loop', 'ilanel_poc_render_shop_load_more', 10 );
