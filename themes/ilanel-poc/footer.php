@@ -11,6 +11,11 @@
  * number was found still showing a placeholder (+61 3 9000 0000) despite
  * this comment's prior claim that real details were already in use.
  *
+ * Social links (Instagram/Pinterest/LinkedIn) pulled directly from the
+ * live ilanel.com footer 2026-08-16 — not covered by any scrape. Live
+ * ilanel.com also has a Facebook link not yet represented in this footer's
+ * nav map.
+ *
  * @package ILANEL_POC
  */
 
@@ -34,6 +39,15 @@ $ilanel_footer_page_slugs = array(
 	'FAQ'                => 'faq',
 	'Warranty'           => 'warranty',
 	'Care & maintenance' => 'faq', // Live on ilanel.com as a FAQ entry, not a separate page.
+	'Shipping & returns' => 'faq', // Same — answered under "WHERE AND HOW DO YOU SHIP?" on the FAQ page.
+);
+
+// Social links — pulled directly from the live ilanel.com footer 2026-08-16,
+// since these accounts aren't part of any WXR/JSON scrape.
+$ilanel_footer_social_links = array(
+	'Instagram' => 'https://www.instagram.com/ilanel/',
+	'Pinterest' => 'https://www.pinterest.com.au/ilanel/',
+	'LinkedIn'  => 'https://www.linkedin.com/company/ilanel-design-studio/',
 );
 
 // Archives with their own post type (not a plain `page`), so home_url()
@@ -74,15 +88,20 @@ $ilanel_footer_archive_slugs = array(
 								foreach ( $ilanel_items as $ilanel_item ) :
 									$ilanel_href = '#';
 
+									$ilanel_external = false;
+
 									if ( 'News' === $ilanel_item ) {
 										$ilanel_href = home_url( '/news/' );
 									} elseif ( isset( $ilanel_footer_archive_slugs[ $ilanel_item ] ) ) {
 										$ilanel_href = home_url( '/' . $ilanel_footer_archive_slugs[ $ilanel_item ] . '/' );
 									} elseif ( isset( $ilanel_footer_page_slugs[ $ilanel_item ] ) ) {
 										$ilanel_href = home_url( '/' . $ilanel_footer_page_slugs[ $ilanel_item ] . '/' );
+									} elseif ( isset( $ilanel_footer_social_links[ $ilanel_item ] ) ) {
+										$ilanel_href     = $ilanel_footer_social_links[ $ilanel_item ];
+										$ilanel_external = true;
 									}
 									?>
-									<li><a href="<?php echo esc_url( $ilanel_href ); ?>"><?php echo esc_html( $ilanel_item ); ?></a></li>
+									<li><a href="<?php echo esc_url( $ilanel_href ); ?>"<?php echo $ilanel_external ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo esc_html( $ilanel_item ); ?></a></li>
 								<?php endforeach; ?>
 							</ul>
 						</div>
