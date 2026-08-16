@@ -3637,3 +3637,103 @@ ul.products li.product .button {
     font-size: 3rem;
   }
 }
+
+/* ===========================================================================
+ * Configurator declutter test — Comet only (body.is-configure-test).
+ *
+ * Studio feedback: the configurator panel is "too busy" — Size/Color/Glass
+ * pills, the scale drawing, selection summary, price, lead time, ETA, three
+ * CTAs, a download link and a share row all read as one dense, undifferen-
+ * tiated column. This is a live guess at a fix (RG/Marz-inspired spacing +
+ * hierarchy, single primary CTA) scoped to one product for review before any
+ * sitewide rollout — remove the body class in functions.php to revert.
+ * ========================================================================= */
+
+/* More air between each Size / Color / Glass step, so they read as
+   sequence rather than a stacked form. */
+body.is-configure-test .rg-config__group {
+  margin-bottom: 4.5rem;
+  padding-top: 2.5rem;
+}
+
+body.is-configure-test .rg-config__label {
+  margin-bottom: 1.8rem;
+}
+
+/* The summary block becomes a quiet recap, not another list of rows:
+   smaller, muted, condensed — everything except price recedes. */
+body.is-configure-test .rg-config__summary {
+  margin: 3.5rem 0 2.5rem;
+  padding: 1.6rem 1.8rem;
+  background: #fff;
+  border-top: 0;
+}
+
+body.is-configure-test .rg-config__summary p {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+body.is-configure-test .rg-config__summary .rg-config__label {
+  min-width: 9rem;
+  font-size: 1rem;
+}
+
+body.is-configure-test .rg-config__price {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--rg-rule);
+}
+
+body.is-configure-test .rg-config__price .js-config-price {
+  font-size: 2.4rem;
+}
+
+/* One primary action. Send enquiry / Specifier enquiry demote to text
+   links beneath it, rather than competing as equal-weight buttons. */
+body.is-configure-test .rg-config__actions {
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+}
+
+body.is-configure-test .rg-config__actions .rg-btn--solid {
+  width: 100%;
+  text-align: center;
+}
+
+body.is-configure-test .rg-config__actions .rg-btn:not(.rg-btn--solid) {
+  display: inline-block;
+  width: auto;
+  padding: 0;
+  border: 0;
+  text-align: left;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  text-decoration: underline;
+  text-decoration-color: var(--rg-rule);
+  text-underline-offset: 0.3rem;
+  color: var(--rg-muted);
+}
+
+body.is-configure-test .rg-config__actions .rg-btn:not(.rg-btn--solid):hover {
+  background: transparent;
+  color: var(--rg-ink);
+  text-decoration-color: var(--rg-ink);
+}
+
+/* Download link and share row: smaller, quieter, clearly secondary to the
+   configure/buy decision above them. */
+body.is-configure-test .rg-config__download {
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+}
+
+body.is-configure-test .rg-share {
+  margin-top: 3rem;
+  padding-top: 1.6rem;
+}
+
+body.is-configure-test .rg-share a {
+  font-size: 1.05rem;
+}

@@ -131,6 +131,22 @@ function ilanel_poc_body_class( $classes ) {
 		$classes[] = 'has-hero';
 	}
 
+	/*
+	 * Configurator declutter test — Comet only (2026-08-16).
+	 *
+	 * Studio flagged the configurator panel as "too busy": Size/Color/Glass
+	 * plus price/lead/ETA/three CTAs/download/share all read as one dense
+	 * column with no hierarchy. Testing a restructure (spacing rhythm
+	 * between groups, one primary CTA, secondary actions demoted to links)
+	 * scoped to this single product before rolling it out sitewide, since
+	 * Studio's full review hasn't landed yet and this is a live guess based
+	 * on the RG/Marz references, not a confirmed direction.
+	 */
+	if ( function_exists( 'is_product' ) && is_product()
+		&& 'comet-pendant-light' === get_post_field( 'post_name', get_the_ID() ) ) {
+		$classes[] = 'is-configure-test';
+	}
+
 	return $classes;
 }
 add_filter( 'body_class', 'ilanel_poc_body_class' );
