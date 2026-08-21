@@ -1,0 +1,518 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ILANEL STUDIO website update manual</title><style>:root { color-scheme: light; }
+* { box-sizing: border-box; }
+html { font-size: 16px; }
+body { margin: 0 auto; max-width: 860px; padding: 54px 62px 80px; color: #22201d; background: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.55; }
+h1, h2, h3 { color: #111; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; line-height: 1.18; break-after: avoid-page; }
+h1 { margin: 0 0 8px; font-size: 34px; letter-spacing: -0.02em; }
+h2 { margin: 42px 0 15px; padding-top: 12px; border-top: 1px solid #bcb5aa; font-size: 25px; }
+h3 { margin: 26px 0 10px; font-size: 18px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 8px 0 18px; padding-left: 23px; }
+li { margin: 5px 0; }
+a { color: #574c3f; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+strong { color: #111; }
+blockquote { margin: 20px 0; padding: 15px 18px; border-left: 4px solid #a98f68; background: #f5f1ea; break-inside: avoid; }
+blockquote p:last-child { margin-bottom: 0; }
+code { padding: 1px 4px; border-radius: 3px; background: #f0ede8; font-family: Consolas, monospace; font-size: 0.92em; }
+table { width: 100%; margin: 16px 0 22px; border-collapse: collapse; break-inside: avoid; }
+th, td { padding: 8px 10px; border: 1px solid #d5d0c8; text-align: left; vertical-align: top; }
+th { background: #eee9e1; font-weight: 600; }
+hr { margin: 34px 0; border: 0; border-top: 1px solid #d5d0c8; }
+input[type='checkbox'] { margin-right: 7px; }
+@page { size: A4; margin: 16mm 14mm 18mm; }
+@media print {
+  body { max-width: none; padding: 0; font-size: 10.2pt; }
+  h1 { font-size: 25pt; }
+  h2 { margin-top: 24pt; font-size: 18pt; }
+  h3 { font-size: 13.5pt; }
+  a { color: #22201d; }
+  table, blockquote, pre, h2, h3 { break-inside: avoid; }
+}</style></head><body><h1 id="ilanel-studio-website-update-manual">ILANEL STUDIO website update manual</h1>
+<p><strong>WordPress + WooCommerce</strong><br />
+<strong>Draft for Oren review — 20 August 2026</strong></p>
+<p>This is the day-to-day guide for the ILANEL STUDIO team. It covers:</p>
+<ul>
+<li>changing product pictures;</li>
+<li>changing product prices;</li>
+<li>adding a product; and</li>
+<li>adding or editing a News article.</li>
+</ul>
+<p>The studio will use two controlled update paths:</p>
+<ol>
+<li><strong>WordPress admin</strong> for routine products, prices, pictures, and News.</li>
+<li><strong>ILANEL Studio Assistant</strong> for specific approved tasks that the normal
+WordPress interface does not expose. The assistant will be implemented as
+a dedicated agent + skill + authenticated MCP, but the studio will only
+need to describe the task in plain language.</li>
+</ol>
+<p>Store payments, tax, shipping, menus, plugins, theme code, redirects, and
+site-wide design stay with Oren/site administration unless a separate,
+explicitly approved assistant workflow is built for one of them.</p>
+<blockquote>
+<p><strong>Admin address during the build:</strong> <code>https://ilanel.dads42.com/wp-admin/</code><br />
+<strong>Admin address after launch:</strong> <code>https://ilanel.com/wp-admin/</code></p>
+</blockquote>
+<p>Each team member should use their own account. Never share passwords by email
+or messaging.</p>
+<hr />
+<h2 id="the-quick-version">The quick version</h2>
+<h3 id="change-a-product-price">Change a product price</h3>
+<ol>
+<li>Go to <strong>Products → All Products</strong>.</li>
+<li>Search for the product and select <strong>Edit</strong>.</li>
+<li>For a simple product, open <strong>Product data → General</strong> and change
+<strong>Regular price</strong>.</li>
+<li>For a variable product, open <strong>Product data → Variations</strong>, open each
+variation, and change its <strong>Regular price</strong>.</li>
+<li>Select <strong>Update</strong>, then <strong>View product</strong> and check the result.</li>
+</ol>
+<p>Enter the number only: <code>3195.50</code>, not <code>$3,195.50</code>. Prices are in AUD and the
+store is configured to display them with GST.</p>
+<h3 id="change-a-products-catalogue-picture">Change a product's catalogue picture</h3>
+<ol>
+<li>Go to <strong>Products → All Products</strong> and edit the product.</li>
+<li>Find <strong>Product image</strong> in the editor sidebar.</li>
+<li>Select the current picture, choose <strong>Replace</strong>, upload or select the new
+image, and add useful <strong>Alt text</strong>.</li>
+<li>Select <strong>Update</strong>, then check the product in the catalogue and on mobile.</li>
+</ol>
+<blockquote>
+<p><strong>Current image limitation:</strong> Product image changes the catalogue/card
+image and acts as a fallback on new products. Existing product hero
+carousels, story pictures, and finish swatches use custom imported image
+sets. The normal WooCommerce <strong>Product gallery</strong> box does not currently
+control those areas. These changes will be handled through the dedicated
+<strong>ILANEL Studio Assistant</strong>. Until that assistant is live, send them to
+Oren/site administration.</p>
+</blockquote>
+<h3 id="add-a-simple-product">Add a simple product</h3>
+<ol>
+<li>Go to <strong>Products → Add New Product</strong>.</li>
+<li>Add the name, short description, price, SKU, Range, product image, and the
+ILANEL specification fields listed in this manual.</li>
+<li>Keep it as a <strong>Draft</strong> and preview it.</li>
+<li>Complete the product checklist below.</li>
+<li>Publish only after a second person checks the preview.</li>
+</ol>
+<h3 id="add-news">Add News</h3>
+<ol>
+<li>Go to <strong>Posts → Add New Post</strong>.</li>
+<li>Add the headline and article text.</li>
+<li>Add the main picture under <strong>Featured image</strong> in the Post settings
+sidebar.</li>
+<li>Select <strong>Preview</strong> and check the article.</li>
+<li>Select <strong>Publish</strong>, confirm, and check both the article and <code>/news/</code>.</li>
+</ol>
+<hr />
+<h2 id="before-every-update">Before every update</h2>
+<p>Use this five-step routine:</p>
+<ol>
+<li>Start with the approved copy, price, and image files.</li>
+<li>Make the change in WordPress.</li>
+<li>Preview before publishing whenever WordPress offers a preview.</li>
+<li>Select <strong>Update</strong> or <strong>Publish</strong>.</li>
+<li>Open the public page and check it on desktop and phone.</li>
+</ol>
+<h3 id="choose-the-correct-update-path">Choose the correct update path</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product copy, simple/variation prices, SKU, specification fields, product-card image</td>
+<td>WordPress admin</td>
+</tr>
+<tr>
+<td>New simple product Draft</td>
+<td>WordPress admin</td>
+</tr>
+<tr>
+<td>News headline, text, date, and Featured image</td>
+<td>WordPress admin</td>
+</tr>
+<tr>
+<td>Product hero carousel, story images, finish swatches</td>
+<td>ILANEL Studio Assistant</td>
+</tr>
+<tr>
+<td>Supporting News story gallery</td>
+<td>ILANEL Studio Assistant</td>
+</tr>
+<tr>
+<td>Custom metadata or a guided task not exposed by WP</td>
+<td>ILANEL Studio Assistant, but only after that task is approved and enabled</td>
+</tr>
+<tr>
+<td>Payments, tax, shipping, plugins, theme, domain, redirects</td>
+<td>Oren/site administration</td>
+</tr>
+</tbody>
+</table>
+<p>The Studio Assistant is task-specific, not a general website administrator.
+It should show what it plans to change and request confirmation before any
+write. Until it is launched, its tasks temporarily go to Oren/site
+administration.</p>
+<h3 id="golden-rules">Golden rules</h3>
+<ul>
+<li>Do not change an existing <strong>URL, slug, or permalink</strong>. Old ILANEL URLs are
+being preserved for search engines and existing links.</li>
+<li>Do not delete a product, Range, News post, or image from the Media Library.
+Use <strong>Draft</strong> or ask the site administrator to retire it safely.</li>
+<li>Do not change product type, variation names, tax, shipping, payments,
+plugins, theme files, or menus without approval.</li>
+<li>Do not copy text directly from a formatted PDF or website without checking
+the preview; hidden formatting can come with it.</li>
+<li>If anything looks wrong, stop before publishing and save a Draft.</li>
+</ul>
+<hr />
+<h2 id="preparing-pictures">Preparing pictures</h2>
+<p>Prepare images before uploading them. WordPress can crop and rotate an image,
+but the clean source file should remain in the studio's asset library.</p>
+<table>
+<thead>
+<tr>
+<th>Use</th>
+<th style="text-align: right;">Maximum width</th>
+<th style="text-align: right;">Target file size</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product / shop</td>
+<td style="text-align: right;">1500 px</td>
+<td style="text-align: right;">under 300 KB</td>
+<td>WebP or JPEG</td>
+</tr>
+<tr>
+<td>Editorial / gallery</td>
+<td style="text-align: right;">2000 px</td>
+<td style="text-align: right;">under 400 KB</td>
+<td>WebP or JPEG</td>
+</tr>
+<tr>
+<td>Wide hero / banner</td>
+<td style="text-align: right;">2500 px</td>
+<td style="text-align: right;">under 500 KB</td>
+<td>WebP or JPEG</td>
+</tr>
+<tr>
+<td>Social share</td>
+<td style="text-align: right;">1200 × 630 px</td>
+<td style="text-align: right;">under 200 KB</td>
+<td>JPEG</td>
+</tr>
+</tbody>
+</table>
+<p>Use WebP where possible. JPEG is also fine for photographs. Avoid PNG for
+photographs and never upload TIFF, RAW, BMP, or a camera-original file.</p>
+<p>Use clear filenames before upload:</p>
+<ul>
+<li>Good: <code>ilanel-comet-linear-brushed-brass.jpg</code></li>
+<li>Avoid: <code>IMG_4827.jpg</code> or <code>FINAL-new-v6.jpg</code></li>
+</ul>
+<p>Add natural Alt text that says what is in the picture, for example:
+<code>ILANEL Comet linear pendant in brushed brass above a dining table</code>.
+Do not stuff keywords into Alt text.</p>
+<hr />
+<h2 id="change-product-pictures">1. Change product pictures</h2>
+<h3 id="replace-the-cataloguecard-picture">Replace the catalogue/card picture</h3>
+<ol>
+<li>In the dashboard, go to <strong>Products → All Products</strong>.</li>
+<li>Search by product name.</li>
+<li>Select <strong>Edit</strong> under the correct product.</li>
+<li>In the editor sidebar, open <strong>Product image</strong>.</li>
+<li>Select <strong>Replace</strong> or remove the existing picture and choose
+<strong>Set product image</strong>.</li>
+<li>Upload the prepared file or choose it from the Media Library.</li>
+<li>Fill in <strong>Alt text</strong> and select <strong>Set product image</strong>.</li>
+<li>Select <strong>Update</strong>.</li>
+<li>Select <strong>View product</strong> and also check the relevant Range page.</li>
+</ol>
+<p>This picture is used on product cards and as the fallback hero for a product
+without a custom hero gallery.</p>
+<h3 id="replace-a-variation-picture">Replace a variation picture</h3>
+<p>Use this only when the product has selectable options such as Size, Colour,
+Glass, or Finish.</p>
+<ol>
+<li>Edit the product.</li>
+<li>Open <strong>Product data → Variations</strong>.</li>
+<li>Open the exact variation.</li>
+<li>Select its image thumbnail and choose the approved picture.</li>
+<li>Select <strong>Save changes</strong> inside Variations.</li>
+<li>Select <strong>Update</strong> for the product.</li>
+<li>On the public page, select that exact option combination and confirm that
+both its picture and price change correctly.</li>
+</ol>
+<h3 id="hero-story-and-finish-swatch-pictures">Hero, story, and finish-swatch pictures</h3>
+<p>These will be managed through the <strong>ILANEL Studio Assistant</strong>. Give it:</p>
+<ul>
+<li>the product name and public page link;</li>
+<li>the prepared image files;</li>
+<li>which image should be first in the hero;</li>
+<li>the required order of the remaining images; and</li>
+<li>which finish or variation each swatch picture belongs to.</li>
+</ul>
+<p>The assistant should return a preview of the proposed order and mappings. The
+studio confirms that preview before it writes the changes. Until this task is
+enabled in the assistant, send the same request package to Oren/site
+administration.</p>
+<p>Do not add pictures to the standard <strong>Product gallery</strong> and assume they will
+appear in the ILANEL hero. The current custom theme does not read that field.</p>
+<hr />
+<h2 id="change-product-prices">2. Change product prices</h2>
+<p>First identify whether the product is <strong>Simple</strong> or <strong>Variable</strong> in the
+Product data box.</p>
+<h3 id="simple-product-one-price">Simple product: one price</h3>
+<ol>
+<li>Go to <strong>Products → All Products</strong> and edit the product.</li>
+<li>Open <strong>Product data → General</strong>.</li>
+<li>Enter the approved amount in <strong>Regular price</strong>.</li>
+<li>Use <strong>Sale price</strong> only for a real approved promotion. If used, select
+<strong>Schedule</strong> and set both a start and end date.</li>
+<li>Select <strong>Update</strong>.</li>
+<li>Check the product page, its Range page, and any “Discover More” card that
+shows the product.</li>
+</ol>
+<h3 id="variable-product-a-price-for-every-option-combination">Variable product: a price for every option combination</h3>
+<ol>
+<li>Edit the product and open <strong>Product data → Variations</strong>.</li>
+<li>Open each variation one at a time.</li>
+<li>Confirm its option labels, SKU, image, and <strong>Regular price</strong>.</li>
+<li>Repeat until every available variation has an approved price.</li>
+<li>Select <strong>Save changes</strong> inside Variations.</li>
+<li>Select <strong>Update</strong> for the product.</li>
+<li>Test several combinations on the public product page. Confirm the price
+and image update when the selections change.</li>
+</ol>
+<p>A variation without a price may disappear from the shop. Do not edit the
+parent product's price and assume all variations will inherit it.</p>
+<h3 id="replacing-one-of-the-provisional-prices">Replacing one of the provisional prices</h3>
+<p>Some migrated products carry a provisional <code>$3,450 AUD</code> price and a
+<code>TBC-...</code> SKU. When replacing one:</p>
+<ol>
+<li>update both the approved price and real SKU;</li>
+<li>check the public product page; and</li>
+<li>ask the <strong>ILANEL Studio Assistant</strong> to mark that product's provisional
+price as resolved. Until this task is enabled, tell Oren/site
+administration so the internal marker can be cleared.</li>
+</ol>
+<hr />
+<h2 id="add-a-product">3. Add a product</h2>
+<h3 id="decide-the-product-type-first">Decide the product type first</h3>
+<ul>
+<li>Use <strong>Simple product</strong> when there is one purchasable version and one price.</li>
+<li>Use <strong>Variable product</strong> when customers choose between priced combinations
+such as Size × Colour × Glass.</li>
+</ul>
+<p>The studio can create a simple product directly. A variable product should
+remain a Draft until the site administrator checks its attributes,
+variations, image matching, and price range.</p>
+<h3 id="new-simple-product-step-by-step">New simple product: step by step</h3>
+<ol>
+<li><p>Go to <strong>Products → Add New Product</strong>.</p>
+</li>
+<li><p>Enter the approved <strong>Product name</strong>.</p>
+</li>
+<li><p>Leave the permalink alone after WordPress creates it. If this replaces an
+older page or must use a specific URL, stop and ask the site administrator.</p>
+</li>
+<li><p>Add the concise customer-facing copy under <strong>Product short description</strong>.
+This is the main product story shown by the ILANEL template.</p>
+</li>
+<li><p>Add the longer source copy in the main Description editor if supplied.
+The custom product template currently gives the short description visual
+priority.</p>
+</li>
+<li><p>In <strong>Product data</strong>, choose <strong>Simple product</strong>.</p>
+</li>
+<li><p>Under <strong>General</strong>, enter the approved <strong>Regular price</strong>.</p>
+</li>
+<li><p>Under <strong>Inventory</strong>, add the real <strong>SKU</strong> and confirm the stock/backorder
+setting agreed for this made-to-order product.</p>
+</li>
+<li><p>In the same Inventory area, complete the ILANEL fields:</p>
+<ul>
+<li><strong>Spec sheet URL</strong> — public HTTPS link to the PDF;</li>
+<li><strong>Finishes</strong> — one finish per line;</li>
+<li><strong>Lead time</strong> — normally <code>4–12 weeks</code>, unless approved otherwise;</li>
+<li><strong>Made in</strong> — normally <code>Melbourne, Australia</code>;</li>
+<li><strong>Type label</strong> — for example <code>Linear Pendant</code>;</li>
+<li><strong>3D model (.glb)</strong> — only when a tested public model URL exists; and</li>
+<li><strong>3D model (.usdz)</strong> — optional iPhone/iPad AR file.</li>
+</ul>
+</li>
+<li><p>In <strong>Ranges</strong>, select exactly one approved primary Range: Pendants, Wall
+Lights, Chandeliers, Lamps, or Editions.</p>
+</li>
+<li><p>Set the <strong>Product image</strong>.</p>
+</li>
+<li><p>Keep <strong>Catalog visibility</strong> public unless there is a reason to hide it.</p>
+</li>
+<li><p>Select <strong>Save Draft</strong>, then <strong>Preview</strong>.</p>
+</li>
+<li><p>Complete the checklist below and ask a second person to review it.</p>
+</li>
+<li><p>Select <strong>Publish</strong> only when it is ready for customers.</p>
+</li>
+</ol>
+<h3 id="new-product-checklist">New product checklist</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Name and Type label are correct.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> URL has been checked and will not replace an existing live URL.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Short description is approved.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Real SKU is present and does not start with <code>TBC-</code>.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Price is approved and shown in AUD.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Correct Range is selected.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Product image is sharp on desktop and phone.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Image Alt text is complete.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Finishes, lead time, and “Made in” are accurate.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Spec sheet link opens the correct PDF.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Stock/backorder behavior is correct.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> If variable, every valid variation has a SKU, price, and correct image.</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Hero/story image set has been supplied to the ILANEL Studio Assistant
+if more than one product picture is required.</li>
+</ul>
+<hr />
+<h2 id="add-or-edit-news">4. Add or edit News</h2>
+<p>The site uses normal WordPress Posts for News. Their public addresses appear
+under <code>/news/</code> automatically.</p>
+<h3 id="add-a-news-article">Add a News article</h3>
+<ol>
+<li>Go to <strong>Posts → Add New Post</strong>.</li>
+<li>Enter the approved headline.</li>
+<li>Add the article using normal <strong>Paragraph</strong> blocks. Use short paragraphs
+and clear subheadings for long articles.</li>
+<li>In the Post settings sidebar, open <strong>Featured image</strong> and set the main
+picture. This image appears in the News listing and at the top of the
+article.</li>
+<li>Add useful Alt text to the image.</li>
+<li>Check the publication date. Use <strong>Publish immediately</strong> unless the article
+has an approved future date.</li>
+<li>Select <strong>Preview</strong> and check the headline, date, picture, spacing, and all
+links.</li>
+<li>Select <strong>Publish</strong>, then confirm.</li>
+<li>Check both the article and the public <code>/news/</code> page. The newest article
+should appear in the large <strong>Latest</strong> position.</li>
+</ol>
+<h3 id="edit-an-existing-news-article">Edit an existing News article</h3>
+<ol>
+<li>Go to <strong>Posts → All Posts</strong>.</li>
+<li>Search for the headline and select <strong>Edit</strong>.</li>
+<li>Change the text or replace the <strong>Featured image</strong>.</li>
+<li>Do not change the permalink.</li>
+<li>Select <strong>Update</strong> and check both the article and <code>/news/</code>.</li>
+</ol>
+<h3 id="supporting-pictures-inside-news">Supporting pictures inside News</h3>
+<p>The Featured image is fully editable in WordPress. The existing alternating
+story galleries were imported into a custom image field that the standard WP
+interface does not expose. If an article needs several supporting pictures,
+save it as a Draft and ask the <strong>ILANEL Studio Assistant</strong> to attach and order
+the News gallery. Until that task is enabled, send the ordered image set to
+Oren/site administration.</p>
+<hr />
+<h2 id="final-check-after-publishing">Final check after publishing</h2>
+<h3 id="product">Product</h3>
+<ul>
+<li>Correct name, type, price, and Range.</li>
+<li>Correct first image and no stretched or blank pictures.</li>
+<li>Every variation updates price and picture correctly.</li>
+<li>Lead time, finishes, origin, and specification link are correct.</li>
+<li>Page works on desktop and phone.</li>
+</ul>
+<h3 id="news">News</h3>
+<ul>
+<li>Correct headline and date.</li>
+<li>Featured image appears on <code>/news/</code> and on the article.</li>
+<li>Excerpt on <code>/news/</code> is clean and does not begin with formatting debris.</li>
+<li>Links open the intended pages.</li>
+<li>Article works on desktop and phone.</li>
+</ul>
+<hr />
+<h2 id="if-something-goes-wrong">If something goes wrong</h2>
+<h3 id="i-updated-it-but-the-old-version-still-appears">“I updated it, but the old version still appears”</h3>
+<ol>
+<li>Confirm you selected <strong>Update</strong> or <strong>Publish</strong>.</li>
+<li>Open the page in a private/incognito window.</li>
+<li>Refresh once.</li>
+<li>If it is still old, send the site administrator the page link, what you
+changed, and the time you changed it. The site has more than one cache
+layer and may need an administrator purge.</li>
+</ol>
+<h3 id="i-changed-product-image-but-the-old-hero-remains">“I changed Product image, but the old hero remains”</h3>
+<p>This is the current custom-gallery limitation. Product image changes the
+catalogue/card image, while an existing product hero may still be reading its
+imported hero image set. Send the image and required order to the site
+administrator.</p>
+<h3 id="a-variation-is-missing">“A variation is missing”</h3>
+<p>Check that the variation is enabled, has a Regular price, and has a valid
+option combination. If attributes were renamed or removed, stop and ask the
+site administrator to review the variation structure.</p>
+<h3 id="the-product-is-not-visible-in-the-catalogue">“The product is not visible in the catalogue”</h3>
+<p>Check that it is Published, its Catalog visibility is public, and the correct
+Range is selected. If all three are correct, ask the site administrator.</p>
+<hr />
+<h2 id="use-the-studio-assistant-or-contact-oren">Use the Studio Assistant or contact Oren?</h2>
+<p>Use the <strong>ILANEL Studio Assistant</strong> for approved content tasks that WordPress
+does not expose:</p>
+<ul>
+<li>product hero carousels and story image sets;</li>
+<li>finish-swatch image mappings;</li>
+<li>supporting News story galleries;</li>
+<li>clearing the internal provisional-price marker after the real price and SKU
+have been entered; and</li>
+<li>any later task that is explicitly added to the assistant's approved skill.</li>
+</ul>
+<p>The assistant must show a proposed change, identify the affected product or
+News URL, and ask for confirmation before writing.</p>
+<p>Send these platform or structural changes to <strong>Oren/site administration</strong>:</p>
+<ul>
+<li>Existing URL, slug, or permalink changes and redirects.</li>
+<li>Complex new variable products or changes to their attributes.</li>
+<li>Removing or restructuring a Range.</li>
+<li>Deleting or retiring a product or News article.</li>
+<li>Menus, homepage layout, footer, forms, SEO templates, or site-wide design.</li>
+<li>Checkout, payments, tax, shipping, email delivery, users, plugins, theme,
+updates, backups, security, or domain settings.</li>
+</ul>
+<p>For either route, include the public page link, the exact requested change,
+approved copy/price, prepared image files, required image order, and the
+desired deadline.</p>
+<hr />
+<h2 id="official-help">Official help</h2>
+<ul>
+<li><a href="https://woocommerce.com/document/managing-products/add-product/">WooCommerce: add a product</a></li>
+<li><a href="https://woocommerce.com/document/managing-products/">WooCommerce: manage products</a></li>
+<li><a href="https://woocommerce.com/document/adding-product-images-and-galleries/">WooCommerce: product images and galleries</a></li>
+<li><a href="https://woocommerce.com/document/variable-product/">WooCommerce: variable products</a></li>
+<li><a href="https://wordpress.org/documentation/article/page-post-settings-sidebar/">WordPress: Post settings and Featured image</a></li>
+<li><a href="https://wordpress.org/documentation/article/image-block/">WordPress: Image block and Alt text</a></li>
+</ul>
+<hr />
+<h2 id="handover-note-for-oren-the-site-administrator">Handover note for Oren / the site administrator</h2>
+<p>Before this manual is treated as final studio training material:</p>
+<ol>
+<li>build the dedicated ILANEL Studio Assistant as an agent + task skill +
+authenticated, least-privilege MCP over the site's custom content fields;</li>
+<li>begin with narrow operations for <code>_ilanel_gallery</code>, <code>_ilanel_story</code>,
+<code>_ilanel_swatches</code>, the News <code>_ilanel_project_gallery</code> field, and clearing
+<code>_ilanel_price_is_placeholder</code> after a verified price/SKU update;</li>
+<li>require lookup → proposed diff/preview → explicit confirmation → write →
+public-page verification, with an audit record for every write;</li>
+<li>keep URL/slug changes, deletion, payments, tax, shipping, plugins, theme,
+and domain controls outside the MCP's default permissions;</li>
+<li>confirm the final studio WordPress account role and exact menu labels it
+can see;</li>
+<li>replace the temporary admin URL with the final production URL after
+cutover;</li>
+<li>capture screenshots from the final WordPress interface and Studio
+Assistant; and</li>
+<li>run one supervised exercise in each path: replace a price and publish a
+News Draft in WordPress, then reorder a product hero and attach a News
+gallery through the Studio Assistant.</li>
+</ol>
+</body></html>
